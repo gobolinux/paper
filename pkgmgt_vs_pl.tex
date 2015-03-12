@@ -1,0 +1,274 @@
+%% LyX 2.1.0 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{url}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+
+\title{Understanding package management by analogy to programming languages}
+
+\maketitle
+
+\section{Introduction}
+
+Package management is an area that lies somewhere in the border between
+programming languages, operating systems and system administration.
+For this reason, it seems to be overlooked by all three fields as
+an implementation issue. In the meantime, package management keeps
+growing in complexity. New languages, new deployment models and new
+portability requirements, all give rise to new package management
+systems. Further, this is not simply a matter of competing implementations:
+modern complex environments often require several package managers
+to be used in tandem.
+
+For example, when writing JavaScript web applications on a Mac environment,
+a developer may require using Bower \cite{bower}, a package manager
+for client-side JavaScript components. Bower is installed using \texttt{npm}
+\cite{npm}, a package manager for \texttt{node.js} \cite{nodejs},
+a JavaScript environment. On a Mac system, the typical way to install
+command-line tools such as \texttt{npm} is via either Homebrew \cite{homebrew}
+or MacPorts \cite{macports}, the two most popular general-purpose
+package managers for Mac OSX. This is not a deliberately contrived
+example; it is the regular way to install development modules for
+a popular language in a modern platform.
+
+In \cite{Burns2012Deploying} we have another example of a typical
+software stack, where a deployment and management scenario for Ruby
+on Rails applications is described combining a number of tools. It
+uses Vagrant \cite{Hashimoto2013Vagrant} for virtual machine management;
+Puppet \cite{Arrundel2011Puppet} for editing system configuration
+files and driving the system-wide package manager on servers; Capistrano
+for deploying the Ruby on Rails application, including installing
+Ruby scripts and migrating database tables, driving RubyGems, the
+language-specific package manager for Ruby modules (with Bundler to
+mitigate module version conflicts); and RVM for managing conflicting
+versions of Ruby itself. It is interesting to note the number of different
+tools being used on top of each other to manage containment and compatibility
+issues on various layers; and again, this is a typical, realistic
+scenario.
+
+The combinations of package managers change as we move to a different
+operating system or use a different language. Learning one's way through
+a new language or system, nowadays, includes learning one or more
+packaging environments. As a developer of modules, this includes not
+only using package managers but also learning to deploy code using
+them, which includes syntaxes for package specification formats, dependency
+and versioning rules and deployment conventions. Simply ignoring these
+environments and managing modules and dependencies by hand is tempting,
+but the complexity of heterogenous environments and keeping track
+of dependency updates can become burdensome — all these package managers
+were created to solve pratical problems which the developer would
+have to otherwise directly handle, after all. Another alternative
+that is often proposed, especially by users of operating systems that
+feature a system-provided package manager (as is the case of most
+Linux distributions), is to avoid using multiple package managers
+and use a single general-purpose package manager. This is, of course,
+as much as a solution as trying to make everyone agree on a single
+programming language, and this is the first of various analogies between
+package management and programming languages that we will make throughout
+this paper. The result is that the ecosystem is not getting any simpler,
+and at first glance it seems that package management is indeed a largely
+unsolved problem.
+
+However, maybe the statement ``package management is an unsolved
+problem'' simply does not make sense, and is akin to saying that
+``programming languages are an unsolved problem''. In the programming
+languages world we accept that the multitude of languages is a given.
+Beyond that, we understand that there are families of languages with
+different paradigms, with well-known tradeoffs. We also accept that
+there is room for domain-specific languages and for general-purpose
+languages. Most importantly, we know how to set boundaries for each
+language and how to make DSLs and general-purpose languages interact.
+
+We argue that all of these observations can be made with regard to
+package management as well. In this paper, we will discuss how these
+observations map from the world of programming languages to that of
+package managers. Most existing package management systems, however,
+are still oblivious to the fact that they exist as part of a larger
+ecosystem, with parts of it handled by other package managers. By
+discussing how programming languages deal with these issues, we point
+to directions on how package manegers could follow their example,
+drawing on our experiences developing both a system-wide package manager
+\cite{Muhammad2002WSL,Homer2010LCA} and a language-specific package
+manager \cite{Muhammad2013LuaRocks}. 
+
+
+\section*{Paradigms of package management}
+\begin{quote}
+\emph{An analogy between programming language paradigms and package
+management paradigms}
+\end{quote}
+We went through filesystem vs. database in Gobo, but this appears
+everywhere.
+\begin{itemize}
+\item filesystem paradigm vs. database paradigm
+\item trade-offs: how runtime lookup of files happens
+
+\begin{itemize}
+\item databases involved in runtime lookup: gtk icon cache, Haskell db updates,
+etc.
+\item pkg-config, how does it fit?
+\item filesystem paradigm and runtime lookup: environment variables, index
+directories with symlinks, symlinks in lib (libfoo.so, libfoo.so.1,
+etc.)
+\end{itemize}
+\item versioning in db vs filesystem. libfoo.so vs. libfoo.so.1, versioning
+in gobo, /usr/include/python2.7/ etc.
+\item changes in filesystems to better support the filesystem paradigm?
+(union mounts, etc)
+\item related work. outside of ``classic'' Unix: appdirs, Windows, Plan
+9.
+\item filesystem paradigm in ``classic'' Unix: /opt
+
+\begin{itemize}
+\item parts of the FS hierarchy which use the filesystem paradigm: /usr/share/appname
+\item parts which don't: /usr/share/icons
+
+\begin{itemize}
+\item effect this had on share/ in gobo
+\end{itemize}
+\end{itemize}
+\item Makefiles with install and uninstall rules in ports: early example
+of database paradigm?
+\item other instances of filesystem vs database paradigm:
+
+\begin{itemize}
+\item sysv and BSD init versus systemd
+\item Mac OSX equivalent
+\item /etc text-based config files vs. gconf
+\item Windows registry.
+\end{itemize}
+\end{itemize}
+
+\section*{Language-oriented vs. language-agnostic package managers}
+\begin{quote}
+\emph{An analogy between PL space with DSLs and general purpose languages
+and pkgmgr space with language-oriented and language-agnostic managers}\end{quote}
+\begin{itemize}
+\item My paper on LuaRocks makes a case for language-oriented package managers:
+
+\begin{itemize}
+\item scalability (30,000 Ubuntu packages in total, 50,000+ Ruby gems alone)
+\item portability (language managers are used in several OSes)
+\end{itemize}
+\end{itemize}
+
+\section*{Integration between languages vs. integration between package managers}
+\begin{quote}
+\emph{An analogy between PL interaction (APIs and FFIs) and pkgmgr
+interaction (virtually none??)}
+\end{quote}
+In GoboLinux we researched the idea of building an ``FFI'' of sorts
+into our general-purpose package manager, called Aliens {[}cite Michael's
+presentation in linux.conf.au{]}. The idea was that we could provide
+a general API for writing shims that interacted with domain-specific
+package managers (that is, language-specific ones) in an clean way.
+Ad-hoc integrations between general-purpose and domain-specific package
+managers proved traumatic to some projects {[}debian's troubles with
+rubygems{]}. Still, they have been successfully realized in others,
+such as the use of LuaRocks by Buildroot.
+
+language-oriented (domain-specific) vs. language-agnostic (general-purpose)
+package managers
+
+
+\section*{Practical experience with filesystem-oriented package management:
+Gobo}
+\begin{itemize}
+\item earliest related work: GNU stow, encap. (Our paper from Workshop em
+Software Livre mentions that, but we didn't really know about them
+when making Gobo)
+\item GoboLinux
+
+\begin{itemize}
+\item Our extensive use of shell scripting for system management was a sort
+of attempt to show that the system could work with ``just a few scripts''.
+\item core ideas work (the system is still driven via symlinks) but management
+scripts became complex over time
+\end{itemize}
+\item the build system, the tooling for generating packages, is the central
+piece of a package management system.
+
+\begin{itemize}
+\item not clear at first, but looking at package management systems they
+all integrate the build process. Why?
+\end{itemize}
+\item Discuss the challenges of GoboLinux through the prism of its build
+system (?)
+
+\begin{itemize}
+\item Tried to make it easy for users to build packages.
+\item Took inspiration from systems such as Gentoo, which was itself inspired
+from BSD Ports.
+\item aim was to make the simple cases super-simple (like a 3-line script)
+and the complex cases possible (leveraging the generality of shell
+scripts)
+\item This worked up to a point. Eventually, started requiring more and
+more metadata, even for the so-called simple cases.
+\item Further, this metadata had to be integrated with the deployed system. 
+\item The ArchLinux build system seems to be a modern-day successor of this
+style of build system in the Linux space.
+\end{itemize}
+\item Modern examples
+
+\begin{itemize}
+\item The Nix project has been around almost as long as GoboLinux. NixOS
+is nowadays a serious contender in the world of server-oriented operating
+systems.
+\item virtual machines: minimalism is making its way back in OS layout design.
+(There have always been minimalistic Linux distributions, back from
+the ``rescue'' distros such as Damn Small Linux and tomsrtbt (which
+would fit in a floppy!).
+
+\begin{itemize}
+\item CoreOS, based on Gentoo, is the current representative of the minimalistic
+server-oriented distro world.
+\item Ubuntu Core was recently announced, and this might be a beginning
+of a general trend of ``core'' OSes.
+
+\begin{itemize}
+\item Ubuntu Core ``snappy'' packages strongly resemble GoboLinux!
+\end{itemize}
+\end{itemize}
+\item Homebrew, a package manager for Mac OS X, is a successful realization
+of this idea. One of its original design criteria was to do package
+management ``the GoboLinux way'' {[}in the git history of homebrew's
+README.md we find them citing gobolinux{]} (so I guess that's the
+most widespread legacy of our work)
+\end{itemize}
+\item What do we mean by filesystem facilities: a more powerful fs would
+make things better?
+
+\begin{itemize}
+\item Back in 200x I wrote {[}the ``clueless'' whitepaper{]} how we needed
+more low-level tooling from the underlying operating system in order
+to be able to realize some of the ideas of GoboLinux cleanly. We were
+asking for more abstraction and isolation in userspace: essentially
+I wanted union filesystems and possibly some sort of containers. Lacking
+those, we had to make do with chroot.
+\item For a while we hoped that as underlying technology matured, these
+ideas could come to fruition.
+\item Docker seems to be proof of that; a container-based system that greatly
+simplified application deployment.
+\item However, Glauber Costa, one of the developers of the Linux Containers
+system, described the limitations of that approach exposed the hackery
+involved {[}did he write about it somewhere?{]}. Costa himself moved
+away from containers and joined the efforts of the OSv project, a
+minimalistic operating system targeting hypervisor-based architectures.
+\end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{gobo}
+\end{itemize}
+
+\end{document}

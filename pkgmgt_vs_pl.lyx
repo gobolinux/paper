@@ -1,0 +1,672 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 3cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Understanding package management by analogy to programming languages
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Package management is an area that lies somewhere in the border between
+ programming languages, operating systems and system administration.
+ For this reason, it seems to be overlooked by all three fields as an implementa
+tion issue.
+ In the meantime, package management keeps growing in complexity.
+ New languages, new deployment models and new portability requirements,
+ all give rise to new package management systems.
+ Further, this is not simply a matter of competing implementations: modern
+ complex environments often require several package managers to be used
+ in tandem.
+\end_layout
+
+\begin_layout Standard
+For example, when writing JavaScript web applications on a Mac environment,
+ a developer may require using Bower 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "bower"
+
+\end_inset
+
+, a package manager for client-side JavaScript components.
+ Bower is installed using 
+\family typewriter
+npm
+\family default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "npm"
+
+\end_inset
+
+, a package manager for 
+\family typewriter
+node.js
+\family default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "nodejs"
+
+\end_inset
+
+, a JavaScript environment.
+ On a Mac system, the typical way to install command-line tools such as
+ 
+\family typewriter
+npm
+\family default
+ is via either Homebrew 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "homebrew"
+
+\end_inset
+
+ or MacPorts 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "macports"
+
+\end_inset
+
+, the two most popular general-purpose package managers for Mac OSX.
+ This is not a deliberately contrived example; it is the regular way to
+ install development modules for a popular language in a modern platform.
+\end_layout
+
+\begin_layout Standard
+In 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Burns2012Deploying"
+
+\end_inset
+
+ we have another example of a typical software stack, where a deployment
+ and management scenario for Ruby on Rails applications is described combining
+ a number of tools.
+ It uses Vagrant 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hashimoto2013Vagrant"
+
+\end_inset
+
+ for virtual machine management; Puppet 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Arrundel2011Puppet"
+
+\end_inset
+
+ for editing system configuration files and driving the system-wide package
+ manager on servers; Capistrano for deploying the Ruby on Rails application,
+ including installing Ruby scripts and migrating database tables, driving
+ RubyGems, the language-specific package manager for Ruby modules (with
+ Bundler to mitigate module version conflicts); and RVM for managing conflicting
+ versions of Ruby itself.
+ It is interesting to note the number of different tools being used on top
+ of each other to manage containment and compatibility issues on various
+ layers; and again, this is a typical, realistic scenario.
+\end_layout
+
+\begin_layout Standard
+The combinations of package managers change as we move to a different operating
+ system or use a different language.
+ Learning one's way through a new language or system, nowadays, includes
+ learning one or more packaging environments.
+ As a developer of modules, this includes not only using package managers
+ but also learning to deploy code using them, which includes syntaxes for
+ package specification formats, dependency and versioning rules and deployment
+ conventions.
+ Simply ignoring these environments and managing modules and dependencies
+ by hand is tempting, but the complexity of heterogenous environments and
+ keeping track of dependency updates can become burdensome — all these package
+ managers were created to solve pratical problems which the developer would
+ have to otherwise directly handle, after all.
+ Another alternative that is often proposed, especially by users of operating
+ systems that feature a system-provided package manager (as is the case
+ of most Linux distributions), is to avoid using multiple package managers
+ and use a single general-purpose package manager.
+ This is, of course, as much as a solution as trying to make everyone agree
+ on a single programming language, and this is the first of various analogies
+ between package management and programming languages that we will make
+ throughout this paper.
+ The result is that the ecosystem is not getting any simpler, and at first
+ glance it seems that package management is indeed a largely unsolved problem.
+\end_layout
+
+\begin_layout Standard
+However, maybe the statement 
+\begin_inset Quotes eld
+\end_inset
+
+package management is an unsolved problem
+\begin_inset Quotes erd
+\end_inset
+
+ simply does not make sense, and is akin to saying that 
+\begin_inset Quotes eld
+\end_inset
+
+programming languages are an unsolved problem
+\begin_inset Quotes erd
+\end_inset
+
+.
+ In the programming languages world we accept that the multitude of languages
+ is a given.
+ Beyond that, we understand that there are families of languages with different
+ paradigms, with well-known tradeoffs.
+ We also accept that there is room for domain-specific languages and for
+ general-purpose languages.
+ Most importantly, we know how to set boundaries for each language and how
+ to make DSLs and general-purpose languages interact.
+\end_layout
+
+\begin_layout Standard
+We argue that all of these observations can be made with regard to package
+ management as well.
+ In this paper, we will discuss how these observations map from the world
+ of programming languages to that of package managers.
+ Most existing package management systems, however, are still oblivious
+ to the fact that they exist as part of a larger ecosystem, with parts of
+ it handled by other package managers.
+ By discussing how programming languages deal with these issues, we point
+ to directions on how package manegers could follow their example, drawing
+ on our experiences developing both a system-wide package manager 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2002WSL,Homer2010LCA"
+
+\end_inset
+
+ and a language-specific package manager 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2013LuaRocks"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section*
+Paradigms of package management
+\end_layout
+
+\begin_layout Quote
+
+\emph on
+An analogy between programming language paradigms and package management
+ paradigms
+\end_layout
+
+\begin_layout Standard
+We went through filesystem vs.
+ database in Gobo, but this appears everywhere.
+\end_layout
+
+\begin_layout Itemize
+filesystem paradigm vs.
+ database paradigm
+\end_layout
+
+\begin_layout Itemize
+trade-offs: how runtime lookup of files happens
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+databases involved in runtime lookup: gtk icon cache, Haskell db updates,
+ etc.
+\end_layout
+
+\begin_layout Itemize
+pkg-config, how does it fit?
+\end_layout
+
+\begin_layout Itemize
+filesystem paradigm and runtime lookup: environment variables, index directories
+ with symlinks, symlinks in lib (libfoo.so, libfoo.so.1, etc.)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+versioning in db vs filesystem.
+ libfoo.so vs.
+ libfoo.so.1, versioning in gobo, /usr/include/python2.7/ etc.
+\end_layout
+
+\begin_layout Itemize
+changes in filesystems to better support the filesystem paradigm? (union
+ mounts, etc)
+\end_layout
+
+\begin_layout Itemize
+related work.
+ outside of 
+\begin_inset Quotes eld
+\end_inset
+
+classic
+\begin_inset Quotes erd
+\end_inset
+
+ Unix: appdirs, Windows, Plan 9.
+\end_layout
+
+\begin_layout Itemize
+filesystem paradigm in 
+\begin_inset Quotes eld
+\end_inset
+
+classic
+\begin_inset Quotes erd
+\end_inset
+
+ Unix: /opt
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+parts of the FS hierarchy which use the filesystem paradigm: /usr/share/appname
+\end_layout
+
+\begin_layout Itemize
+parts which don't: /usr/share/icons
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+effect this had on share/ in gobo
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Makefiles with install and uninstall rules in ports: early example of database
+ paradigm?
+\end_layout
+
+\begin_layout Itemize
+other instances of filesystem vs database paradigm:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+sysv and BSD init versus systemd
+\end_layout
+
+\begin_layout Itemize
+Mac OSX equivalent
+\end_layout
+
+\begin_layout Itemize
+/etc text-based config files vs.
+ gconf
+\end_layout
+
+\begin_layout Itemize
+Windows registry.
+\end_layout
+
+\end_deeper
+\begin_layout Section*
+Language-oriented vs.
+ language-agnostic package managers
+\end_layout
+
+\begin_layout Quote
+
+\emph on
+An analogy between PL space with DSLs and general purpose languages and
+ pkgmgr space with language-oriented and language-agnostic managers
+\end_layout
+
+\begin_layout Itemize
+My paper on LuaRocks makes a case for language-oriented package managers:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+scalability (30,000 Ubuntu packages in total, 50,000+ Ruby gems alone)
+\end_layout
+
+\begin_layout Itemize
+portability (language managers are used in several OSes)
+\end_layout
+
+\end_deeper
+\begin_layout Section*
+Integration between languages vs.
+ integration between package managers
+\end_layout
+
+\begin_layout Quote
+
+\emph on
+An analogy between PL interaction (APIs and FFIs) and pkgmgr interaction
+ (virtually none??)
+\end_layout
+
+\begin_layout Standard
+In GoboLinux we researched the idea of building an 
+\begin_inset Quotes eld
+\end_inset
+
+FFI
+\begin_inset Quotes erd
+\end_inset
+
+ of sorts into our general-purpose package manager, called Aliens [cite
+ Michael's presentation in linux.conf.au].
+ The idea was that we could provide a general API for writing shims that
+ interacted with domain-specific package managers (that is, language-specific
+ ones) in an clean way.
+ Ad-hoc integrations between general-purpose and domain-specific package
+ managers proved traumatic to some projects [debian's troubles with rubygems].
+ Still, they have been successfully realized in others, such as the use
+ of LuaRocks by Buildroot.
+\end_layout
+
+\begin_layout Standard
+language-oriented (domain-specific) vs.
+ language-agnostic (general-purpose) package managers
+\end_layout
+
+\begin_layout Section*
+Practical experience with filesystem-oriented package management: Gobo
+\end_layout
+
+\begin_layout Itemize
+earliest related work: GNU stow, encap.
+ (Our paper from Workshop em Software Livre mentions that, but we didn't
+ really know about them when making Gobo)
+\end_layout
+
+\begin_layout Itemize
+GoboLinux
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Our extensive use of shell scripting for system management was a sort of
+ attempt to show that the system could work with 
+\begin_inset Quotes eld
+\end_inset
+
+just a few scripts
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+core ideas work (the system is still driven via symlinks) but management
+ scripts became complex over time
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+the build system, the tooling for generating packages, is the central piece
+ of a package management system.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+not clear at first, but looking at package management systems they all integrate
+ the build process.
+ Why?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Discuss the challenges of GoboLinux through the prism of its build system
+ (?)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tried to make it easy for users to build packages.
+\end_layout
+
+\begin_layout Itemize
+Took inspiration from systems such as Gentoo, which was itself inspired
+ from BSD Ports.
+\end_layout
+
+\begin_layout Itemize
+aim was to make the simple cases super-simple (like a 3-line script) and
+ the complex cases possible (leveraging the generality of shell scripts)
+\end_layout
+
+\begin_layout Itemize
+This worked up to a point.
+ Eventually, started requiring more and more metadata, even for the so-called
+ simple cases.
+\end_layout
+
+\begin_layout Itemize
+Further, this metadata had to be integrated with the deployed system.
+ 
+\end_layout
+
+\begin_layout Itemize
+The ArchLinux build system seems to be a modern-day successor of this style
+ of build system in the Linux space.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Modern examples
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The Nix project has been around almost as long as GoboLinux.
+ NixOS is nowadays a serious contender in the world of server-oriented operating
+ systems.
+\end_layout
+
+\begin_layout Itemize
+virtual machines: minimalism is making its way back in OS layout design.
+ (There have always been minimalistic Linux distributions, back from the
+ 
+\begin_inset Quotes eld
+\end_inset
+
+rescue
+\begin_inset Quotes erd
+\end_inset
+
+ distros such as Damn Small Linux and tomsrtbt (which would fit in a floppy!).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+CoreOS, based on Gentoo, is the current representative of the minimalistic
+ server-oriented distro world.
+\end_layout
+
+\begin_layout Itemize
+Ubuntu Core was recently announced, and this might be a beginning of a general
+ trend of 
+\begin_inset Quotes eld
+\end_inset
+
+core
+\begin_inset Quotes erd
+\end_inset
+
+ OSes.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ubuntu Core 
+\begin_inset Quotes eld
+\end_inset
+
+snappy
+\begin_inset Quotes erd
+\end_inset
+
+ packages strongly resemble GoboLinux!
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Homebrew, a package manager for Mac OS X, is a successful realization of
+ this idea.
+ One of its original design criteria was to do package management 
+\begin_inset Quotes eld
+\end_inset
+
+the GoboLinux way
+\begin_inset Quotes erd
+\end_inset
+
+ [in the git history of homebrew's README.md we find them citing gobolinux]
+ (so I guess that's the most widespread legacy of our work)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What do we mean by filesystem facilities: a more powerful fs would make
+ things better?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Back in 200x I wrote [the 
+\begin_inset Quotes eld
+\end_inset
+
+clueless
+\begin_inset Quotes erd
+\end_inset
+
+ whitepaper] how we needed more low-level tooling from the underlying operating
+ system in order to be able to realize some of the ideas of GoboLinux cleanly.
+ We were asking for more abstraction and isolation in userspace: essentially
+ I wanted union filesystems and possibly some sort of containers.
+ Lacking those, we had to make do with chroot.
+\end_layout
+
+\begin_layout Itemize
+For a while we hoped that as underlying technology matured, these ideas
+ could come to fruition.
+\end_layout
+
+\begin_layout Itemize
+Docker seems to be proof of that; a container-based system that greatly
+ simplified application deployment.
+\end_layout
+
+\begin_layout Itemize
+However, Glauber Costa, one of the developers of the Linux Containers system,
+ described the limitations of that approach exposed the hackery involved
+ [did he write about it somewhere?].
+ Costa himself moved away from containers and joined the efforts of the
+ OSv project, a minimalistic operating system targeting hypervisor-based
+ architectures.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "gobo"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_body
+\end_document
