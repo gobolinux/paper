@@ -7,6 +7,11 @@
 \geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
 
 \makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \usepackage{url}
 
@@ -104,6 +109,51 @@ manager \cite{Muhammad2013LuaRocks}.
 
 
 \section*{Paradigms of package management}
+
+\begin{figure}
+\begin{centering}
+\begin{tabular}{|c|c|c|}
+\cline{2-3} 
+\multicolumn{1}{c|}{} & Filesystem-oriented & Database-oriented\tabularnewline
+\hline 
+Language-agnostic & %
+\begin{minipage}[t]{0.35\columnwidth}%
+GoboLinux
+
+Homebrew (Mac OS X)
+
+Nix
+
+Windows Installer%
+\end{minipage} & %
+\begin{minipage}[t]{0.35\columnwidth}%
+RPM (RedHat/Fedora/etc.)
+
+dpkg/apt (Debian/Ubuntu/etc.)
+
+Pacman (ArchLinux)%
+\end{minipage}\tabularnewline
+\hline 
+Language-specific & %
+\begin{minipage}[t]{0.35\columnwidth}%
+npm (JavaScript)
+
+Bower (JavaScript)
+
+LuaRocks 1.x (Lua)%
+\end{minipage} & %
+\begin{minipage}[t]{0.35\columnwidth}%
+LuaRocks 2.x (Lua)
+
+Cabal (Haskell)%
+\end{minipage}\tabularnewline
+\hline 
+\end{tabular}
+\par\end{centering}
+
+\protect\caption{A package manager taxonomy}
+\end{figure}
+
 \begin{quote}
 \emph{An analogy between programming language paradigms and package
 management paradigms}
@@ -148,6 +198,14 @@ of database paradigm?
 \item /etc text-based config files vs. gconf
 \item Windows registry.
 \end{itemize}
+\item Short history of alternative approaches: Zero Install (still active),
+Autopackage (dormant, ``packages must be relocatable''), 
+\item Being database-oriented does not imply an opaque, binary database
+format. LuaRocks 2.x uses a set of Lua tables (in \texttt{.lua} source
+format) as its database. ArchLinux keeps its database as a tree under
+\texttt{/var/lib/pacman/local}, with one subdirectory per package,
+containing text files that list which files belong to which package,
+as well as other metadata.
 \end{itemize}
 
 \section*{Language-oriented vs. language-agnostic package managers}
