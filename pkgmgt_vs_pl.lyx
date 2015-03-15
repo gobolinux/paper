@@ -276,6 +276,239 @@ key "Muhammad2013LuaRocks"
 Paradigms of package management
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="3">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Filesystem-oriented
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Database-oriented
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Language-agnostic
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "35col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+GoboLinux
+\end_layout
+
+\begin_layout Plain Layout
+Homebrew (Mac OS X)
+\end_layout
+
+\begin_layout Plain Layout
+Nix
+\end_layout
+
+\begin_layout Plain Layout
+Windows Installer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "35col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+RPM (RedHat/Fedora/etc.)
+\end_layout
+
+\begin_layout Plain Layout
+dpkg/apt (Debian/Ubuntu/etc.)
+\end_layout
+
+\begin_layout Plain Layout
+Pacman (ArchLinux)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Language-specific
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "35col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+npm (JavaScript)
+\end_layout
+
+\begin_layout Plain Layout
+Bower (JavaScript)
+\end_layout
+
+\begin_layout Plain Layout
+LuaRocks 1.x (Lua)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "35col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+LuaRocks 2.x (Lua)
+\end_layout
+
+\begin_layout Plain Layout
+Cabal (Haskell)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+A package manager taxonomy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Quote
 
 \emph on
@@ -393,6 +626,34 @@ Windows registry.
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+Short history of alternative approaches: Zero Install (still active), Autopackag
+e (dormant, 
+\begin_inset Quotes eld
+\end_inset
+
+packages must be relocatable
+\begin_inset Quotes erd
+\end_inset
+
+), 
+\end_layout
+
+\begin_layout Itemize
+Being database-oriented does not imply an opaque, binary database format.
+ LuaRocks 2.x uses a set of Lua tables (in 
+\family typewriter
+.lua
+\family default
+ source format) as its database.
+ ArchLinux keeps its database as a tree under 
+\family typewriter
+/var/lib/pacman/local
+\family default
+, with one subdirectory per package, containing text files that list which
+ files belong to which package, as well as other metadata.
+\end_layout
+
 \begin_layout Section*
 Language-oriented vs.
  language-agnostic package managers
