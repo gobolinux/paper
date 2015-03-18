@@ -200,7 +200,7 @@ The combinations of package managers change as we move to a different operating
  package specification formats, dependency and versioning rules and deployment
  conventions.
  Simply ignoring these environments and managing modules and dependencies
- by hand is tempting, but the complexity of heterogenous environments and
+ by hand is tempting, but the complexity of heterogeneous environments and
  keeping track of dependency updates can become burdensome — all these package
  managers were created to solve pratical problems which the developer would
  have to otherwise directly handle, after all.
@@ -238,8 +238,8 @@ programming languages are an unsolved problem
  is a given.
  Beyond that, we understand that there are families of languages with different
  paradigms, with well-known tradeoffs.
- We also accept that there is room for domain-specific languages and for
- general-purpose languages.
+ We also accept that there is room for domain-specific languages (DSLs)
+ and for general-purpose languages.
  Most importantly, we know how to set boundaries for each language and how
  to make DSLs and general-purpose languages interact.
 \end_layout
@@ -247,8 +247,8 @@ programming languages are an unsolved problem
 \begin_layout Standard
 We argue that all of these observations can be made with regard to package
  management as well.
- In this paper, we will discuss how these observations map from the world
- of programming languages to that of package managers.
+ In this paper, we discuss how these observations map from the world of
+ programming languages to that of package managers.
  Most existing package management systems, however, are still oblivious
  to the fact that they exist as part of a larger ecosystem, with parts of
  it handled by other package managers.
