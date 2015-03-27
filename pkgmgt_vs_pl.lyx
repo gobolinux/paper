@@ -272,8 +272,9 @@ key "Muhammad2013LuaRocks"
  
 \end_layout
 
-\begin_layout Section*
-Paradigms of package management
+\begin_layout Section
+Paradigms of package management: filesystem-oriented vs.
+ database-oriented
 \end_layout
 
 \begin_layout Standard
@@ -333,34 +334,55 @@ Language-agnostic
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "35col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
 
 \begin_layout Plain Layout
 GoboLinux
 \end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
 Homebrew (Mac OS X)
 \end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
 
 \begin_layout Plain Layout
 Nix
 \end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
 Windows Installer
 \end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
 
 \end_inset
 
@@ -373,30 +395,44 @@ Windows Installer
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "35col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
 
 \begin_layout Plain Layout
 RPM (RedHat/Fedora/etc.)
 \end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
 dpkg/apt (Debian/Ubuntu/etc.)
 \end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
 Pacman (ArchLinux)
 \end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
 
 \end_inset
 
@@ -420,30 +456,44 @@ Language-specific
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "35col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
 
 \begin_layout Plain Layout
 npm (JavaScript)
 \end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
 Bower (JavaScript)
 \end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
 LuaRocks 1.x (Lua)
 \end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
 
 \end_inset
 
@@ -456,26 +506,33 @@ LuaRocks 1.x (Lua)
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "35col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cabal (Haskell)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
 
 \begin_layout Plain Layout
 LuaRocks 2.x (Lua)
 \end_layout
 
-\begin_layout Plain Layout
-Cabal (Haskell)
-\end_layout
+\end_inset
+</cell>
+</row>
+</lyxtabular>
 
 \end_inset
 
@@ -496,6 +553,12 @@ Cabal (Haskell)
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:pm-taxonomy"
+
+\end_inset
+
 A package manager taxonomy
 \end_layout
 
@@ -513,12 +576,7 @@ A package manager taxonomy
 
 \emph on
 An analogy between programming language paradigms and package management
- paradigms
-\end_layout
-
-\begin_layout Standard
-We went through filesystem vs.
- database in Gobo, but this appears everywhere.
+ paradigms, generally advocating filesystem-oriented models.
 \end_layout
 
 \begin_layout Itemize
@@ -558,8 +616,7 @@ changes in filesystems to better support the filesystem paradigm? (union
 \end_layout
 
 \begin_layout Itemize
-related work.
- outside of 
+related work outside of 
 \begin_inset Quotes eld
 \end_inset
 
@@ -571,18 +628,14 @@ classic
 \end_layout
 
 \begin_layout Itemize
-filesystem paradigm in 
-\begin_inset Quotes eld
-\end_inset
-
-classic
-\begin_inset Quotes erd
-\end_inset
-
- Unix: /opt
+filesystem paradigm in Unix:
 \end_layout
 
 \begin_deeper
+\begin_layout Itemize
+/opt: early example of filesystem-oriented management
+\end_layout
+
 \begin_layout Itemize
 parts of the FS hierarchy which use the filesystem paradigm: /usr/share/appname
 \end_layout
@@ -593,16 +646,34 @@ parts which don't: /usr/share/icons
 
 \begin_deeper
 \begin_layout Itemize
-effect this had on share/ in gobo
+effect this had on share/ in Gobo: launching helper indexing such as gtk-update-
+icon-cache upon each installation 
 \end_layout
 
 \end_deeper
 \end_deeper
 \begin_layout Itemize
+Being database-oriented does not imply an opaque, binary database format.
+ LuaRocks 2.x uses a set of Lua tables (in 
+\family typewriter
+.lua
+\family default
+ source format) as its database.
+ ArchLinux keeps its database as a tree under 
+\family typewriter
+/var/lib/pacman/local
+\family default
+, with one subdirectory per package, containing text files that list which
+ files belong to which package, as well as other metadata.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
 Makefiles with install and uninstall rules in ports: early example of database
  paradigm?
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 other instances of filesystem vs database paradigm:
 \end_layout
@@ -627,111 +698,20 @@ Windows registry.
 
 \end_deeper
 \begin_layout Itemize
-Short history of alternative approaches: Zero Install (still active), Autopackag
-e (dormant, 
-\begin_inset Quotes eld
+Explain Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pm-taxonomy"
+
 \end_inset
 
-packages must be relocatable
-\begin_inset Quotes erd
-\end_inset
-
-), 
+.
 \end_layout
 
-\begin_layout Itemize
-Being database-oriented does not imply an opaque, binary database format.
- LuaRocks 2.x uses a set of Lua tables (in 
-\family typewriter
-.lua
-\family default
- source format) as its database.
- ArchLinux keeps its database as a tree under 
-\family typewriter
-/var/lib/pacman/local
-\family default
-, with one subdirectory per package, containing text files that list which
- files belong to which package, as well as other metadata.
-\end_layout
-
-\begin_layout Section*
-Language-oriented vs.
- language-agnostic package managers
-\end_layout
-
-\begin_layout Quote
-
-\emph on
-An analogy between PL space with DSLs and general purpose languages and
- pkgmgr space with language-oriented and language-agnostic managers
-\end_layout
-
-\begin_layout Itemize
-My paper on LuaRocks makes a case for language-oriented package managers:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-scalability (30,000 Ubuntu packages in total, 50,000+ Ruby gems alone)
-\end_layout
-
-\begin_layout Itemize
-portability (language managers are used in several OSes)
-\end_layout
-
-\end_deeper
-\begin_layout Section*
-Integration between languages vs.
- integration between package managers
-\end_layout
-
-\begin_layout Quote
-
-\emph on
-An analogy between PL interaction (APIs and FFIs) and pkgmgr interaction
- (virtually none??)
-\end_layout
-
-\begin_layout Standard
-In GoboLinux we researched the idea of building an 
-\begin_inset Quotes eld
-\end_inset
-
-FFI
-\begin_inset Quotes erd
-\end_inset
-
- of sorts into our general-purpose package manager, called Aliens [cite
- Michael's presentation in linux.conf.au].
- The idea was that we could provide a general API for writing shims that
- interacted with domain-specific package managers (that is, language-specific
- ones) in an clean way.
- Ad-hoc integrations between general-purpose and domain-specific package
- managers proved traumatic to some projects [debian's troubles with rubygems].
- Still, they have been successfully realized in others, such as the use
- of LuaRocks by Buildroot.
-\end_layout
-
-\begin_layout Standard
-language-oriented (domain-specific) vs.
- language-agnostic (general-purpose) package managers
-\end_layout
-
-\begin_layout Section*
-Practical experience with filesystem-oriented package management: Gobo
-\end_layout
-
-\begin_layout Itemize
-earliest related work: GNU stow, encap.
- (Our paper from Workshop em Software Livre mentions that, but we didn't
- really know about them when making Gobo)
-\end_layout
-
-\begin_layout Itemize
+\begin_layout Subsection
 GoboLinux
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 Our extensive use of shell scripting for system management was a sort of
  attempt to show that the system could work with 
@@ -745,6 +725,7 @@ just a few scripts
 .
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 core ideas work (the system is still driven via symlinks) but management
  scripts became complex over time
@@ -801,17 +782,41 @@ The ArchLinux build system seems to be a modern-day successor of this style
 \end_layout
 
 \end_deeper
+\begin_layout Subsection
+Other filesystem-oriented approaches
+\end_layout
+
 \begin_layout Itemize
-Modern examples
+Short history of alternative approaches:
 \end_layout
 
 \begin_deeper
+\begin_layout Itemize
+earliest related work: GNU stow, encap.
+ (Our paper from Workshop em Software Livre mentions that, but we didn't
+ really know about them when making Gobo)
+\end_layout
+
+\begin_layout Itemize
+Zero Install (still active), Autopackage (dormant, 
+\begin_inset Quotes eld
+\end_inset
+
+packages must be relocatable
+\begin_inset Quotes erd
+\end_inset
+
+), 
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 The Nix project has been around almost as long as GoboLinux.
  NixOS is nowadays a serious contender in the world of server-oriented operating
  systems.
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 virtual machines: minimalism is making its way back in OS layout design.
  (There have always been minimalistic Linux distributions, back from the
@@ -883,7 +888,7 @@ What do we mean by filesystem facilities: a more powerful fs would make
 
 \begin_deeper
 \begin_layout Itemize
-Back in 200x I wrote [the 
+Back in 200x we mentioned [the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -894,7 +899,8 @@ clueless
  whitepaper] how we needed more low-level tooling from the underlying operating
  system in order to be able to realize some of the ideas of GoboLinux cleanly.
  We were asking for more abstraction and isolation in userspace: essentially
- I wanted union filesystems and possibly some sort of containers.
+ we wanted union filesystems and possibly some sort of containers for finer-grai
+ned isolation.
  Lacking those, we had to make do with chroot.
 \end_layout
 
@@ -917,6 +923,1236 @@ However, Glauber Costa, one of the developers of the Linux Containers system,
  architectures.
 \end_layout
 
+\end_deeper
+\begin_layout Section
+Language-oriented vs.
+ language-agnostic package managers
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+
+\size footnotesize
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="5">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none" width="70col%">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Language-specific managers
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Package managers
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size footnotesize
+npm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size footnotesize
+RubyGems
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size footnotesize
+NuGet
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size footnotesize
+LuaRocks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Portability
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+OS-independent (all Unix, Windows)
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Installs code written in
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+JS family,
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+C/C++
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Ruby, C/C++,
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+JVM family
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+any .NET, C++
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Lua family, C/C++
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Files managed
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+JS scripts,
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+JS modules
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Ruby scripts,
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Ruby modules
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+.NET and
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+native packages
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Lua scripts,
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Lua modules
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Supports per-user install
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+yes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\size footnotesize
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="5">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="15col%">
+<column alignment="center" valignment="top" width="15col%">
+<column alignment="center" valignment="top" width="15col%">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none" width="70col%">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Language-agnostic managers
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Package managers
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size footnotesize
+Nix
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size footnotesize
+Homebrew
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size footnotesize
+RPM
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\size footnotesize
+GoboLinux
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Portability
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Linux/OSX
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+OSX
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Linux/AIX
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Linux/Cygwin/OSX
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Installs code written in
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+any language
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Files managed
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+all kinds
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Supports per-user install
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+no*
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+no
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+* different installation prefixes are supported but 
+\family typewriter
+/usr/local
+\family default
+ is strongly recommended.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:langspec-vs-langagn"
+
+\end_inset
+
+Contrasting language-specific and language-agnostic package managers
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quote
+
+\emph on
+An analogy between PL space with DSLs and general purpose languages and
+ pkgmgr space with language-oriented and language-agnostic managers
+\end_layout
+
+\begin_layout Standard
+In the world of programming languages, there is a distinction between DSLs
+ and general purpose languages.
+ Categorizing languages in one camp or another is not always easy, but a
+ working definition is that domain-specific languages are those designed
+ with a specific application domain in mind, and general purpose languages
+ are the complementary set, that is, those languages designed not with a
+ particular domain in mind, but rather focusing on general areas such as
+ 
+\begin_inset Quotes eld
+\end_inset
+
+systems programming
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+While we tend to see DSLs as smaller languages than their general-purpose
+ counterparts (and in fact early literature used to term them 
+\begin_inset Quotes eld
+\end_inset
+
+little languages
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bentley1986little"
+
+\end_inset
+
+), what defines a language as being a DSL is the 
+\emph on
+inclusion
+\emph default
+ of features tailored for a domain.
+ This means that a domain-specific language may end up including all features
+ normally understood as those defining a general purpose language.
+ MATLAB, for instance, is a complete programming language, but its wealth
+ of features for numerical computing it is often regarded as being domain-specif
+ic 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Gill:2014:DLC:2611429.2617811,Fowler2005LanguageWorkbench"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In the world of package management, there is also a distinction between
+ domain-specific and general purpose systems, but it is better defined.
+ Language-specific are designed to be used in a particular 
+\emph on
+language ecosystem
+\emph default
+.
+ This ecosystem usually focuses around a single language (hence the name
+ 
+\begin_inset Quotes eld
+\end_inset
+
+language-specific
+\begin_inset Quotes erd
+\end_inset
+
+), but that is not necessarily the case: environments such as .NET and the
+ JVM make this evident, but other languages also grow into families: for
+ example, LuaRocks also supports MoonScript and Typed Lua; npm supports
+ CoffeeScript, TypeScript and others.
+ Besides, these VM-based ecosystems usually support loading native extensions,
+ and therefore they must also support building and integrating libraries
+ usually written in C or C++ (or, in the case of RubyGems with JRuby, Java).
+ Like domain-specific programming languages which are not necessarily much
+ smaller than their general-purpose counterparts, the more sophisticated
+ language-specific package managers are in effect general package managers
+ with specific support for an ecosystem added.
+ They need to build and deploy executables, native libraries and resource
+ files written in different languages, keep track of installed files, check
+ dependencies, perform network operations and manage remote repositories.
+ Some of these tasks can be simplified due to ecosystem-specific assumptions,
+ but many are equivalent in complexity to the tasks of a system-wide package
+ manager.
+\end_layout
+
+\begin_layout Itemize
+If there's so much duplication, why language-specific managers? My paper
+ on LuaRocks makes a case for language-oriented package managers:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+scalability (30,000 Ubuntu packages in total, 50,000+ Ruby gems alone)
+\end_layout
+
+\begin_layout Itemize
+portability (language managers are used in several OSes)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Explain Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:langspec-vs-langagn"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+LuaRocks
+\end_layout
+
+\begin_layout Itemize
+Initially for Lua modules
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Supported several build backends for compatibility with upstream and supporting
+ building C files
+\end_layout
+
+\begin_layout Itemize
+Ended up having its own integrated build backend
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+currently supporting C, third-party plugin for C++, will need to be extended
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Challenges in integration with the OS: external_dependencies system.
+\end_layout
+
+\begin_layout Itemize
+Went from filesystem-oriented in LR1 to database-oriented in LR2: explain
+ why
+\end_layout
+
+\begin_layout Section
+Integration between languages vs.
+ integration between package managers
+\end_layout
+
+\begin_layout Quote
+
+\emph on
+An analogy between PL interaction (APIs and FFIs) and pkgmgr interaction
+ (virtually none??)
+\end_layout
+
+\begin_layout Itemize
+Ad-hoc integrations between general-purpose and domain-specific package
+ managers proved traumatic to some projects [debian's troubles with rubygems].
+\end_layout
+
+\begin_layout Itemize
+Still, they have been successfully realized in others, such as the use of
+ LuaRocks by Buildroot.
+\end_layout
+
+\begin_layout Subsection
+GoboLinux Aliens
+\end_layout
+
+\begin_layout Itemize
+In GoboLinux we researched the idea of building an 
+\begin_inset Quotes eld
+\end_inset
+
+FFI
+\begin_inset Quotes erd
+\end_inset
+
+ of sorts into our general-purpose package manager, called Aliens [cite
+ Michael's presentation in linux.conf.au].
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The idea was that we could provide a general API for writing shims that
+ interacted with domain-specific package managers (that is, language-specific
+ ones) in an clean way.
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+To-do.
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
@@ -928,6 +2164,5 @@ options "plain"
 
 \end_layout
 
-\end_deeper
 \end_body
 \end_document
