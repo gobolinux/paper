@@ -782,6 +782,15 @@ The ArchLinux build system seems to be a modern-day successor of this style
 \end_layout
 
 \end_deeper
+\begin_layout Standard
+The mostly declarative style of GoboLinux recipes proved to be a success
+ among users and gave us greater freedom when modifying the build process.
+ We made major changes to the system's directory layout between releases
+ 014 and 015 of the distribution, and the use of high-level descriptions
+ and our cautious avoidance of hardcoded paths allowed us to reuse the majority
+ of recipes with no changes.
+\end_layout
+
 \begin_layout Subsection
 Other filesystem-oriented approaches
 \end_layout
@@ -2005,7 +2014,7 @@ key "Gill:2014:DLC:2611429.2617811,Fowler2005LanguageWorkbench"
 \begin_layout Standard
 In the world of package management, there is also a distinction between
  domain-specific and general purpose systems, but it is better defined.
- Language-specific are designed to be used in a particular 
+ Language-specific managers are designed to be used in a particular 
 \emph on
 language ecosystem
 \emph default
@@ -2021,11 +2030,13 @@ language-specific
 
 ), but that is not necessarily the case: environments such as .NET and the
  JVM make this evident, but other languages also grow into families: for
- example, LuaRocks also supports MoonScript and Typed Lua; npm supports
- CoffeeScript, TypeScript and others.
+ example, LuaRocks was written for Lua but also supports MoonScript and
+ Typed Lua; npm supports JavaScript, CoffeeScript, TypeScript and others.
  Besides, these VM-based ecosystems usually support loading native extensions,
  and therefore they must also support building and integrating libraries
  usually written in C or C++ (or, in the case of RubyGems with JRuby, Java).
+ A language-specific package manager, therefore, is almost never specific
+ to code written in a single language.
  Like domain-specific programming languages which are not necessarily much
  smaller than their general-purpose counterparts, the more sophisticated
  language-specific package managers are in effect general package managers
@@ -2038,64 +2049,318 @@ language-specific
  manager.
 \end_layout
 
-\begin_layout Itemize
-If there's so much duplication, why language-specific managers? My paper
- on LuaRocks makes a case for language-oriented package managers:
+\begin_layout Standard
+This leads us to question why should we have language-specific managers
+ at all, if they replicate so much of the work done by general-purpose package
+ managers.
+ Two arguments in defense of language-specific managers are scalability
+ and portability.
+ If we compare the number of packages provided by a typical Linux distribution
+ versus the number of modules available in mature module repositories from
+ scripting languages, it becomes clear that the approach of converting everythin
+g into native packages is untenable: for example, while the repository for
+ the Debian Linux distribution features 43,000 packages in total, the Maven
+ Central repository for Java alone contains over 103,000 packages, with
+ the advantage that the repository is portable to various platforms, some
+ of which lacking a built-in universal package manager (Microsoft Windows
+ being a notable case).
+ Still, this kind of effort duplication does happen: the Debian repository
+ contains 715 packages of Ruby modules; this is a far cry from the 100,000
+ modules in the RubyGems repository.
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-scalability (30,000 Ubuntu packages in total, 50,000+ Ruby gems alone)
-\end_layout
-
-\begin_layout Itemize
-portability (language managers are used in several OSes)
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Explain Figure 
+\begin_layout Standard
+Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:langspec-vs-langagn"
 
 \end_inset
 
-.
+ contrasts language-specific and language-agnostic package managers, through
+ a few examples.
+ Language-specific package managers tend to be highly portable, even if
+ the modules in their repositories are not.
+ For example, while most packages for NuGet are Windows-specific, the manager
+ itself has been ported to Unix systems via Mono; packages that do not depend
+ on Windows APIs can be shared by various platforms.
+ Language-agnostic managers are generally system-specific, and may present
+ some degree of portability to other similar OSes.
+ Note that the extent of portability of all language-agnostic managers in
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:langspec-vs-langagn"
+
+\end_inset
+
+ is limited to specific Unix variants.
+ Those managers support packaging programs written in any language and for
+ that reason do not expect particular file formats or subdirectory layouts.
+ Language-specific managers make more assumptions in that regard, and also
+ support customizing the installation directory prefix, which is a necessity
+ for running as a non-privileged user.
+ Some system-wide managers, like Nix and GoboLinux support per-user installation
+s, but that often requires patching packages for removing hardcoded pathnames.
+ Homebrew supports this feature as a tool, but their packages are not adapted
+ for that, so per-user installations are discouraged.
 \end_layout
 
 \begin_layout Subsection
 LuaRocks
 \end_layout
 
-\begin_layout Itemize
-Initially for Lua modules
+\begin_layout Standard
+LuaRocks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2013LuaRocks"
+
+\end_inset
+
+ is a package manager for the Lua ecosystem.
+ It was developed building on our previous experience writing package management
+ tools for GoboLinux and adapting them to the realities of a language-specific
+ manager.
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-Supported several build backends for compatibility with upstream and supporting
- building C files
+\begin_layout Standard
+The package specification format (
+\emph on
+rockspec
+\emph default
+) was largely influenced by GoboLinux, and LuaRocks pushes the use of declarativ
+e specifications even further.
+ While the 
+\family typewriter
+.rockspec
+\family default
+ files themselves are actually Lua scripts, LuaRocks loads them using a
+ restricted execution environment that disables the Lua standard libraries;
+ they essentially consist of variable declarations, describing the package
+ via Lua tables (Lua's single data structure, which combines numeric and
+ associative arrays).
 \end_layout
 
-\begin_layout Itemize
-Ended up having its own integrated build backend
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+LR has a plugin-based build system like Gobo
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-currently supporting C, third-party plugin for C++, will need to be extended
+\end_inset
+
+
 \end_layout
 
-\end_deeper
-\end_deeper
-\begin_layout Itemize
-Challenges in integration with the OS: external_dependencies system.
+\begin_layout Standard
+Another design feature inherited from GoboLinux was the support for multiple
+ build back-ends.
+ In most language ecosystems, at any point in time a single build tool is
+ well-established as a standard (such as 
+\family typewriter
+easy_install
+\family default
+ and later 
+\family typewriter
+pip
+\family default
+ for Python, Rake for Ruby, ExtUtils::MakeMaker and later Module::Build
+ for Perl).
+ In the Lua world, by the time LuaRocks was conceived, in spite of several
+ contenders, there was no clear winner as a standard build tool.
+ To deal with the variety of build systems, OS-level package managers typically
+ let developers call their preferred build tools explicitly in imperative
+ scripts.
+ LuaRocks attempted to solve this in a more controlled manner, with a system
+ of plugins for the various tools, akin to the one used in GoboLinux.
+ In LuaRocks, each plugin is implemented as a Lua module, selected through
+ an entry in the rockspec.
+ For example, using 
+\family typewriter
+build.type="cmake"
+\family default
+ causes LuaRocks to invoke CMake with the appropriate arguments.
+ We also included a simple built-in build system, invoked via 
+\family typewriter
+build.type="builtin"
+\family default
+, which is able to install Lua files and portably compile C code into Lua
+ modules.
+ This proved a success among developers: at the time of this writing, 75%
+ of all packages in the LuaRocks repository use the built-in build system.
 \end_layout
 
-\begin_layout Itemize
-Went from filesystem-oriented in LR1 to database-oriented in LR2: explain
- why
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+LR supports relocatable packages
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+LuaRocks installs all packages into a sandbox directory and later moves
+ them to their final destinations.
+ The actual installation prefix is never informed to the build system under
+ execution.
+ This prevents a package from hardcoding its own installation directory
+ in its source code.
+ While the ability to do this is a feature sometimes requested by developers
+ (as it would make it easier to load asset files, for example), disallowing
+ hardcoded paths ensures that every package built is relocatable.
+ Having fully relocatable packages is rare on Unix, but is an expected feature
+ on Windows.
+ Having to cater to such conflicting requirements is a constant in writing
+ portable software; to alleviate the issue of finding asset files, one of
+ the authors developed a Lua module called 
+\family typewriter
+datafile
+\family default
+ 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://github.com/hishamhm/datafile
+\end_layout
+
+\end_inset
+
+, also available via 
+\family typewriter
+luarocks install datafile
+\end_layout
+
+\end_inset
+
+, resolves directory locations portably at runtime.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+LR changed its directory layout like Gobo
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As it also happened with GoboLinux, having a high-level description format
+ allowed us to make radical changes to the installation layout once that
+ proved necessary.
+ Since LuaRocks does not provide to specification files any knowledge of
+ the final directory structure, this change was even less impacting for
+ users than the change on GoboLinux: all existing rockspecs could be used
+ in the new directory layout without any changes.
+ This level of information hiding, extending not only the installation prefix,
+ but to all subdirectories, was only possible because we were dealing with
+ a language-specific manager, where we could make assumptions about the
+ contents of files (Lua source code and binary dynamic libraries) and how
+ they would be later used (as command-line scripts or loaded by Lua through
+ its package loader system).
+\end_layout
+
+\begin_layout Standard
+The design changes that LuaRocks underwent from version 1.0 to version 2.0
+ were due to lessons learned on the specificities of language-specific package
+ management.
+ The original design of LuaRocks was filesystem-oriented, like GoboLinux.
+ Each version of an installed package was given its own directory and each
+ category of files got its own subdirectory.
+ For example, for module 
+\family typewriter
+lpeg 0.12-1
+\family default
+ one would store Lua files in 
+\family typewriter
+$PREFIX/lib/luarocks/rocks/lpeg/0.12-1/lua
+\family default
+.
+ LuaRocks included then a custom wrapper for Lua's 
+\family typewriter
+require()
+\family default
+ function in module 
+\family typewriter
+luarocks.require
+\family default
+.
+ Once this module was loaded (either via plain 
+\family typewriter
+require()
+\family default
+ or via a command-line flag), subsequent calls to 
+\family typewriter
+require()
+\family default
+ would match module names to file locations, taking into account the dependency
+ trees of previously loaded modules.
+ This allowed multiple versions of a module to coexist in an installation,
+ and let modules load the correct versions of their dependencies transparently.
+ The approach of loading a custom 
+\family typewriter
+require()
+\family default
+ function is the same as adopted by RubyGems.
+ However, many Lua users perceived the wrapper as tampering with a standard
+ library function, and disliked having to perform an initial setup in their
+ scripts for using modules installed via LuaRocks 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Since Ruby 1.9, the interpreter preloads the 
+\family typewriter
+rubygems
+\family default
+ module automatically; in prior versions uses had to add 
+\family typewriter
+require 'rubygems'
+\family default
+ explicitly.
+ This was never an option for Lua due to the language's minimalistic design,
+ rendering LuaRocks as a strictly optional component.
+\end_layout
+
+\end_inset
+
+.
+ For LuaRocks 2.0, the design was changed to be database-oriented, so that
+ Lua modules could be installed into a typical Unix-like layout that matched
+ the default configuration of the Lua interpreter's package loader.
+ Since now Lua modules from all packages were installed into a single directory
+ such as 
+\family typewriter
+$PREFIX/share/lua/5.3
+\family default
+, a database had to be put in place matching files to packages.
+ We kept to Lua's minimalistic approach, using a plain-text manifest file
+ (loadable as Lua code) as a database.
+ Supporting multiple versions of the same package installed at the same
+ time is still possible, but requires the now-optional custom package loader,
+ which produces versioned filenames such as 
+\family typewriter
+$PREFIX/lib/5.3/lpeg-0.11-1.so
+\family default
+ when the dependency graph requires an old version of a module.
 \end_layout
 
 \begin_layout Section
