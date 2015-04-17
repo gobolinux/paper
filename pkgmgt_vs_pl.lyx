@@ -735,12 +735,49 @@ An analogy between programming language paradigms and package management
 \end_layout
 
 \begin_layout Itemize
+In PL world, we have paradigms, which are in a sense defined by their design
+ trade-offs
+\end_layout
+
+\begin_layout Itemize
+These trade-offs have been studied and are well understood
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+for example, the Expression Problem between FP and OOP
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+We can also identify general paradigms in package management, looking at
+ their design trade-offs
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
 filesystem paradigm vs.
  database paradigm
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
-trade-offs: how runtime lookup of files happens
+trade-off: runtime lookup of files versus mapping between packages and files
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+filesystem-oriented: easy mapping of packages, programs needs to adapt (or
+ downstream!)
+\end_layout
+
+\begin_layout Itemize
+database-oriented: programs use any layout, manager must keep track
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Practical instances of this fs vs db trade-off:
 \end_layout
 
 \begin_deeper
@@ -753,11 +790,6 @@ databases involved in runtime lookup: gtk icon cache, Haskell db updates,
 pkg-config, how does it fit?
 \end_layout
 
-\begin_layout Itemize
-filesystem paradigm and runtime lookup: environment variables, index directories
- with symlinks, symlinks in lib (libfoo.so, libfoo.so.1, etc.)
-\end_layout
-
 \end_deeper
 \begin_layout Itemize
 versioning in db vs filesystem.
@@ -766,10 +798,21 @@ versioning in db vs filesystem.
 \end_layout
 
 \begin_layout Itemize
+How to handle runteme lookup in the filesystem paradigm:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+environment variables, index directories with symlinks, symlinks in lib
+ (libfoo.so, libfoo.so.1, etc.)
+\end_layout
+
+\begin_layout Itemize
 changes in filesystems to better support the filesystem paradigm? (union
  mounts, etc)
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 related work outside of 
 \begin_inset Quotes eld
