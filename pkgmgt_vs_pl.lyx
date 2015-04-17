@@ -867,6 +867,37 @@ reference "fig:pm-taxonomy"
 GoboLinux
 \end_layout
 
+\begin_layout Standard
+GoboLinux 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2002WSL"
+
+\end_inset
+
+ is a Linux distribution based on the concept of installing each package
+ in a separate installation prefix.
+ It was the first Linux distribution to be entirely based on a filesystem-orient
+ed approach to package management.
+ Each program is installed under its own versioned directory, such as 
+\family typewriter
+/Programs/Bash/4.3.28
+\family default
+ and 
+\family typewriter
+/Programs/GTK+/3.16.0
+\family default
+.
+ This direct mapping of the package structure to the directory layout allows
+ one to inspect the system using standard Unix commands.
+ For example, to get a list of installed packages, one only needs to issue
+ 
+\family typewriter
+ls /Programs
+\family default
+.
+\end_layout
+
 \begin_layout Itemize
 Our extensive use of shell scripting for system management was a sort of
  attempt to show that the system could work with 
