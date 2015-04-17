@@ -4,7 +4,7 @@
 \begin_header
 \textclass article
 \begin_preamble
-\usepackage{url}
+\usepackage{usenix,url}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -27,10 +27,10 @@
 \output_sync 0
 \bibtex_command default
 \index_command default
-\paperfontsize default
+\paperfontsize 10
 \spacing single
 \use_hyperref false
-\papersize a4paper
+\papersize letterpaper
 \use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
@@ -64,7 +64,7 @@
 \paragraph_separation indent
 \paragraph_indentation default
 \quotes_language english
-\papercolumns 1
+\papercolumns 2
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
@@ -77,7 +77,122 @@
 \begin_body
 
 \begin_layout Title
-Understanding package management by analogy to programming languages
+Understanding package management through programming languages
+\end_layout
+
+\begin_layout Author
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\backslash
+rm 
+\end_layout
+
+\end_inset
+
+Hisham Muhammad
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+PUC-Rio
+\begin_inset Newline newline
+\end_inset
+
+Rio de Janeiro, Brazil
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+and{
+\backslash
+rm 
+\end_layout
+
+\end_inset
+
+Lucas Correia Villa Real
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+IBM Research
+\begin_inset Newline newline
+\end_inset
+
+Rio de Janeiro, Brazil
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+and{
+\backslash
+rm 
+\end_layout
+
+\end_inset
+
+Michael Homer
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Victoria University of Wellington
+\begin_inset Newline newline
+\end_inset
+
+Wellington, New Zealand
+\end_layout
+
+\begin_layout Abstract
+This is an abstract, yet to be written.
 \end_layout
 
 \begin_layout Section
@@ -279,7 +394,7 @@ Paradigms of package management: filesystem-oriented vs.
 
 \begin_layout Standard
 \begin_inset Float figure
-wide false
+wide true
 sideways false
 status open
 
@@ -305,6 +420,8 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 Filesystem-oriented
 \end_layout
 
@@ -314,6 +431,8 @@ Filesystem-oriented
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 Database-oriented
 \end_layout
 
@@ -325,6 +444,8 @@ Database-oriented
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 Language-agnostic
 \end_layout
 
@@ -334,6 +455,8 @@ Language-agnostic
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 \begin_inset Tabular
 <lyxtabular version="3" rows="4" columns="1">
 <features rotate="0" tabularvalignment="middle">
@@ -343,17 +466,8 @@ Language-agnostic
 \begin_inset Text
 
 \begin_layout Plain Layout
-GoboLinux
-\end_layout
 
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
+\size footnotesize
 Homebrew (Mac OS X)
 \end_layout
 
@@ -365,6 +479,8 @@ Homebrew (Mac OS X)
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 Nix
 \end_layout
 
@@ -376,7 +492,22 @@ Nix
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 Windows Installer
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+GoboLinux
 \end_layout
 
 \end_inset
@@ -395,6 +526,8 @@ Windows Installer
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="1">
 <features rotate="0" tabularvalignment="middle">
@@ -404,6 +537,8 @@ Windows Installer
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 RPM (RedHat/Fedora/etc.)
 \end_layout
 
@@ -415,6 +550,8 @@ RPM (RedHat/Fedora/etc.)
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 dpkg/apt (Debian/Ubuntu/etc.)
 \end_layout
 
@@ -426,6 +563,8 @@ dpkg/apt (Debian/Ubuntu/etc.)
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 Pacman (ArchLinux)
 \end_layout
 
@@ -447,6 +586,8 @@ Pacman (ArchLinux)
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 Language-specific
 \end_layout
 
@@ -456,6 +597,8 @@ Language-specific
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="1">
 <features rotate="0" tabularvalignment="middle">
@@ -465,7 +608,9 @@ Language-specific
 \begin_inset Text
 
 \begin_layout Plain Layout
-npm (JavaScript)
+
+\size footnotesize
+npm (server-side JavaScript)
 \end_layout
 
 \end_inset
@@ -476,7 +621,9 @@ npm (JavaScript)
 \begin_inset Text
 
 \begin_layout Plain Layout
-Bower (JavaScript)
+
+\size footnotesize
+Bower (client-side JavaScript)
 \end_layout
 
 \end_inset
@@ -487,6 +634,8 @@ Bower (JavaScript)
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 LuaRocks 1.x (Lua)
 \end_layout
 
@@ -506,6 +655,8 @@ LuaRocks 1.x (Lua)
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 \begin_inset Tabular
 <lyxtabular version="3" rows="2" columns="1">
 <features rotate="0" tabularvalignment="middle">
@@ -515,6 +666,8 @@ LuaRocks 1.x (Lua)
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 Cabal (Haskell)
 \end_layout
 
@@ -526,6 +679,8 @@ Cabal (Haskell)
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\size footnotesize
 LuaRocks 2.x (Lua)
 \end_layout
 
@@ -940,7 +1095,7 @@ Language-oriented vs.
 
 \begin_layout Standard
 \begin_inset Float figure
-wide false
+wide true
 sideways false
 status open
 
@@ -952,10 +1107,10 @@ status open
 <lyxtabular version="3" rows="7" columns="5">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="10page%">
+<column alignment="center" valignment="top" width="10page%">
+<column alignment="center" valignment="top" width="10page%">
+<column alignment="center" valignment="top" width="10page%">
 <row>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
@@ -966,7 +1121,7 @@ status open
 
 \end_inset
 </cell>
-<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none" width="70col%">
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1536,10 +1691,10 @@ yes
 <lyxtabular version="3" rows="7" columns="5">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top">
-<column alignment="center" valignment="top" width="15col%">
-<column alignment="center" valignment="top" width="15col%">
-<column alignment="center" valignment="top" width="15col%">
-<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="10page%">
+<column alignment="center" valignment="top" width="10page%">
+<column alignment="center" valignment="top" width="10page%">
+<column alignment="center" valignment="top" width="10page%">
 <row>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
@@ -1550,7 +1705,7 @@ yes
 
 \end_inset
 </cell>
-<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none" width="70col%">
+<cell multicolumn="1" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -1949,13 +2104,6 @@ Contrasting language-specific and language-agnostic package managers
 
 \end_layout
 
-\begin_layout Quote
-
-\emph on
-An analogy between PL space with DSLs and general purpose languages and
- pkgmgr space with language-oriented and language-agnostic managers
-\end_layout
-
 \begin_layout Standard
 In the world of programming languages, there is a distinction between DSLs
  and general purpose languages.
@@ -1988,7 +2136,7 @@ little languages
  
 \begin_inset CommandInset citation
 LatexCommand cite
-key "Bentley1986little"
+key "Bentley:1986:PPL:6424.315691"
 
 \end_inset
 
@@ -2276,6 +2424,19 @@ As it also happened with GoboLinux, having a high-level description format
  contents of files (Lua source code and binary dynamic libraries) and how
  they would be later used (as command-line scripts or loaded by Lua through
  its package loader system).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+went from filesystem-oriented to database-oriented
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
