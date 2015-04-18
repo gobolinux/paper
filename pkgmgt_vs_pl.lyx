@@ -969,7 +969,7 @@ Since packages become self-described through the GoboLinux filesystem hierarchy,
  system (namely, the creation of symbolic links to their libraries, headers,
  executables, and manuals) as well as their removal (achieved by deleting
  their directory and the now broken symbolic links).
- Over time, these scripts inevitable became more complex as they got integrated
+ Over time, these scripts inevitably became more complex as they got integrated
  with other system tools and served as the pillars for 
 \emph on
 Compile
