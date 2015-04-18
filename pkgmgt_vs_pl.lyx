@@ -150,7 +150,7 @@ IBM Research
 \begin_inset Newline newline
 \end_inset
 
-Rio de Janeiro, Brazil
+São Paulo, Brazil
 \begin_inset Newline newline
 \end_inset
 
@@ -939,6 +939,39 @@ ed approach to package management.
 ls /Programs
 \family default
 .
+\end_layout
+
+\begin_layout Standard
+Since packages become self-described through the GoboLinux filesystem hierarchy,
+ the distribution features its own set of system management tools built
+ around scripting languages.
+ At first, these scripts automated tasks such as the installation of new
+ packages (simply compressed tar archives) and their ``activation'' in the
+ system (namely, the creation of symbolic links to their libraries, headers,
+ executables, and manuals) as well as their removal (achieved by deleting
+ their directory and the now broken symbolic links).
+ Over time, these scripts inevitable became more complex as they got integrated
+ with other system tools and served as the pillars for 
+\emph on
+Compile
+\emph default
+, GoboLinux' build system.
+\end_layout
+
+\begin_layout Standard
+Taking inspiration from Gentoo's Portage system (which was itself inspired
+ from BSD Ports), Compile makes use of recipes that describe how to fetch
+ the source code of a software and the sequence of commands required to
+ build and install it.
+ Because recipes are frequently hand-written, it is essential to make them
+ as simple as possible so that users are compelled to contribute to the
+ distribution's ecosystem.
+ The approach adopted by Compile is to embed as much code as possible in
+ its build systems' backends (e.g.
+ Autoconf, Makefile, xmkmf, Cmake), allowing the majority of recipes to
+ be described with a little more than a couple of lines.
+ More complex build cases can be described by extending recipes with regular
+ shell scripting.
 \end_layout
 
 \begin_layout Itemize
