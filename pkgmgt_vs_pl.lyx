@@ -368,7 +368,7 @@ We argue that all of these observations can be made with regard to package
  to the fact that they exist as part of a larger ecosystem, with parts of
  it handled by other package managers.
  By discussing how programming languages deal with these issues, we point
- to directions on how package manegers could follow their example, drawing
+ to directions on how package managers could follow their example, drawing
  on our experiences developing both a system-wide package manager 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -727,28 +727,47 @@ A package manager taxonomy
 
 \end_layout
 
-\begin_layout Quote
+\begin_layout Standard
+It is customary to organize the landscape of programming languages into
+ paradigms, such as imperative, functional, object-oriented, and so on.
+ These paradigms describe the core conceptual frameworks on top of which
+ languages are designed.
+ The paradigms a language is categorized into inform users about particular
+ design choices, and with these choices come design trade-offs.
+ Many of these trade-offs have been studied and are well understood.
+ A notable example is the Expression Problem 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wadler1998EP,Krishnamurthi:1998:SOF:646155.679709"
 
-\emph on
-An analogy between programming language paradigms and package management
- paradigms, generally advocating filesystem-oriented models.
+\end_inset
+
+, which poses a trade-off between traditional functional and object-oriented
+ approaches when extending code via separate compilation units: in functional
+ programming, it is easy to add new operations to a data type (adding new
+ functions), but it is not possible to extend the type (adding new cases
+ to the algebraic data type) without editing the original code; in OOP,
+ it is easy to extend the type (adding a subclass), but it is not possible
+ to add new operations to an existing type (adding new methods to the original
+ class) without editing code.
+ Once this trade-off is understood, it becomes easier to propose solutions
+ to mitigate it, such as open classes 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Clifton:2000:MMO:353171.353181"
+
+\end_inset
+
+ and mixins 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Flatt:1998:CM:268946.268961"
+
+\end_inset
+
+.
 \end_layout
 
-\begin_layout Itemize
-In PL world, we have paradigms, which are in a sense defined by their design
- trade-offs
-\end_layout
-
-\begin_layout Itemize
-These trade-offs have been studied and are well understood
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-for example, the Expression Problem between FP and OOP
-\end_layout
-
-\end_deeper
 \begin_layout Itemize
 We can also identify general paradigms in package management, looking at
  their design trade-offs
