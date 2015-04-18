@@ -2624,7 +2624,7 @@ Still, they have been successfully realized in others, such as the use of
 GoboLinux Aliens
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
 In GoboLinux we researched the idea of building an 
 \begin_inset Quotes eld
 \end_inset
@@ -2633,18 +2633,76 @@ FFI
 \begin_inset Quotes erd
 \end_inset
 
- of sorts into our general-purpose package manager, called Aliens [cite
- Michael's presentation in linux.conf.au].
+ of sorts into our general-purpose package manager, which we called Aliens
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Homer2010LCA"
+
+\end_inset
+
+.
+ Aliens provides an API to write shims that connect the general-purpose
+ system package manager with domain-specific package managers.
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-The idea was that we could provide a general API for writing shims that
- interacted with domain-specific package managers (that is, language-specific
- ones) in an clean way.
+\begin_layout Standard
+With Aliens, packages in the general-purpose manager may express a dependency
+ on a package provided by a supported domain-specific manager: for example,
+ a package that requires the Perl 
+\family typewriter
+XML::Parser
+\family default
+ module, available from CPAN, can express a dependency 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+CPAN:XML::Parser >= 2.34
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The Aliens system directs such a dependency to a translating shim, which
+ uses the CPAN tool to confirm whether it is satisfied, to install the package
+ (and its dependencies) if required, and to upgrade it, communicating any
+ necessary information back to the general-purpose manager.
+ The shim can then make symbolic links for any binaries or native libraries
+ that have been installed.
+ Any package in one of the supported domain-specific managers is automatically
+ available in this way, without creating wrapper packages.
 \end_layout
 
-\end_deeper
+\begin_layout Standard
+The domain-specific managers themselves are not modified in this process.
+ Each system is given complete control of a directory tree, and the relevant
+ languages configured to search in that tree.
+ This protects against changes in the functioning of the third-party systems,
+ and allows users to access them directly as well.
+ A drawback, however, is that the domain-specific managers do not have reciproca
+l access to the wider system: installing a RubyGem that depends on a native
+ library will not innately result in the native dependency being satisfied.
+ The cross-platform nature of these systems makes even specifying such informati
+on in a machine-readable way difficult, although some, notably LuaRocks,
+ make the attempt.
+\end_layout
+
+\begin_layout Standard
+Not all domain-specific package managers lend themselves to this integration.
+ Some are resistant to placing their files within a restricted directory
+ tree, preferring to install into the global filesystem hierarchy where
+ they may interfere with each other and the system, while others do not
+ mechanize well.
+ This limited coverage is an additional drawback of the Aliens approach,
+ but one that is limited to failing to solve an existing problem, rather
+ than creating a new one.
+ As with programming languages, a consensus implementation platform would
+ inevitably be simpler, but social and technical factors make it impractical.
+ FFIs, and Aliens, attempt to bridge the gap, with reasonable success.
+\end_layout
+
 \begin_layout Section
 Conclusion
 \end_layout
