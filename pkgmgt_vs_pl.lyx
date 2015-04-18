@@ -2662,9 +2662,54 @@ An analogy between PL interaction (APIs and FFIs) and pkgmgr interaction
  (virtually none??)
 \end_layout
 
+\begin_layout Standard
+Programming languages, both general-purpose and domain-specific, frequently
+ have points of integration between each other, in the form of foreign function
+ interfaces (FFIs).
+ Code written in one language can frequently call into code written in another
+ language, sometimes with some adapter code in between.
+ Domain-specific languages are in fact frequently embedded in general-purpose
+ languages and in programs.
+\end_layout
+
+\begin_layout Standard
+The same is not true of general-purpose and domain-specific package managers.
+ Integration between two package managers is almost unheard of, even when
+ they may be found on the same system.
+ Instead, a subset of packages distributed through a domain-specific package
+ manager are repackaged in the format of the general-purpose system.
+ These packages are fully integrated with the broader system and fully detached
+ from the domain-specific manager.
+ Packages that were not repackaged are still available by using the domain-speci
+fic system, but others are available twice, potentially in different versions
+ and with different configurations.
+ Debian experimented with a 
+\family typewriter
+rubygems-integration
+\family default
+ package that provided a limited connection between APT and RubyGems, allowing
+ Debian packages to satisfy RubyGems dependencies, but encountered substantial
+ complications in doing so, and has not yet pursued even this level of integrati
+on for other widely-used domain-specific package managers.
+ In Section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GoboLinux-Aliens"
+
+\end_inset
+
+ we discuss our attempt at deeper integration in GoboLinux, but we are aware
+ of no other such integrations beyond what Debian performs.
+\end_layout
+
 \begin_layout Itemize
 Ad-hoc integrations between general-purpose and domain-specific package
- managers proved traumatic to some projects [debian's troubles with rubygems].
+ managers proved traumatic to some projects [debian's troubles with rubygems
+ - cite?].
 \end_layout
 
 \begin_layout Itemize
@@ -2674,6 +2719,13 @@ Still, they have been successfully realized in others, such as the use of
 
 \begin_layout Subsection
 GoboLinux Aliens
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GoboLinux-Aliens"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
