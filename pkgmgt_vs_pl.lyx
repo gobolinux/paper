@@ -1097,17 +1097,38 @@ ls /Programs
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Need to add a paragraph explaining our symlinks here (the next paragraph
- mentions symlinks without prior explanation)
-\end_layout
-
+As well as the individual program trees, a tree of symbolic links also exists
+ created collecting references to the files of every program in the system
+ together.
+ A single directory contains symlinks matching the structure of the 
+\begin_inset Quotes eld
 \end_inset
 
 
+\family typewriter
+lib
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+ directory of every program, paralleling the contents of 
+\family typewriter
+/usr/lib
+\family default
+ in a conventional layout.
+ In this way only a single entry in PATH is needed to find every executable
+ and libraries can be loaded using the ordinary linker mechanisms without
+ further configuration.
+ An additional layer of fixed symlinks provides backwards compatibility
+ with the conventional Filesystem Hierarchy Standard
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fhs"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
