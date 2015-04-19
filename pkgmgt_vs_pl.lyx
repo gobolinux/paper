@@ -768,33 +768,177 @@ key "Flatt:1998:CM:268946.268961"
 .
 \end_layout
 
-\begin_layout Itemize
-We can also identify general paradigms in package management, looking at
- their design trade-offs
+\begin_layout Standard
+In the world of package managers, we can also identify general paradigms,
+ by looking at their core concepts and design trade-offs.
+ Package managers are programs that map relations between files and packages
+ (which correspond to sets of files), and between packages (dependencies),
+ allowing users to perform maintainance of their systems in terms of packages
+ rather than at the level of individual files.
+ The central design choice in a package manager, therefore, is how to perform
+ those mappings.
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-filesystem paradigm vs.
- database paradigm
+\begin_layout Standard
+There are two approaches on how to map files to packages: the mapping can
+ be either 
+\emph on
+internal
+\emph default
+ or 
+\emph on
+external
+\emph default
+ to the hierarchical structure of directories where the files reside.
+ As this choice embodies a series of trade-offs and is the single decision
+ that affects the design and implementation of a package manager the most,
+ we identify these as two paradigms of package management.
+ When the mapping is internal to the file hierarchy structure, we say that
+ package management is 
+\emph on
+filesystem-oriented
+\emph default
+.
+ When it is external to the hierarchy of files being managed, the mapping
+ needs to be stored elsewhere: on a database, or an equivalent structure
+ that acts as one.
+ We say in these cases that management is 
+\emph on
+database-oriented
+\emph default
+.
 \end_layout
 
-\end_deeper
-\begin_layout Itemize
-trade-off: runtime lookup of files versus mapping between packages and files
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Not sure at what point this paragraph should fit.
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-filesystem-oriented: easy mapping of packages, programs needs to adapt (or
- downstream!)
+\end_inset
+
+Initially it may seem that this is an implementation detail, and that this
+ distinction is, or should be, transparent to users of package managers.
+ As long as they can type a command to install a package and then launch
+ the program or load the library, how the manager keeps its consistency
+ is irrelevant.
+ While this is true for end-users installing packages and using applications
+ and libraries, it is not true for another category of users of package
+ managers: those who do the packaging of programs.
+ In other words, this is akin to saying that on one hand end-users of applicatio
+ns shouldn't care what language they are written in, but on the other hand
+ the language paradigm affects those who write programs greatly.
 \end_layout
 
-\begin_layout Itemize
-database-oriented: programs use any layout, manager must keep track
+\begin_layout Standard
+The major trade-off between the filesystem-oriented and the database-oriented
+ approach is 
 \end_layout
 
-\end_deeper
+\begin_layout Standard
+In filesystem-oriented managers the mapping of files to packages is simple.
+ File conflicts are naturally avoided by storing files of different packages
+ in separate subtrees.
+ Versioning conflicts between variants of the same package can also be handled
+ via the tree structure.
+ The structure also becomes more transparent to users, which can simplify
+ their experience.
+ The run-time lookup of files by applications, however, can be complicated,
+ if they are oblivious to the structure defined by the package manager.
+ Applications must either agree beforehand to this structure (which might
+ be an option in domain-specific environments), or the package manager has
+ to do extra work to configure them to use the structure; in the worst case,
+ patching them.
+\end_layout
+
+\begin_layout Standard
+Conversely, in database-oriented managers the mapping of files to packages
+ is more complicated.
+ Applications may install files wherever they please, and the package manager
+ needs to keep track.
+ This includes handling potential conflicts if two packages want to use
+ the same pathname.
+ Database-oriented systems will usually report on these conflicts and forbid
+ them.
+ It is up to the integrator (such as a distribution developer) who is building
+ packages the task of resolving the conflict somehow.
+ Also, the package manager needs to verify that the database and the contents
+ of the filesystem remain in sync, which is trivial in the filesystem-oriented
+ approach.
+ The run-time lookup of files on database-oriented systems, on its turn,
+ is greatly simplified.
+ In most cases it will be a non-issue, since each file is in the location
+ the application expected it to be in the first place.
+ However, it does become an issue when the file has been relocated by the
+ integrator who built the package, perhaps for solving conflicts.
+\end_layout
+
+\begin_layout Standard
+Repository maintainers of database-oriented package managers often solve
+ versioning conflicts by resorting to filesystem-oriented approaches.
+ For example, the maintainer of Debian packages for the Lua virtual machine
+ patches its Makefile to install C headers under versioned directories such
+ as 
+\family typewriter
+/usr/include/lua5.3
+\family default
+, to avoid conflicts of simultaneous Lua versions in the system installing
+ 
+\family typewriter
+lua.h
+\family default
+.
+ Such changes propagate to users of these packages: Lua-based software such
+ as LuaRocks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2013LuaRocks"
+
+\end_inset
+
+ and Prosody 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "prosody"
+
+\end_inset
+
+ include code in their installation scripts specifically to handle Debian
+ locations.
+ Meanwhile, FreeBSD uses 
+\family typewriter
+/usr/include/lua53
+\family default
+ and NetBSD uses 
+\family typewriter
+/usr/include/lua-5.3
+\family default
+.
+ To reduce this kind of incompatibility among downstream distributors, many
+ upstream maintainers adopt hierarchical versioning structures themselves:
+ C headers for Python, for example, install into versioned directories such
+ as 
+\family typewriter
+/usr/include/python2.7
+\family default
+ by default in every system.
+ It is unclear, however, which packages are the ones where users will desire
+ to keep simultaneously installed versions and which are not; one might
+ ask why aren't 
+\emph on
+all
+\emph default
+ C headers installed in a versioned way.
+ In fact, when we look at Unix shared libraries, we see that this is the
+ case: the standard practice is to install libraries in versioned files
+ such as libfoo.so.1, with a libfoo.so symbolic link for user convenience.
+ Note that, as typical of filesystem-oriented approaches, there needs to
+ be some cooperation for run-time lookup, and indeed the dynamic linker
+ is aware of this structure and makes use of versioned filenames.
+\end_layout
+
 \begin_layout Itemize
 Practical instances of this fs vs db trade-off:
 \end_layout
@@ -811,19 +955,12 @@ pkg-config, how does it fit?
 
 \end_deeper
 \begin_layout Itemize
-versioning in db vs filesystem.
- libfoo.so vs.
- libfoo.so.1, versioning in gobo, /usr/include/python2.7/ etc.
-\end_layout
-
-\begin_layout Itemize
-How to handle runteme lookup in the filesystem paradigm:
+How to handle runtime lookup in the filesystem paradigm:
 \end_layout
 
 \begin_deeper
 \begin_layout Itemize
-environment variables, index directories with symlinks, symlinks in lib
- (libfoo.so, libfoo.so.1, etc.)
+environment variables, index directories with symlinks
 \end_layout
 
 \begin_layout Itemize
@@ -857,17 +994,6 @@ filesystem paradigm in Unix:
 parts of the FS hierarchy which use the filesystem paradigm: /usr/share/appname
 \end_layout
 
-\begin_layout Itemize
-parts which don't: /usr/share/icons
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-effect this had on share/ in Gobo: launching helper indexing such as gtk-update-
-icon-cache upon each installation 
-\end_layout
-
-\end_deeper
 \end_deeper
 \begin_layout Itemize
 Being database-oriented does not imply an opaque, binary database format.
@@ -961,6 +1087,34 @@ ls /Programs
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Need to add a paragraph explaining our symlinks here (the next paragraph
+ mentions symlinks without prior explanation)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Should we add a figure illustrating the GoboLinux FS layout? I think we'll
+ need a more detailed description of the structure somehow.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 Since packages become self-described through the GoboLinux filesystem hierarchy,
  the distribution features its own set of system management tools built
  around scripting languages.
@@ -993,6 +1147,65 @@ Taking inspiration from Gentoo's Portage system (which was itself inspired
  shell scripting.
 \end_layout
 
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW, moved from 2.0
+\end_layout
+
+\end_inset
+
+parts of the Unix FS hierarchy which assume a single directory: /usr/share/icons
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+effect this had on share/ in Gobo
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+having to symlink /P/Foo/x.y/share into /S/L/share
+\end_layout
+
+\begin_layout Itemize
+launching helper indexing such as gtk-update-icon-cache upon each installation
+ 
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW
+\end_layout
+
+\end_inset
+
+discuss symlinks
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+virtualized
+\begin_inset Quotes erd
+\end_inset
+
+ Unix directories of GoboLinux avoid some compatibility issues that affect
+ other distributions: all executables appear at the same time in /bin, /sbin,
+ /usr/bin and so on.
+\end_layout
+
+\end_deeper
 \begin_layout Itemize
 Our extensive use of shell scripting for system management was a sort of
  attempt to show that the system could work with 
@@ -1060,6 +1273,45 @@ Further, this metadata had to be integrated with the deployed system.
 \begin_layout Itemize
 The ArchLinux build system seems to be a modern-day successor of this style
  of build system in the Linux space.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW
+\end_layout
+
+\end_inset
+
+tie in with the discussion of above section about includes: Gobo pre-/S/I
+ didn't need versioned includes when applications detect the install prefix
+ of libraries they depended on (e.g.
+ via pkgconfig); with /S/I, pkgconfig will return includedir as /usr/include,
+ so this becomes an issue: the recipe needs to point the conflicting program
+ to /P/Foo/x.y/include, or the user needs to temporarily symlink the desired
+ version (which is more fragile).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This could be an interesting self-criticism on how Gobo became more 
+\begin_inset Quotes eld
+\end_inset
+
+database-oriented
+\begin_inset Quotes erd
+\end_inset
+
+ (i.e.
+ more reliant on /S/I as a db index) than before.
+\end_layout
+
+\begin_layout Itemize
+Still, the compatibility gains for maintenance greatly outweigh the losses,
+ of course.
 \end_layout
 
 \end_deeper
@@ -2653,13 +2905,6 @@ $PREFIX/lib/5.3/lpeg-0.11-1.so
 \begin_layout Section
 Integration between languages vs.
  integration between package managers
-\end_layout
-
-\begin_layout Quote
-
-\emph on
-An analogy between PL interaction (APIs and FFIs) and pkgmgr interaction
- (virtually none??)
 \end_layout
 
 \begin_layout Standard
