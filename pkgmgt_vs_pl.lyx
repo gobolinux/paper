@@ -3234,10 +3234,89 @@ Not all domain-specific package managers lend themselves to this integration.
 Conclusion
 \end_layout
 
-\begin_layout Standard
-To-do.
+\begin_layout Itemize
+Some thoughts for the conclusion.
+ Like, "ok, what are the ~contributions~ of the paper?
+\begin_inset Quotes erd
+\end_inset
+
+...
 \end_layout
 
+\begin_layout Itemize
+The ones I could think of were:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+a conceptual organization on approaches for package management 
+\end_layout
+
+\begin_layout Itemize
+pointing out the need to see that package managers do not exist on their
+ own, but are part of an ecosystem in which other package managers often
+ take part
+\end_layout
+
+\begin_layout Itemize
+a third item, I guess, would be something like 
+\begin_inset Quotes eld
+\end_inset
+
+if you have the choice, pick filesystem-oriented
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+where 
+\begin_inset Quotes eld
+\end_inset
+
+if you have the choice
+\begin_inset Quotes erd
+\end_inset
+
+ means 
+\begin_inset Quotes eld
+\end_inset
+
+if you can control how run-time lookup happens consistently for all packages
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+as is the case for example with node.js where the people who make the platform
+ are the same who make the pkg manager
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+...and which is not the case for LuaRocks, but it's the case for Ruby, where
+ they could make everyone use the RubyGems loader by pre-loading it automaticall
+y in the default Ruby interpreter.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+and in the case of GoboLinux 015 where, with --prefix=/usr + /S/I, we managed
+ to dribble run-time lookup issues consistently.
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
