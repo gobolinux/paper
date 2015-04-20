@@ -1411,7 +1411,7 @@ reference "sub:GoboLinux-Aliens"
 Up to GoboLinux 014.01, packages built with Compile had their prefixes set
  to their versioned directory during their compilation.
  That had a consequence in a considerable extent of software that use their
- prefix directory for runtime lookups of 
+ prefix directory for run-time lookups of 
 \shape italic
 shared 
 \shape default
@@ -1441,8 +1441,8 @@ Shared
 \family default
  directory), leading to code growth and a deviation to the distribution's
  original design.
- As the Linux userland ecossystem evolved, some new packages started to
- share files through 
+ As the Linux userland ecosystem evolved, some new packages started to share
+ files through 
 \family typewriter
 /usr/lib{64}
 \family default
@@ -1450,8 +1450,8 @@ Shared
  It is easy to picture how complicated the task of a modern package manager
  can be nowadays, as even subtle changes to filesystem namespace semantics
  can have profound impact on the organization of this class of software.
- In GoboLinux, we fixed this problem for once and all by introducing major
- changes to the system´ s directory layout and by using a new compilation
+ In GoboLinux, we fixed this problem once and for all by introducing major
+ changes to the system's directory layout and by using a new compilation
  prefix 
 \family typewriter
 /System/Index
@@ -1464,6 +1464,22 @@ reference "fig:gobofs"
 \end_inset
 
 ).
+ Through this structure, even though packages are organized in self-contained
+ directories under 
+\family typewriter
+/Programs
+\family default
+, applications can find their files through the traditional Unix hierarchy,
+ as 
+\family typewriter
+/usr
+\family default
+ is a symbolic link to 
+\family typewriter
+/System/Index
+\family default
+.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1476,7 +1492,7 @@ status open
 \begin_inset Tabular
 <lyxtabular version="3" rows="2" columns="2">
 <features rotate="0" tabularvalignment="middle">
-<column alignment="left" valignment="middle" width="50page%">
+<column alignment="left" valignment="middle" width="45page%">
 <column alignment="left" valignment="middle" width="50page%">
 <row>
 <cell alignment="left" valignment="top" usebox="none">
@@ -1567,7 +1583,7 @@ GoboLinux file system hierarchy
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The mostly declarative style of GoboLinux recipes proved to be a success
@@ -1585,7 +1601,7 @@ The mostly declarative style of GoboLinux recipes proved to be a success
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Itemize
 \begin_inset Note Note
@@ -3184,7 +3200,7 @@ luarocks install datafile
 
 \end_inset
 
-, which resolves directory locations portably at runtime.
+, which resolves directory locations portably at run-time.
 \end_layout
 
 \begin_layout Standard
