@@ -1833,6 +1833,57 @@ Still, the compatibility gains for maintenance greatly outweigh the losses,
 Other filesystem-driven approaches
 \end_layout
 
+\begin_layout Standard
+One of the earliest filesystem-driven package manager to note is GNU Stow
+\begin_inset CommandInset citation
+LatexCommand cite
+key "stow"
+
+\end_inset
+
+, which inherited ideas from Carnegie Mellon´s Depot
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Colyer1992Depot"
+
+\end_inset
+
+.
+ Differently from most of today´s popular package managers, Stow does not
+ integrate the build process.
+ Instead, it focuses on the management of packages installed on non-regular
+ paths (e.g.
+ some user´s home directory, external devices, etc).
+ Given the path to one such package, Stow ``activates´´ it on the system
+ by creating symbolic links to the package´s contents at e.g.
+ /usr/local.
+ Existing symbolic links are expanded with directories to manage conflicts.
+ A similar approach is taken by Encap
+\begin_inset CommandInset citation
+LatexCommand cite
+key "encap"
+
+\end_inset
+
+: packages are installed onto a 
+\family typewriter
+/usr/local/encap/package-name-package-version
+\family default
+ hierarchy, with the management of symbolic links performed by the epkg
+ script.
+ Unlike Stow, Encap is able to revert to a previous version of a given package
+ thanks to the directory names used at 
+\family typewriter
+/usr/local/encap
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
 \begin_layout Itemize
 Short history of alternative approaches:
 \end_layout
@@ -1980,6 +2031,11 @@ However, Glauber Costa, one of the developers of the Linux Containers system,
 \end_layout
 
 \end_deeper
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Language-specific vs.
  language-agnostic package managers
