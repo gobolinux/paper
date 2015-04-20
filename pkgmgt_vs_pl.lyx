@@ -2995,9 +2995,23 @@ reference "sub:GoboLinux-Aliens"
  of no other such integrations beyond what Debian performs.
 \end_layout
 
-\begin_layout Itemize
-Still, they have been successfully realized in others, such as the use of
- LuaRocks by Buildroot.
+\begin_layout Standard
+A weaker form of one-way integration between package managers occurs when
+ the system-wide manager uses the language-specific package manager merely
+ as a build system.
+ An example is the use of LuaRocks by Buildroot 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "buildroot"
+
+\end_inset
+
+.
+ Buildroot is a system for compiling full-system images for embedded environment
+s, which has its own package specification format.
+ It uses LuaRocks as a build tool: the Buildroot specification scripts launch
+ LuaRocks to generate Lua modules and then collect and integrate them to
+ the system.
 \end_layout
 
 \begin_layout Subsection
