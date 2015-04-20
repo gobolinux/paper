@@ -1178,6 +1178,42 @@ Taking inspiration from Gentoo's Portage system (which was itself inspired
  shell scripting.
 \end_layout
 
+\begin_layout Standard
+Up to GoboLinux 014.01, packages built with Compile had their prefixes set
+ to their versioned directory during their compilation.
+ That had a consequence in a considerable extent of software that use their
+ prefix directory for runtime lookups of 
+\shape italic
+shared 
+\shape default
+files (i.e.
+ those under
+\family typewriter
+ /usr/share
+\family default
+) and impacted the layout of the GoboLinux directory tree and its management
+ scripts.
+ Each versioned directory received a 
+\family typewriter
+Shared
+\family default
+ sub-directory containing that package´s own files and a symbolic link named
+ 
+\family typewriter
+share p
+\family default
+ointing back 
+\family typewriter
+/System/Links/Shared
+\family default
+ (which managed links to the files of each package´s 
+\family typewriter
+Shared
+\family default
+ directory), leading to code complexity and a deviation to the distribution´s
+ original design.
+\end_layout
+
 \begin_layout Itemize
 \begin_inset Note Note
 status open
