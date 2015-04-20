@@ -77,7 +77,11 @@
 \begin_body
 
 \begin_layout Title
-Understanding package management through the lens of programming languages
+Understanding Package Management
+\begin_inset Newline newline
+\end_inset
+
+Through the Lens of Programming Languages
 \end_layout
 
 \begin_layout Author
@@ -494,7 +498,7 @@ Nix
 \begin_layout Plain Layout
 
 \size footnotesize
-Windows Installer
+PBI (PC-BSD)
 \end_layout
 
 \end_inset
@@ -658,7 +662,7 @@ LuaRocks 1.x (Lua)
 
 \size footnotesize
 \begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="1">
+<lyxtabular version="3" rows="3" columns="1">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <row>
@@ -669,6 +673,19 @@ LuaRocks 1.x (Lua)
 
 \size footnotesize
 Cabal (Haskell)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+pip (Python)
 \end_layout
 
 \end_inset
@@ -714,7 +731,7 @@ name "fig:pm-taxonomy"
 
 \end_inset
 
-A package manager taxonomy
+A package manager taxonomy, with representative examples
 \end_layout
 
 \end_inset
@@ -807,6 +824,50 @@ filesystem-oriented
 database-oriented
 \emph default
 .
+ Most package managers for Linux distributions, such as RPM and dpkg/APT,
+ are database-oriented.
+ Filesystem-oriented package management is more often seen in language-specific
+ package managers, such as npm and Bower, but as we discuss in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GoboLinux"
+
+\end_inset
+
+, it can be performed system-wide.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pm-taxonomy"
+
+\end_inset
+
+ lists more examples.
+\end_layout
+
+\begin_layout Standard
+Being database-oriented does not imply an opaque, binary database format.
+ LuaRocks 2.x uses a set of Lua tables (in 
+\family typewriter
+.lua
+\family default
+ source format) as its database.
+ ArchLinux keeps its database as a tree under 
+\family typewriter
+/var/lib/pacman/local
+\family default
+, with one subdirectory per package, containing text files that list which
+ files belong to which package, as well as other metadata.
+ The tree of Makefiles in BSD ports, containing 
+\family typewriter
+install
+\family default
+ and 
+\family typewriter
+uninstall
+\family default
+ rules which control the mapping of files to packages, can be considered
+ a central database for package management as well.
 \end_layout
 
 \begin_layout Standard
@@ -834,17 +895,12 @@ ns shouldn't care what language they are written in, but on the other hand
 
 \begin_layout Standard
 The major trade-off between the filesystem-oriented and the database-oriented
- approach is 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Unfinished sentence!
-\end_layout
-
-\end_inset
-
-
+ approaches is whether applications should be aware of the file structure
+ defined by the manager or whether the manager should adapt to the file
+ structure defined by applications.
+ This affects how the manager tracks the mapping of files and how applications
+ find their resource files.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -883,6 +939,19 @@ Conversely, in database-oriented managers the mapping of files to packages
  the application expected it to be in the first place.
  However, it does become an issue when the file has been relocated by the
  integrator who built the package, perhaps for solving conflicts.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Challenges with database-oriented systems
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -943,126 +1012,120 @@ all
  C headers aren't installed in a versioned way.
  In fact, when we look at Unix shared libraries, we see that this is the
  case: the standard practice is to install libraries in versioned files
- such as libfoo.so.1, with a libfoo.so symbolic link for user convenience.
+ such as 
+\family typewriter
+libfoo.so.1
+\family default
+, with a 
+\family typewriter
+libfoo.so
+\family default
+ symbolic link for user convenience.
  Note that, as typical of filesystem-oriented approaches, there needs to
  be some cooperation for run-time lookup, and indeed the dynamic linker
  is aware of this structure and makes use of versioned filenames.
 \end_layout
 
-\begin_layout Itemize
-Practical instances of this fs vs db trade-off:
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Challenges with filesystem-oriented systems
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-databases involved in runtime lookup: gtk icon cache, Haskell db updates,
- etc.
+\end_inset
+
+
 \end_layout
 
-\begin_layout Itemize
-pkg-config, how does it fit?
+\begin_layout Standard
+Filesystem-oriented managers also present their own set of challenges, as
+ the description of packages as set of files does not present a full picture.
+ Packages, especially in system-wide installations, often need to perform
+ global changes to the system, such as adding users and setting environment
+ variables.
+ Some applications also include database-oriented portions which are assumed
+ to be updated by installation scripts, such as the icon cache for the GTK+
+ widget library: any package that installs new icons has to refresh this
+ global cache.
+ Non-relocatable packages often assume hardcoded default paths in which
+ resource files are expected to be found; if the package manager employs
+ a different organization, it needs to reconfigure applications to make
+ sure the required files are found.
+ One common solution is to use environment variables, since applications
+ often support setting custom paths via variables in addition to the system-wide
+ defaults.
+ Most applications can be installed in custom locations, with the installation
+ prefix being adjustable at compile time.
+ The 
+\family typewriter
+/opt
+\family default
+ directory is a traditional location for filesystem-oriented organization
+ of additional packages.
+ Core system services are often harder to relocate.
 \end_layout
 
-\end_deeper
-\begin_layout Itemize
-How to handle runtime lookup in the filesystem paradigm:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-environment variables, index directories with symlinks
-\end_layout
-
-\begin_layout Itemize
-changes in filesystems to better support the filesystem paradigm? (union
- mounts, etc)
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-related work outside of 
+\begin_layout Standard
+To use the filesystem or a database is a frequent design dilemma beyond
+ package management, especially on Unix systems, where 
 \begin_inset Quotes eld
 \end_inset
 
-classic
+everything is a file
 \begin_inset Quotes erd
 \end_inset
 
- Unix: appdirs, Windows, Plan 9.
-\end_layout
-
-\begin_layout Itemize
-filesystem paradigm in Unix:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-/opt: early example of filesystem-oriented management
-\end_layout
-
-\begin_layout Itemize
-parts of the FS hierarchy which use the filesystem paradigm: /usr/share/appname
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Being database-oriented does not imply an opaque, binary database format.
- LuaRocks 2.x uses a set of Lua tables (in 
+ is a long-standing tradition.
+ Different styles of bootscripts on Unix employ one or the other approach,
+ with System V being the archetypical file-hierarchy-based init system and
+ BSD init using 
 \family typewriter
-.lua
+/etc/rc.conf
 \family default
- source format) as its database.
- ArchLinux keeps its database as a tree under 
+ as a central configuration file.
+ Program configuration can either use on separate text-based configuration
+ files under 
 \family typewriter
-/var/lib/pacman/local
+/etc
 \family default
-, with one subdirectory per package, containing text files that list which
- files belong to which package, as well as other metadata.
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Makefiles with install and uninstall rules in ports: early example of database
- paradigm?
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-other instances of filesystem vs database paradigm:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-sysv and BSD init versus systemd
-\end_layout
-
-\begin_layout Itemize
-Mac OSX equivalent
-\end_layout
-
-\begin_layout Itemize
-/etc text-based config files vs.
- gconf
-\end_layout
-
-\begin_layout Itemize
-Windows registry.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Explain Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:pm-taxonomy"
+ or a central registry of settings, such as GConf 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Pennington2002GConf"
 
 \end_inset
 
 .
+ 
+\end_layout
+
+\begin_layout Standard
+In modern Linux distributions, the package manager is the most central component
+ for organizing the operating system.
+ Database-oriented solutions often are considered un-Unix-like (GConf, for
+ instance, raises comparisons to the Windows Registry 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wallen2003GConfWin"
+
+\end_inset
+
+).
+ It is remarkable that, in spite of the Unix philosophy, most Linux package
+ managers are primarily database-oriented.
 \end_layout
 
 \begin_layout Subsection
 GoboLinux
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GoboLinux"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1368,6 +1431,10 @@ Short history of alternative approaches:
 earliest related work: GNU stow, encap.
  (Our paper from Workshop em Software Livre mentions that, but we didn't
  really know about them when making Gobo)
+\end_layout
+
+\begin_layout Itemize
+djb's /package structure
 \end_layout
 
 \begin_layout Itemize
