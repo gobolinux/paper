@@ -3754,11 +3754,10 @@ c highlighted the complementary qualities of these two classes of managers.
 New package managers will continue to appear, as new languages and environments
  give rise to new needs.
  Since new languages and environments invariably give rise to new package
- managers, it is important to take this issue into account from early on,
- understanding how they interact with the filesystem organization and with
- run-time systems.
- Doing this keeps possibilities open for better designs, ones less prone
- to 
+ managers, it is important to take this issue into account, understanding
+ how they interact with the filesystem organization and with run-time systems.
+ Doing this from early on keeps possibilities open for better designs that
+ less prone to 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3766,7 +3765,7 @@ dependency hell
 \begin_inset Quotes erd
 \end_inset
 
- or versioning conflicts.
+ and versioning conflicts.
 \end_layout
 
 \begin_layout Standard
