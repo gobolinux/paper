@@ -3634,105 +3634,85 @@ In the realm of programming languages, the existing conceptual organization
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-In package managers...
-\end_layout
-
-\end_inset
-
-
+Similar methods of classification are needed for package managers.
+ By identifying families of filesystem-driven and database-driven package
+ managers, we were able to point out issues common to them and the general
+ solutions in use.
+ It is notable how many of the package managers we researched for this work
+ went through similar changes, and how many of their experiences match our
+ own.
 \end_layout
 
 \begin_layout Standard
-Through our experience in both ends of the spectrum of package management
- — from low-level OS management in GoboLinux to high-level language modules
- in LuaRocks — we observed a necessity for these different levels of system
- organization to recognize each other and interact.
+Package managers deal fundamentally with the mapping between the file-level
+ organization of the filesystem and the higher-level concept of packages.
+ We observed that filesystem-driven designs are preferrable as they tend
+ to have less problems with conflict resolution, but they require some level
+ of control on how run-time lookup happens, to ensure that it is consistent
+ for all packages.
+ We observe that this control exists when language-specific package managers
+ are bundled with the language environment, as is the case with npm for
+ node.js and RubyGems for Ruby.
+ These managers were free to adopt filesystem-driven designs since they
+ adjusted their module loaders accordingly.
+ The other way to exert this control over run-time lookup is to employ a
+ system-wide lower-level solution as we did in GoboLinux with the 
+\family typewriter
+/System/Index
+\family default
+ tree of symbolic links or in the stowfs filesystem virtualization proposed
+ for GNU Hurd.
+ Database-driven designs, on the other hand, are more generally applicable,
+ but are more opaque to their users and are more prone to package conflict
+ and file-to-package synchronization issues.
+ For these reasons, we advocate filesystem-driven systems in general, but
+ we also recognize that there are situations where a database-driven solution
+ works best to preserve compatibility with the ecosystem at play, as was
+ the case with LuaRocks.
+\end_layout
+
+\begin_layout Standard
+Our classification of package managers as language-agnostic and language-specifi
+c highlighted the complementary qualities of these two classes of managers.
+ The existence of language-specific package managers distributes integration
+ efforts, as upstream module developers are often the package integrators
+ themselves.
+ This allows scaling repositories way beyond what is possible through the
+ work of OS distribution maintainers, but also generates some tension between
+ the language and distribution communities as perceived duplicate work and
+ incompatibilites happen.
+ Through our experience in both ends of the spectrum of package management
+ — from low-level distribution management in GoboLinux to high-level language
+ modules in LuaRocks — we observed a necessity for these different levels
+ of system organization to recognize each other and aim for cooperation.
  Package managers do not exist on their own, but are part of an ecosystem
  in which other package managers often take part.
- We point some directions on how progress on this 
+ We shared our experience in progressing on this direction with the GoboLinux
+ Aliens project, and we plan to further pursue FFI-style package management
+ interoperability.
+ Future directions for LuaRocks include a plug-in system through which a
+ closer integration with the host system may be implemented.
 \end_layout
 
-\begin_layout Itemize
-Some thoughts for the conclusion.
- Like, "ok, what are the ~contributions~ of the paper?
-\begin_inset Quotes erd
-\end_inset
-
-...
-\end_layout
-
-\begin_layout Itemize
-The ones I could think of were:
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-a conceptual organization on approaches for package management 
-\end_layout
-
-\begin_layout Itemize
-a third item, I guess, would be something like 
+\begin_layout Standard
+New package managers will continue to appear, as new languages and environments
+ give rise to new needs.
+ Since new languages and environments invariably give rise to new package
+ managers, it is important to take this issue into account from early on,
+ understanding how they interact with the filesystem organization and with
+ run-time systems.
+ Doing this keeps possibilities open for better designs, ones less prone
+ to 
 \begin_inset Quotes eld
 \end_inset
 
-if you have the choice, pick filesystem-driven
+dependency hell
 \begin_inset Quotes erd
 \end_inset
 
-
+ or versioning conflicts.
 \end_layout
 
-\begin_deeper
-\begin_layout Itemize
-where 
-\begin_inset Quotes eld
-\end_inset
-
-if you have the choice
-\begin_inset Quotes erd
-\end_inset
-
- means 
-\begin_inset Quotes eld
-\end_inset
-
-if you can control how run-time lookup happens consistently for all packages
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-as is the case for example with node.js where the people who make the platform
- are the same who make the pkg manager
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-...and which is not the case for LuaRocks, but it's the case for Ruby, where
- they could make everyone use the RubyGems loader by pre-loading it automaticall
-y in the default Ruby interpreter.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-and in the case of GoboLinux 015 where, with --prefix=/usr + /S/I, we managed
- to dribble run-time lookup issues consistently.
-\end_layout
-
-\end_deeper
-\end_deeper
-\end_deeper
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
