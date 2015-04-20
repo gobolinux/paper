@@ -1449,9 +1449,16 @@ Compile
 
 \begin_layout Standard
 Taking inspiration from Gentoo's Portage system (which was itself inspired
- from BSD Ports), Compile makes use of recipes that describe how to fetch
- the source code of a piece of software and the sequence of commands required
- to build and install it.
+ from BSD Ports)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Thiruvathukal2004Gentoo"
+
+\end_inset
+
+, Compile makes use of recipes that describe how to fetch the source code
+ of a piece of software and the sequence of commands required to build and
+ install it.
  Because recipes are frequently hand-written, it is essential to make them
  as simple as possible so that users are encouraged to contribute to the
  distribution's ecosystem.
