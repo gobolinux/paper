@@ -898,6 +898,20 @@ uninstall
 status open
 
 \begin_layout Plain Layout
+TODO Illustrate with figures/examples: rubygems vs.
+ pip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 Not sure at what point this paragraph should fit.
 \end_layout
 
@@ -1236,10 +1250,17 @@ Since packages become self-described through the GoboLinux filesystem hierarchy,
  the distribution features its own set of system management tools built
  around scripting languages.
  At first, these scripts automated tasks such as the installation of new
- packages (simply compressed tar archives) and their ``activation'' in the
- system (namely, the creation of symbolic links to their libraries, headers,
- executables, and manuals) as well as their removal (achieved by deleting
- their directory and the now-broken symbolic links).
+ packages (simply compressed tar archives) and their 
+\begin_inset Quotes eld
+\end_inset
+
+activation
+\begin_inset Quotes erd
+\end_inset
+
+ in the system (namely, the creation of symbolic links to their libraries,
+ headers, executables, and manuals) as well as their removal (achieved by
+ deleting their directory and the now-broken symbolic links).
  Over time, these scripts inevitably became more complex as they became
  integrated with other system tools and served as the pillars for 
 \emph on
@@ -1292,11 +1313,11 @@ ointing back
 \family typewriter
 /System/Links/Shared
 \family default
- (which managed links to the files of each package´s 
+ (which managed links to the files of each package's 
 \family typewriter
 Shared
 \family default
- directory), leading to code complexity and a deviation to the distribution´s
+ directory), leading to code complexity and a deviation to the distribution's
  original design.
 \end_layout
 
@@ -1439,7 +1460,7 @@ NEW
 
 \end_inset
 
-tie in with the discussion of above section about includes: Gobo pre-/S/I
+tie in with the discussion of above section about includes? Gobo pre-/S/I
  didn't need versioned includes when applications detect the install prefix
  of libraries they depended on (e.g.
  via pkgconfig); with /S/I, pkgconfig will return includedir as /usr/include,
@@ -1449,19 +1470,6 @@ tie in with the discussion of above section about includes: Gobo pre-/S/I
 \end_layout
 
 \begin_deeper
-\begin_layout Itemize
-This could be an interesting self-criticism on how Gobo became more 
-\begin_inset Quotes eld
-\end_inset
-
-database-oriented
-\begin_inset Quotes erd
-\end_inset
-
- (i.e.
- more reliant on /S/I as a db index) than before.
-\end_layout
-
 \begin_layout Itemize
 Still, the compatibility gains for maintenance greatly outweigh the losses,
  of course.
@@ -1509,6 +1517,11 @@ packages must be relocatable
 \end_layout
 
 \end_deeper
+\begin_layout Itemize
+app dirs: RiscOS, Mac OSX.
+ (Android and iOS?)
+\end_layout
+
 \begin_layout Itemize
 The Nix project has been around almost as long as GoboLinux.
  NixOS is nowadays a serious contender in the world of server-oriented operating
@@ -2967,6 +2980,19 @@ status open
 
 \begin_layout Plain Layout
 went from filesystem-oriented to database-oriented
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO illustrate with figures
 \end_layout
 
 \end_inset
