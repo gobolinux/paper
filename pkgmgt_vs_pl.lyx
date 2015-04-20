@@ -899,7 +899,7 @@ key "Wallen2003GConfWin"
 \begin_inset Float figure
 wide true
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -1373,8 +1373,8 @@ activation
  in the system (namely, the creation of symbolic links to their libraries,
  headers, executables, and manuals) as well as their removal (achieved by
  deleting their directory and the now-broken symbolic links).
- Over time, these scripts inevitably became more complex as they became
- integrated with other system tools and served as the pillars for 
+ Over time, these scripts inevitably became more complex as they were integrated
+ with other system tools and served as the pillars for 
 \emph on
 Compile
 \emph default
@@ -1395,6 +1395,16 @@ Taking inspiration from Gentoo's Portage system (which was itself inspired
  be described with little more than a couple of lines.
  More complex build cases can be described by extending recipes with regular
  shell scripting.
+ We have also included in Compile the ability to manage the installation
+ of packages through third-party package managers.
+ More details of that feature are given in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GoboLinux-Aliens"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1421,7 +1431,7 @@ Shared
 \family typewriter
 share p
 \family default
-ointing back 
+ointing back to 
 \family typewriter
 /System/Links/Shared
 \family default
@@ -1429,9 +1439,153 @@ ointing back
 \family typewriter
 Shared
 \family default
- directory), leading to code complexity and a deviation to the distribution's
+ directory), leading to code growth and a deviation to the distribution's
  original design.
+ As the Linux userland ecossystem evolved, some new packages started to
+ share files through 
+\family typewriter
+/usr/lib{64}
+\family default
+, too.
+ It is easy to picture how complicated the task of a modern package manager
+ can be nowadays, as even subtle changes to filesystem namespace semantics
+ can have profound impact on the organization of this class of software.
+ In GoboLinux, we fixed this problem for once and all by introducing major
+ changes to the system´ s directory layout and by using a new compilation
+ prefix 
+\family typewriter
+/System/Index
+\family default
+ common to all packages (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:gobofs"
+
+\end_inset
+
+).
 \end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="middle" width="50page%">
+<column alignment="left" valignment="middle" width="50page%">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename gobo_systemindex.eps
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename gobo_programs.eps
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(a) The filesystem is indexed with the use of 
+\begin_inset Newline newline
+\end_inset
+
+directories and symbolic links.
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(b) Packages are managed through a 
+\begin_inset Newline newline
+\end_inset
+
+versioned directory tree.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:gobofs"
+
+\end_inset
+
+GoboLinux file system hierarchy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+The mostly declarative style of GoboLinux recipes proved to be a success
+ among users and gave us greater freedom when modifying the build process.
+ We made major changes to the system's directory layout between releases
+ 014 and 015 of the distribution, and the use of high-level descriptions
+ and our cautious avoidance of hardcoded paths allowed us to reuse the majority
+ of recipes with no changes.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
 
 \begin_layout Itemize
 \begin_inset Note Note
@@ -1489,26 +1643,6 @@ virtualized
  Unix directories of GoboLinux avoid some compatibility issues that affect
  other distributions: all executables appear at the same time in /bin, /sbin,
  /usr/bin and so on.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Our extensive use of shell scripting for system management was a sort of
- attempt to show that the system could work with 
-\begin_inset Quotes eld
-\end_inset
-
-just a few scripts
-\begin_inset Quotes erd
-\end_inset
-
-.
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-core ideas work (the system is still driven via symlinks) but management
- scripts became complex over time
 \end_layout
 
 \end_deeper
@@ -1588,13 +1722,9 @@ Still, the compatibility gains for maintenance greatly outweigh the losses,
 \end_layout
 
 \end_deeper
-\begin_layout Standard
-The mostly declarative style of GoboLinux recipes proved to be a success
- among users and gave us greater freedom when modifying the build process.
- We made major changes to the system's directory layout between releases
- 014 and 015 of the distribution, and the use of high-level descriptions
- and our cautious avoidance of hardcoded paths allowed us to reuse the majority
- of recipes with no changes.
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -3298,7 +3428,8 @@ FFI
 \begin_inset Quotes erd
 \end_inset
 
- of sorts into our general-purpose package manager, which we called Aliens
+ (Foreign Function Interface) of sorts into our general-purpose package
+ manager, which we called Aliens
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Homer2010LCA"
