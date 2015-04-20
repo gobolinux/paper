@@ -487,14 +487,6 @@ reference "sub:GoboLinux"
 \end_inset
 
 , it can be performed system-wide.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:pm-taxonomy"
-
-\end_inset
-
- lists more examples.
 \end_layout
 
 \begin_layout Standard
@@ -522,15 +514,25 @@ uninstall
  a central database for package management as well.
 \end_layout
 
-\begin_layout LyX-Code
-
-\end_layout
-
 \begin_layout Standard
 \begin_inset Float figure
 wide true
 sideways false
 status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -581,7 +583,7 @@ status collapsed
 
 Modules for all packages are stored together under 
 \family typewriter
-/usr/lib/python2.7/
+/usr/lib/python2.7/site-packages/
 \family default
 .
 \end_layout
@@ -613,11 +615,20 @@ Each package gets its own subdirectory under
 
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
+
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-ovo
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Comparison-of-db-and-fs"
+
+\end_inset
+
+Comparison of database-oriented and filesystem-oriented package management
+ styles.
 \end_layout
 
 \end_inset
@@ -627,25 +638,80 @@ ovo
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout LyX-Code
 
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-TODO Illustrate with figures/examples: rubygems vs.
- pip
-\end_layout
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Comparison-of-db-and-fs"
 
 \end_inset
 
+ illustrates the two different styles of package management.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Comparison-of-db-and-fs"
 
+\end_inset
+
+(a) is representative of the database-oriented style.
+ It shows the directory structure using 
+\family typewriter
+pip
+\family default
+, the package manager for Python modules.
+ Note that all installed modules are stored under 
+\family typewriter
+/usr/lib/python2.7/site-packages/
+\family default
+, which was the default directory for locally-installed modules prior to
+ the introduction of 
+\family typewriter
+pip
+\family default
+.
+ Database-oriented designs are often chosen when the package manager needs
+ to accomodate a pre-existing directory structure.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Comparison-of-db-and-fs"
+
+\end_inset
+
+(b) showcases the filesystem-oriented style, presenting the directory structure
+ produced by RubyGems, the package manager for Ruby.
+ Each package has its own subtree under a versioned directory, containing
+ a Unix substructure with 
+\family typewriter
+bin/
+\family default
+, 
+\family typewriter
+lib/
+\family default
+ and so on.
+ The 
+\family typewriter
+rubygems.rb
+\family default
+ module, part of the default installation of Ruby, takes care of finding
+ the appropriate files when modules are loaded with the 
+\family typewriter
+require
+\family default
+ function.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pm-taxonomy"
+
+\end_inset
+
+ lists more examples and their classification.
 \end_layout
 
 \begin_layout Standard
