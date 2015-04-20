@@ -199,6 +199,15 @@ Wellington, New Zealand
 This is an abstract, yet to be written.
 \end_layout
 
+\begin_layout Abstract
+\noindent
+
+\series bold
+Tags:
+\series default
+ package management, operating systems, filesystem hierarchy
+\end_layout
+
 \begin_layout Section
 Introduction
 \end_layout
@@ -675,6 +684,11 @@ pip
 .
  Database-oriented designs are often chosen when the package manager needs
  to accomodate a pre-existing directory structure.
+ Conflicts are avoided through the use of the Python module namespace, but
+ may still occur in case of module clashes.
+ In this example, Pillow is a fork of the PIL (Python Imaging Library) package,
+ and reuses the same namespace.
+ Both cannot be installed at the same time.
  Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3592,6 +3606,57 @@ Not all domain-specific package managers lend themselves to this integration.
 Conclusion
 \end_layout
 
+\begin_layout Standard
+In this paper, we presented an analysis of the landscape of existing methodologi
+es for package management, substantiated by our practical experiences in
+ the development and maintenance over the years of a system-wide package
+ manager for a Linux distribution and a portable package manager for a scripting
+ language.
+ Package management is an area that is notably neglected in academic studies,
+ but is one of practical impact in the design of modern operating systems,
+ module systems for programming languages and a central issue in system
+ administration.
+ With this work, we provide the beginnings of a conceptual organization
+ on approaches for package management, an area that lacks even common terminolog
+y, and where many of the same design issues are faced and dealt with time
+ and again.
+\end_layout
+
+\begin_layout Standard
+In the realm of programming languages, the existing conceptual organization
+ is useful in various levels.
+ As one learns about a new programming language, one can immediately gather
+ some insight about its workings by learning whether it is imperative or
+ functional, statically-typed or dynamically-typed, if it features eager
+ or lazy evaluation.
+ One is also able to reason generally about whole families of languages,
+ but studying design issues and trade-offs that apply to all of them.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+In package managers...
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Through our experience in both ends of the spectrum of package management
+ — from low-level OS management in GoboLinux to high-level language modules
+ in LuaRocks — we observed a necessity for these different levels of system
+ organization to recognize each other and interact.
+ Package managers do not exist on their own, but are part of an ecosystem
+ in which other package managers often take part.
+ We point some directions on how progress on this 
+\end_layout
+
 \begin_layout Itemize
 Some thoughts for the conclusion.
  Like, "ok, what are the ~contributions~ of the paper?
@@ -3608,12 +3673,6 @@ The ones I could think of were:
 \begin_deeper
 \begin_layout Itemize
 a conceptual organization on approaches for package management 
-\end_layout
-
-\begin_layout Itemize
-pointing out the need to see that package managers do not exist on their
- own, but are part of an ecosystem in which other package managers often
- take part
 \end_layout
 
 \begin_layout Itemize
