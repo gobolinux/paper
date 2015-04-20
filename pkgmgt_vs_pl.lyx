@@ -604,7 +604,7 @@ Language-specific
 
 \size footnotesize
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="1">
+<lyxtabular version="3" rows="4" columns="1">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <row>
@@ -628,6 +628,19 @@ npm (server-side JavaScript)
 
 \size footnotesize
 Bower (client-side JavaScript)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+RubyGems (Ruby)
 \end_layout
 
 \end_inset
@@ -732,6 +745,16 @@ name "fig:pm-taxonomy"
 \end_inset
 
 A package manager taxonomy, with representative examples
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+More db examples??
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
