@@ -397,10 +397,509 @@ Paradigms of package management: filesystem-oriented vs.
 \end_layout
 
 \begin_layout Standard
+It is customary to organize the landscape of programming languages into
+ paradigms, such as imperative, functional, object-oriented, and so on.
+ These paradigms describe the core conceptual frameworks on top of which
+ languages are designed.
+ The paradigms a language is categorized into inform users about particular
+ design choices, and with these choices come design trade-offs.
+ Many of these trade-offs have been studied and are well understood.
+ A notable example is the Expression Problem 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wadler1998EP,Krishnamurthi:1998:SOF:646155.679709"
+
+\end_inset
+
+, which poses a trade-off between traditional functional and object-oriented
+ approaches when extending code via separate compilation units: in functional
+ programming, it is easy to add new operations to a data type (adding new
+ functions), but it is not possible to extend the type (adding new cases
+ to the algebraic data type) without editing the original code; in OOP,
+ it is easy to extend the type (adding a subclass), but it is not possible
+ to add new operations to an existing type (adding new methods to the original
+ class) without editing code.
+ Once this trade-off is understood, it becomes easier to propose solutions
+ to mitigate it, such as open classes 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Clifton:2000:MMO:353171.353181"
+
+\end_inset
+
+ and mixins 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Flatt:1998:CM:268946.268961"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In the world of package managers, we can also identify general paradigms,
+ by looking at their core concepts and design trade-offs.
+ Package managers are programs that map relations between files and packages
+ (which correspond to sets of files), and between packages (dependencies),
+ allowing users to perform maintainance of their systems in terms of packages
+ rather than at the level of individual files.
+ The central design choice in a package manager, therefore, is how to perform
+ those mappings.
+\end_layout
+
+\begin_layout Standard
+There are two approaches on how to map files to packages: the mapping can
+ be either 
+\emph on
+internal
+\emph default
+ or 
+\emph on
+external
+\emph default
+ to the hierarchical structure of directories where the files reside.
+ As this choice embodies a series of trade-offs and is the single decision
+ that affects the design and implementation of a package manager the most,
+ we identify these as two paradigms of package management.
+ When the mapping is internal to the file hierarchy structure, we say that
+ package management is 
+\emph on
+filesystem-oriented
+\emph default
+.
+ When it is external to the hierarchy of files being managed, the mapping
+ needs to be stored elsewhere: on a database, or an equivalent structure
+ that acts as one.
+ We say in these cases that management is 
+\emph on
+database-oriented
+\emph default
+.
+ Most package managers for Linux distributions, such as RPM and dpkg/APT,
+ are database-oriented.
+ Filesystem-oriented package management is more often seen in language-specific
+ package managers, such as npm and Bower, but as we discuss in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GoboLinux"
+
+\end_inset
+
+, it can be performed system-wide.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:pm-taxonomy"
+
+\end_inset
+
+ lists more examples.
+\end_layout
+
+\begin_layout Standard
+Being database-oriented does not imply an opaque, binary database format.
+ LuaRocks 2.x uses a set of Lua tables (in 
+\family typewriter
+.lua
+\family default
+ source format) as its database.
+ ArchLinux keeps its database as a tree under 
+\family typewriter
+/var/lib/pacman/local
+\family default
+, with one subdirectory per package, containing text files that list which
+ files belong to which package, as well as other metadata.
+ The tree of Makefiles in BSD ports, containing 
+\family typewriter
+install
+\family default
+ and 
+\family typewriter
+uninstall
+\family default
+ rules which control the mapping of files to packages, can be considered
+ a central database for package management as well.
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide true
 sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top" width="99col%">
+<column alignment="center" valignment="top" width="99col%">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename python_pip.eps
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ruby_rubygems.eps
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(a) Database-oriented management of Python modules.
+\begin_inset Newline newline
+\end_inset
+
+Modules for all packages are stored together under 
+\family typewriter
+/usr/lib/python2.7/
+\family default
+.
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(b) Ruby modules managed with RubyGems.
+\begin_inset Newline newline
+\end_inset
+
+Each package gets its own subdirectory under 
+\family typewriter
+/usr/lib/ruby/gems/1.9.1/gems/
+\family default
+.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+ovo
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+TODO Illustrate with figures/examples: rubygems vs.
+ pip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
 status open
+
+\begin_layout Plain Layout
+Not sure at what point this paragraph should fit.
+\end_layout
+
+\end_inset
+
+Initially it may seem that this is an implementation detail, and that this
+ distinction is, or should be, transparent to users of package managers.
+ As long as they can type a command to install a package and then launch
+ the program or load the library, how the manager keeps its consistency
+ is irrelevant.
+ While this is true for end-users installing packages and using applications
+ and libraries, it is not true for another category of users of package
+ managers: those who do the packaging of programs.
+ In other words, this is akin to saying that on one hand end-users of applicatio
+ns shouldn't care what language they are written in, but on the other hand
+ the language paradigm affects those who write programs greatly.
+\end_layout
+
+\begin_layout Standard
+The major trade-off between the filesystem-oriented and the database-oriented
+ approaches is whether applications should be aware of the file structure
+ defined by the manager or whether the manager should adapt to the file
+ structure defined by applications.
+ This affects how the manager tracks the mapping of files and how applications
+ find their resource files.
+ 
+\end_layout
+
+\begin_layout Standard
+In filesystem-oriented managers the mapping of files to packages is simple.
+ File conflicts are naturally avoided by storing files of different packages
+ in separate subtrees.
+ Versioning conflicts between variants of the same package can also be handled
+ via the tree structure.
+ The structure also becomes more transparent to users, which can simplify
+ their experience.
+ The run-time lookup of files by applications, however, can be complicated,
+ if they are oblivious to the structure defined by the package manager.
+ Applications must either agree beforehand to this structure (which might
+ be an option in domain-specific environments), or the package manager has
+ to do extra work to configure them to use the structure; in the worst case,
+ patching them.
+\end_layout
+
+\begin_layout Standard
+Conversely, in database-oriented managers the mapping of files to packages
+ is more complicated.
+ Applications may install files wherever they please, and the package manager
+ needs to keep track.
+ This includes handling potential conflicts if two packages want to use
+ the same pathname.
+ Database-oriented systems will usually report on these conflicts and forbid
+ them.
+ It is up to the integrator (such as a distribution developer) who is building
+ packages to resolve the conflict somehow.
+ Also, the package manager needs to verify that the database and the contents
+ of the filesystem remain in sync, which is trivial in the filesystem-oriented
+ approach.
+ The run-time lookup of files on database-oriented systems, on its turn,
+ is greatly simplified.
+ In most cases it will be a non-issue, since each file is in the location
+ the application expected it to be in the first place.
+ However, it does become an issue when the file has been relocated by the
+ integrator who built the package, perhaps for solving conflicts.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Challenges with database-oriented systems
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Repository maintainers of database-oriented package managers often solve
+ versioning conflicts by resorting to filesystem-oriented approaches.
+ For example, the maintainer of Debian packages for the Lua virtual machine
+ patches its Makefile to install C headers under versioned directories such
+ as 
+\family typewriter
+/usr/include/lua5.3
+\family default
+, to avoid conflicts of simultaneous Lua versions in the system installing
+ 
+\family typewriter
+lua.h
+\family default
+.
+ Such changes propagate to users of these packages: Lua-based software such
+ as LuaRocks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2013LuaRocks"
+
+\end_inset
+
+ and Prosody 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "prosody"
+
+\end_inset
+
+ include code in their installation scripts specifically to handle Debian
+ locations.
+ Meanwhile, FreeBSD uses 
+\family typewriter
+/usr/include/lua53
+\family default
+ and NetBSD uses 
+\family typewriter
+/usr/include/lua-5.3
+\family default
+.
+ To reduce this kind of incompatibility among downstream distributors, many
+ upstream maintainers adopt hierarchical versioning structures themselves:
+ C headers for Python, for example, install into versioned directories such
+ as 
+\family typewriter
+/usr/include/python2.7
+\family default
+ by default in every system.
+ It is unclear, however, which packages are the ones where users will desire
+ to keep simultaneously installed versions and which are not; one might
+ ask why 
+\emph on
+all
+\emph default
+ C headers aren't installed in a versioned way.
+ In fact, when we look at Unix shared libraries, we see that this is the
+ case: the standard practice is to install libraries in versioned files
+ such as 
+\family typewriter
+libfoo.so.1
+\family default
+, with a 
+\family typewriter
+libfoo.so
+\family default
+ symbolic link for user convenience.
+ Note that, as typical of filesystem-oriented approaches, there needs to
+ be some cooperation for run-time lookup, and indeed the dynamic linker
+ is aware of this structure and makes use of versioned filenames.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Challenges with filesystem-oriented systems
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Filesystem-oriented managers also present their own set of challenges, as
+ the description of packages as set of files does not present a full picture.
+ Packages, especially in system-wide installations, often need to perform
+ global changes to the system, such as adding users and setting environment
+ variables.
+ Some applications also include database-oriented portions which are assumed
+ to be updated by installation scripts, such as the icon cache for the GTK+
+ widget library: any package that installs new icons has to refresh this
+ global cache.
+ Non-relocatable packages often assume hardcoded default paths in which
+ resource files are expected to be found; if the package manager employs
+ a different organization, it needs to reconfigure applications to make
+ sure the required files are found.
+ One common solution is to use environment variables, since applications
+ often support setting custom paths via variables in addition to the system-wide
+ defaults.
+ Most applications can be installed in custom locations, with the installation
+ prefix being adjustable at compile time.
+ The 
+\family typewriter
+/opt
+\family default
+ directory is a traditional location for filesystem-oriented organization
+ of additional packages.
+ Core system services are often harder to relocate.
+\end_layout
+
+\begin_layout Standard
+To use the filesystem or a database is a frequent design dilemma beyond
+ package management, especially on Unix systems, where 
+\begin_inset Quotes eld
+\end_inset
+
+everything is a file
+\begin_inset Quotes erd
+\end_inset
+
+ is a long-standing tradition.
+ Different styles of bootscripts on Unix employ one or the other approach,
+ with System V being the archetypical file-hierarchy-based init system and
+ BSD init using 
+\family typewriter
+/etc/rc.conf
+\family default
+ as a central configuration file.
+ Program configuration can either use on separate text-based configuration
+ files under 
+\family typewriter
+/etc
+\family default
+ or a central registry of settings, such as GConf 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Pennington2002GConf"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+In modern Linux distributions, the package manager is the most central component
+ for organizing the operating system.
+ Database-oriented solutions often are considered un-Unix-like (GConf, for
+ instance, raises comparisons to the Windows Registry 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wallen2003GConfWin"
+
+\end_inset
+
+).
+ It is remarkable that, in spite of the Unix philosophy, most Linux package
+ managers are primarily database-oriented.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide true
+sideways false
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -765,393 +1264,6 @@ More db examples??
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-It is customary to organize the landscape of programming languages into
- paradigms, such as imperative, functional, object-oriented, and so on.
- These paradigms describe the core conceptual frameworks on top of which
- languages are designed.
- The paradigms a language is categorized into inform users about particular
- design choices, and with these choices come design trade-offs.
- Many of these trade-offs have been studied and are well understood.
- A notable example is the Expression Problem 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Wadler1998EP,Krishnamurthi:1998:SOF:646155.679709"
-
-\end_inset
-
-, which poses a trade-off between traditional functional and object-oriented
- approaches when extending code via separate compilation units: in functional
- programming, it is easy to add new operations to a data type (adding new
- functions), but it is not possible to extend the type (adding new cases
- to the algebraic data type) without editing the original code; in OOP,
- it is easy to extend the type (adding a subclass), but it is not possible
- to add new operations to an existing type (adding new methods to the original
- class) without editing code.
- Once this trade-off is understood, it becomes easier to propose solutions
- to mitigate it, such as open classes 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Clifton:2000:MMO:353171.353181"
-
-\end_inset
-
- and mixins 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Flatt:1998:CM:268946.268961"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-In the world of package managers, we can also identify general paradigms,
- by looking at their core concepts and design trade-offs.
- Package managers are programs that map relations between files and packages
- (which correspond to sets of files), and between packages (dependencies),
- allowing users to perform maintainance of their systems in terms of packages
- rather than at the level of individual files.
- The central design choice in a package manager, therefore, is how to perform
- those mappings.
-\end_layout
-
-\begin_layout Standard
-There are two approaches on how to map files to packages: the mapping can
- be either 
-\emph on
-internal
-\emph default
- or 
-\emph on
-external
-\emph default
- to the hierarchical structure of directories where the files reside.
- As this choice embodies a series of trade-offs and is the single decision
- that affects the design and implementation of a package manager the most,
- we identify these as two paradigms of package management.
- When the mapping is internal to the file hierarchy structure, we say that
- package management is 
-\emph on
-filesystem-oriented
-\emph default
-.
- When it is external to the hierarchy of files being managed, the mapping
- needs to be stored elsewhere: on a database, or an equivalent structure
- that acts as one.
- We say in these cases that management is 
-\emph on
-database-oriented
-\emph default
-.
- Most package managers for Linux distributions, such as RPM and dpkg/APT,
- are database-oriented.
- Filesystem-oriented package management is more often seen in language-specific
- package managers, such as npm and Bower, but as we discuss in Section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:GoboLinux"
-
-\end_inset
-
-, it can be performed system-wide.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:pm-taxonomy"
-
-\end_inset
-
- lists more examples.
-\end_layout
-
-\begin_layout Standard
-Being database-oriented does not imply an opaque, binary database format.
- LuaRocks 2.x uses a set of Lua tables (in 
-\family typewriter
-.lua
-\family default
- source format) as its database.
- ArchLinux keeps its database as a tree under 
-\family typewriter
-/var/lib/pacman/local
-\family default
-, with one subdirectory per package, containing text files that list which
- files belong to which package, as well as other metadata.
- The tree of Makefiles in BSD ports, containing 
-\family typewriter
-install
-\family default
- and 
-\family typewriter
-uninstall
-\family default
- rules which control the mapping of files to packages, can be considered
- a central database for package management as well.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO Illustrate with figures/examples: rubygems vs.
- pip
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Not sure at what point this paragraph should fit.
-\end_layout
-
-\end_inset
-
-Initially it may seem that this is an implementation detail, and that this
- distinction is, or should be, transparent to users of package managers.
- As long as they can type a command to install a package and then launch
- the program or load the library, how the manager keeps its consistency
- is irrelevant.
- While this is true for end-users installing packages and using applications
- and libraries, it is not true for another category of users of package
- managers: those who do the packaging of programs.
- In other words, this is akin to saying that on one hand end-users of applicatio
-ns shouldn't care what language they are written in, but on the other hand
- the language paradigm affects those who write programs greatly.
-\end_layout
-
-\begin_layout Standard
-The major trade-off between the filesystem-oriented and the database-oriented
- approaches is whether applications should be aware of the file structure
- defined by the manager or whether the manager should adapt to the file
- structure defined by applications.
- This affects how the manager tracks the mapping of files and how applications
- find their resource files.
- 
-\end_layout
-
-\begin_layout Standard
-In filesystem-oriented managers the mapping of files to packages is simple.
- File conflicts are naturally avoided by storing files of different packages
- in separate subtrees.
- Versioning conflicts between variants of the same package can also be handled
- via the tree structure.
- The structure also becomes more transparent to users, which can simplify
- their experience.
- The run-time lookup of files by applications, however, can be complicated,
- if they are oblivious to the structure defined by the package manager.
- Applications must either agree beforehand to this structure (which might
- be an option in domain-specific environments), or the package manager has
- to do extra work to configure them to use the structure; in the worst case,
- patching them.
-\end_layout
-
-\begin_layout Standard
-Conversely, in database-oriented managers the mapping of files to packages
- is more complicated.
- Applications may install files wherever they please, and the package manager
- needs to keep track.
- This includes handling potential conflicts if two packages want to use
- the same pathname.
- Database-oriented systems will usually report on these conflicts and forbid
- them.
- It is up to the integrator (such as a distribution developer) who is building
- packages to resolve the conflict somehow.
- Also, the package manager needs to verify that the database and the contents
- of the filesystem remain in sync, which is trivial in the filesystem-oriented
- approach.
- The run-time lookup of files on database-oriented systems, on its turn,
- is greatly simplified.
- In most cases it will be a non-issue, since each file is in the location
- the application expected it to be in the first place.
- However, it does become an issue when the file has been relocated by the
- integrator who built the package, perhaps for solving conflicts.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Challenges with database-oriented systems
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Repository maintainers of database-oriented package managers often solve
- versioning conflicts by resorting to filesystem-oriented approaches.
- For example, the maintainer of Debian packages for the Lua virtual machine
- patches its Makefile to install C headers under versioned directories such
- as 
-\family typewriter
-/usr/include/lua5.3
-\family default
-, to avoid conflicts of simultaneous Lua versions in the system installing
- 
-\family typewriter
-lua.h
-\family default
-.
- Such changes propagate to users of these packages: Lua-based software such
- as LuaRocks 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Muhammad2013LuaRocks"
-
-\end_inset
-
- and Prosody 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "prosody"
-
-\end_inset
-
- include code in their installation scripts specifically to handle Debian
- locations.
- Meanwhile, FreeBSD uses 
-\family typewriter
-/usr/include/lua53
-\family default
- and NetBSD uses 
-\family typewriter
-/usr/include/lua-5.3
-\family default
-.
- To reduce this kind of incompatibility among downstream distributors, many
- upstream maintainers adopt hierarchical versioning structures themselves:
- C headers for Python, for example, install into versioned directories such
- as 
-\family typewriter
-/usr/include/python2.7
-\family default
- by default in every system.
- It is unclear, however, which packages are the ones where users will desire
- to keep simultaneously installed versions and which are not; one might
- ask why 
-\emph on
-all
-\emph default
- C headers aren't installed in a versioned way.
- In fact, when we look at Unix shared libraries, we see that this is the
- case: the standard practice is to install libraries in versioned files
- such as 
-\family typewriter
-libfoo.so.1
-\family default
-, with a 
-\family typewriter
-libfoo.so
-\family default
- symbolic link for user convenience.
- Note that, as typical of filesystem-oriented approaches, there needs to
- be some cooperation for run-time lookup, and indeed the dynamic linker
- is aware of this structure and makes use of versioned filenames.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Challenges with filesystem-oriented systems
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Filesystem-oriented managers also present their own set of challenges, as
- the description of packages as set of files does not present a full picture.
- Packages, especially in system-wide installations, often need to perform
- global changes to the system, such as adding users and setting environment
- variables.
- Some applications also include database-oriented portions which are assumed
- to be updated by installation scripts, such as the icon cache for the GTK+
- widget library: any package that installs new icons has to refresh this
- global cache.
- Non-relocatable packages often assume hardcoded default paths in which
- resource files are expected to be found; if the package manager employs
- a different organization, it needs to reconfigure applications to make
- sure the required files are found.
- One common solution is to use environment variables, since applications
- often support setting custom paths via variables in addition to the system-wide
- defaults.
- Most applications can be installed in custom locations, with the installation
- prefix being adjustable at compile time.
- The 
-\family typewriter
-/opt
-\family default
- directory is a traditional location for filesystem-oriented organization
- of additional packages.
- Core system services are often harder to relocate.
-\end_layout
-
-\begin_layout Standard
-To use the filesystem or a database is a frequent design dilemma beyond
- package management, especially on Unix systems, where 
-\begin_inset Quotes eld
-\end_inset
-
-everything is a file
-\begin_inset Quotes erd
-\end_inset
-
- is a long-standing tradition.
- Different styles of bootscripts on Unix employ one or the other approach,
- with System V being the archetypical file-hierarchy-based init system and
- BSD init using 
-\family typewriter
-/etc/rc.conf
-\family default
- as a central configuration file.
- Program configuration can either use on separate text-based configuration
- files under 
-\family typewriter
-/etc
-\family default
- or a central registry of settings, such as GConf 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Pennington2002GConf"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
-In modern Linux distributions, the package manager is the most central component
- for organizing the operating system.
- Database-oriented solutions often are considered un-Unix-like (GConf, for
- instance, raises comparisons to the Windows Registry 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Wallen2003GConfWin"
-
-\end_inset
-
-).
- It is remarkable that, in spite of the Unix philosophy, most Linux package
- managers are primarily database-oriented.
 \end_layout
 
 \begin_layout Subsection
