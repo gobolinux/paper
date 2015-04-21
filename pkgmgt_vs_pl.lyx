@@ -1849,13 +1849,11 @@ key "Colyer1992Depot"
 \end_inset
 
 .
- Differently from most of today´s popular package managers, Stow does not
- integrate the build process.
- Instead, it focuses on the management of packages installed on non-regular
- paths (e.g.
- some user´s home directory, external devices, etc).
- Given the path to one such package, Stow ``activates´´ it on the system
- by creating symbolic links to the package´s contents at e.g.
+ Stow focuses on the management of programs installed on non-regular paths
+ (e.g.
+ on some user´s home directory, on external devices, etc).
+ Given the path to one such program tree, Stow ``activates´´ it on the system
+ by creating symbolic links to the program´s contents at e.g.
  /usr/local.
  Existing symbolic links are expanded with directories to manage conflicts.
  A similar approach is taken by Encap
@@ -1878,6 +1876,50 @@ key "encap"
 \family default
 .
  
+\end_layout
+
+\begin_layout Standard
+The popularization of union-based filesystems brought novel ideas into package
+ management.
+ The GNU Hurd community proposes the use of GNU Guix to have packages installed
+ in their own directory.
+ Through the use of user 
+\shape italic
+profiles
+\shape default
+, then, union-mounts provided by Hurd´s stowfs will create a traditional
+ Unix directory structure view formed from all the files in the individual
+ package directories listed in that profile
+\begin_inset CommandInset citation
+LatexCommand cite
+key "hurd"
+
+\end_inset
+
+.
+ The Push Button Installer (PBI) of the FreeBSD-based PC-BSD distribution
+ used for a long time a similar structure to GoboLinux´s /Programs.
+ Packages managed by PBI were installed on /usr/Programs and activated by
+ symbolic links at /usr/local.
+ The fundamental difference between the two is that, in PBI, package dependencie
+s (i.e.
+ a collection of shared objects) are shipped along with the package.
+ For instance, the Xpdf package ships with both the xpdf executable as well
+ as with the Xorg libraries it depends on.
+ The storage space taken by the many duplicated files found across different
+ packages is managed by PBI through a simple deduplication method based
+ on hardlinks
+\begin_inset CommandInset citation
+LatexCommand cite
+key "pbi"
+
+\end_inset
+
+.
+ Starting with the PC-BSD 10 series, the PC-BSD project revamped their implement
+ation of the runtime containers so that they could benefit from a virtualized
+ /usr/local namespace.
+ As of today that is still an ongoing work.
 \end_layout
 
 \begin_layout Standard
