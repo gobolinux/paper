@@ -1079,7 +1079,7 @@ Nix
 \begin_layout Plain Layout
 
 \size footnotesize
-PBI (PC-BSD)
+PBI 8 (PC-BSD)
 \end_layout
 
 \end_inset
@@ -1114,7 +1114,7 @@ GoboLinux
 
 \size footnotesize
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="1">
+<lyxtabular version="3" rows="4" columns="1">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <row>
@@ -1138,6 +1138,19 @@ RPM (RedHat/Fedora/etc.)
 
 \size footnotesize
 dpkg/apt (Debian/Ubuntu/etc.)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+PBI 9 (PC-BSD)
 \end_layout
 
 \end_inset
