@@ -1492,7 +1492,7 @@ key "Thiruvathukal2004Gentoo"
  distribution's ecosystem.
  The approach adopted by Compile is to embed as much code as possible in
  its build systems' backends (e.g.
- Autoconf, Makefile, xmkmf, Cmake), allowing the majority of recipes to
+ Autoconf, Makefile, xmkmf, CMake), allowing the majority of recipes to
  be described with little more than a couple of lines.
  More complex build cases can be described by extending recipes with regular
  shell scripting.
