@@ -196,7 +196,23 @@ Wellington, New Zealand
 \end_layout
 
 \begin_layout Abstract
-This is an abstract, yet to be written.
+Package management is an area that is instrumental for programming languages,
+ operating systems and system administration, and yet it is neglected by
+ all three areas as an implementation detail.
+ For this reason, package management lacks the same kind of conceptual organizat
+ion present in other disciplines.
+ Moreover, we lack terminology to classify them or to reason about their
+ design trade-offs or issues that affect families of similar managers.
+ The multitude of package managers in modern systems should be embraced,
+ so we could start reasoning about them the way we do about ecosystems of
+ programming languages.
+ In this paper, we look at package management systems through this lens,
+ sharing our experience writing package managers for both a Linux distribution
+ and a scripting language.
+ We categorize families of package managers and discuss their design implication
+s beyond particular implementations.
+ We also identify possibilities in the still largely unexplored area of
+ package manager interoperability.
 \end_layout
 
 \begin_layout Abstract
@@ -205,7 +221,7 @@ This is an abstract, yet to be written.
 \series bold
 Tags:
 \series default
- package management, operating systems, filesystem hierarchy
+ package management, operating systems, module systems, filesystem hierarchy
 \end_layout
 
 \begin_layout Section
@@ -1976,8 +1992,8 @@ d
 \end_layout
 
 \begin_layout Standard
-One last class of virtualization arose from the widespread adoption of cloud
- computing and is represented by the Docker project
+One last class of virtualization arose motivated by the widespread adoption
+ of cloud computing and is represented by projects such as Docker 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Merkel2014Docker"
@@ -1992,17 +2008,25 @@ containers
 \shape default
  that run with isolated resources, as if they were in a virtual machine.
  Linux kernel namespace and control groups (cgroups) subsystems are used
- to implement Docker´s fine-grained control over the hardware and operating
+ to implement Docker's fine-grained control over the hardware and operating
  system resources.
+ The container environment can then contain only the necessary packages
+ for a single application, circumventing dependency chain conflicts that
+ might arise from installing multiple applications sharing a single filesystem
+ hierarchy.
  These technologies are giving birth to a new concept of package management,
  as users no longer run into library versioning conflicts between the various
  packages installed on their system: they simply deploy conflicting packages
  as separate containers.
+ Still, this only shifts the problem to a larger granularity: the containers
+ themselves need to be managed, and various services communicating with
+ each other in separate containers will also have versioning compatibility
+ requirements.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Itemize
 Short history of alternative approaches:
