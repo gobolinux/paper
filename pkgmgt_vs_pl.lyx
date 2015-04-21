@@ -1496,8 +1496,8 @@ key "Thiruvathukal2004Gentoo"
  be described with little more than a couple of lines.
  More complex build cases can be described by extending recipes with regular
  shell scripting.
- We have also included in Compile the ability to manage the installation
- of packages through third-party package managers.
+ Compile can also enable the installation of packages through third-party
+ package managers.
  More details of that feature are given in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
