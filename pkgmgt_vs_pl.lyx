@@ -196,9 +196,9 @@ Wellington, New Zealand
 \end_layout
 
 \begin_layout Abstract
-Package management is an area that is instrumental for programming languages,
- operating systems and system administration, and yet it is neglected by
- all three areas as an implementation detail.
+Package management is instrumental for programming languages, operating
+ systems and system administration, and yet it is neglected by all three
+ areas as an implementation detail.
  For this reason, package management lacks the same kind of conceptual organizat
 ion present in other disciplines.
  Moreover, we lack terminology to classify them or to reason about their
