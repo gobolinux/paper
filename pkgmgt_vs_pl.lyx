@@ -1184,7 +1184,7 @@ Language-specific
 
 \size footnotesize
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="1">
+<lyxtabular version="3" rows="5" columns="1">
 <features rotate="0" tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <row>
@@ -1221,6 +1221,19 @@ Bower (client-side JavaScript)
 
 \size footnotesize
 RubyGems (Ruby)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size footnotesize
+Cargo (Rust)
 \end_layout
 
 \end_inset
@@ -1425,20 +1438,6 @@ key "fhs"
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Should we add a figure illustrating the GoboLinux FS layout? I think we'll
- need a more detailed description of the structure somehow.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 Since packages become self-described through the GoboLinux filesystem hierarchy,
  the distribution features its own set of system management tools built
  around scripting languages.
@@ -1459,12 +1458,12 @@ activation
 \emph on
 Compile
 \emph default
-, GoboLinux' build system.
+, GoboLinux's build system.
 \end_layout
 
 \begin_layout Standard
 Taking inspiration from Gentoo's Portage system (which was itself inspired
- from BSD Ports)
+ from BSD Ports) 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Thiruvathukal2004Gentoo"
@@ -1837,14 +1836,15 @@ Other filesystem-driven approaches
 \end_layout
 
 \begin_layout Standard
-One of the earliest filesystem-driven package manager to note is GNU Stow
+One of the earliest filesystem-driven package managers to note is GNU Stow
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "stow"
 
 \end_inset
 
-, which inherited ideas from Carnegie Mellon´s Depot
+, which inherited ideas from Carnegie Mellon's Depot 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Colyer1992Depot"
@@ -1854,12 +1854,23 @@ key "Colyer1992Depot"
 .
  Stow focuses on the management of programs installed on non-regular paths
  (e.g.
- on some user´s home directory, on external devices, etc).
- Given the path to one such program tree, Stow ``activates´´ it on the system
- by creating symbolic links to the program´s contents at e.g.
- /usr/local.
+ on some user's home directory, on external devices, etc).
+ Given the path to one such program tree, Stow 
+\begin_inset Quotes eld
+\end_inset
+
+activates
+\begin_inset Quotes erd
+\end_inset
+
+ it on the system by creating symbolic links to the program's contents at
+ a central location such as 
+\family typewriter
+/usr/local
+\family default
+.
  Existing symbolic links are expanded with directories to manage conflicts.
- A similar approach is taken by Encap
+ A similar approach is taken by Encap 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "encap"
@@ -1868,9 +1879,12 @@ key "encap"
 
 : packages are installed onto a 
 \family typewriter
-/usr/local/encap/package-name-package-version
+/usr/local/encap/packageName-packageVersion
 \family default
- hierarchy, with the management of symbolic links performed by the epkg
+ hierarchy, with the management of symbolic links performed by the 
+\family typewriter
+epkg
+\family default
  script.
  Unlike Stow, Encap is able to revert to a previous version of a given package
  thanks to the directory names used at 
@@ -1885,14 +1899,18 @@ key "encap"
 The popularization of union-based filesystems brought novel ideas into package
  management.
  The GNU Hurd community proposes the use of GNU Guix to have packages installed
- in their own directory.
+ in their own directories.
  Through the use of user 
 \shape italic
 profiles
 \shape default
-, then, union-mounts provided by Hurd´s stowfs will create a traditional
- Unix directory structure view formed from all the files in the individual
- package directories listed in that profile
+, then, union-mounts provided by Hurd's 
+\family typewriter
+stowfs
+\family default
+ will create a traditional Unix directory structure view formed from all
+ the files in the individual package directories listed in that profile
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hurd"
@@ -1901,17 +1919,31 @@ key "hurd"
 
 .
  The Push Button Installer (PBI) of the FreeBSD-based PC-BSD distribution
- used for a long time a similar structure to GoboLinux´s /Programs.
- Packages managed by PBI were installed on /usr/Programs and activated by
- symbolic links at /usr/local.
+ used for a long time a similar structure to GoboLinux's 
+\family typewriter
+/Programs
+\family default
+.
+ Packages managed by PBI were installed on 
+\family typewriter
+/usr/Programs
+\family default
+ and activated by symbolic links at 
+\family typewriter
+/usr/local
+\family default
+.
  The fundamental difference between the two is that, in PBI, package dependencie
 s (i.e.
  a collection of shared objects) are shipped along with the package.
- For instance, the Xpdf package ships both with the xpdf executable as well
- as with the Xorg libraries it depends on.
+ For instance, the Xpdf package ships both with the 
+\family typewriter
+xpdf
+\family default
+ executable as well as with the Xorg libraries it depends on.
  The storage space taken by the many duplicated files found across different
  packages is managed by PBI through a simple deduplication method based
- on hardlinks
+ on hardlinks 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "pbi"
@@ -1921,13 +1953,17 @@ key "pbi"
 .
  Starting with the PC-BSD 10 series, the PC-BSD project revamped their implement
 ation of the runtime containers so that they could benefit from a virtualized
- /usr/local namespace.
+ 
+\family typewriter
+/usr/local
+\family default
+ namespace.
  As of today that is still an ongoing work.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Itemize
 Short history of alternative approaches:
