@@ -3699,16 +3699,9 @@ name "sub:GoboLinux-Aliens"
 \end_layout
 
 \begin_layout Standard
-In GoboLinux we researched the idea of building an 
-\begin_inset Quotes eld
-\end_inset
-
-FFI
-\begin_inset Quotes erd
-\end_inset
-
- (Foreign Function Interface) of sorts into our general-purpose package
- manager, which we called Aliens
+In GoboLinux we researched the idea of building a foreign function interface
+ (FFI) of sorts into our general-purpose package manager, which we called
+ Aliens
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Homer2010LCA"
