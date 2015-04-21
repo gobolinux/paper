@@ -1953,18 +1953,43 @@ key "pbi"
 
 .
  Starting with the PC-BSD 10 series, the PC-BSD project revamped their implement
-ation of the runtime containers so that they could benefit from a virtualized
- 
+ation of the PBI runtime containers so that they could benefit from a virtualize
+d 
 \family typewriter
 /usr/local
 \family default
  namespace.
- As of today that is still an ongoing work.
+ At the present time that is still an ongoing work.
+\end_layout
+
+\begin_layout Standard
+One last class of virtualization arose from the widespread adoption of cloud
+ computing and is represented by the Docker project
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Merkel2014Docker"
+
+\end_inset
+
+.
+ Docker provides an abstraction layer so that users can deploy their application
+s (together with their dependencies) inside 
+\shape italic
+containers
+\shape default
+ that run with isolated resources, as if they were in a virtual machine.
+ Linux kernel namespace and control groups (cgroups) subsystems are used
+ to implement Docker´s fine-grained control over the hardware and operating
+ system resources.
+ These technologies are giving birth to a new concept of package management,
+ as users no longer run into library versioning conflicts between the various
+ packages installed on their system: they simply deploy conflicting packages
+ as separate containers.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Note Comment
-status collapsed
+status open
 
 \begin_layout Itemize
 Short history of alternative approaches:
