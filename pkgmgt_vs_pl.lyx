@@ -1907,7 +1907,7 @@ key "hurd"
  The fundamental difference between the two is that, in PBI, package dependencie
 s (i.e.
  a collection of shared objects) are shipped along with the package.
- For instance, the Xpdf package ships with both the xpdf executable as well
+ For instance, the Xpdf package ships both with the xpdf executable as well
  as with the Xorg libraries it depends on.
  The storage space taken by the many duplicated files found across different
  packages is managed by PBI through a simple deduplication method based
@@ -3714,11 +3714,11 @@ es for package management, substantiated by our practical experiences in
  manager for a Linux distribution and a portable package manager for a scripting
  language.
  Package management is an area that is notably neglected in academic studies,
- but is one of practical impact in the design of modern operating systems,
- module systems for programming languages and a central issue in system
+ but is one of practical impact in the design of modern operating systems
+ and module systems for programming languages, and a central issue in system
  administration.
  With this work, we provide the beginnings of a conceptual organization
- on approaches for package management, an area that lacks even common terminolog
+ of approaches for package management, an area that lacks even common terminolog
 y, and where many of the same design issues are faced and dealt with time
  and again.
 \end_layout
