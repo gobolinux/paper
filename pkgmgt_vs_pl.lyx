@@ -401,8 +401,8 @@ key "Muhammad2013LuaRocks"
 \end_layout
 
 \begin_layout Section
-Paradigms of package management: filesystem-driven vs.
- database-driven
+Paradigms of package management: filesystem-oriented vs.
+ database-oriented
 \end_layout
 
 \begin_layout Standard
@@ -474,7 +474,7 @@ external
  When the mapping is internal to the file hierarchy structure, we say that
  package management is 
 \emph on
-filesystem-driven
+filesystem-oriented
 \emph default
 .
  When it is external to the hierarchy of files being managed, the mapping
@@ -482,12 +482,12 @@ filesystem-driven
  that acts as one.
  We say in these cases that management is 
 \emph on
-database-driven
+database-oriented
 \emph default
 .
  Most package managers for Linux distributions, such as RPM and dpkg/APT,
- are database-driven.
- Filesystem-driven package management is more often seen in language-specific
+ are database-oriented.
+ Filesystem-oriented package management is more often seen in language-specific
  package managers, such as npm and Bower, but as we discuss in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -499,7 +499,7 @@ reference "sub:GoboLinux"
 \end_layout
 
 \begin_layout Standard
-Being database-driven does not imply an opaque, binary database format.
+Being database-oriented does not imply an opaque, binary database format.
  LuaRocks 2.x uses a set of Lua tables (in 
 \family typewriter
 .lua
@@ -587,7 +587,7 @@ status open
 \begin_inset Text
 
 \begin_layout Plain Layout
-(a) Database-driven management of Python modules.
+(a) Database-oriented management of Python modules.
 \begin_inset Newline newline
 \end_inset
 
@@ -637,7 +637,8 @@ name "fig:Comparison-of-db-and-fs"
 
 \end_inset
 
-Comparison of database-driven and filesystem-driven package management styles.
+Comparison of database-oriented and filesystem-oriented package management
+ styles.
 \end_layout
 
 \end_inset
@@ -666,7 +667,7 @@ reference "fig:Comparison-of-db-and-fs"
 
 \end_inset
 
-(a) is representative of the database-driven style.
+(a) is representative of the database-oriented style.
  It shows the directory structure using 
 \family typewriter
 pip
@@ -682,7 +683,7 @@ pip
 pip
 \family default
 .
- Database-driven designs are often chosen when the package manager needs
+ Database-oriented designs are often chosen when the package manager needs
  to accomodate a pre-existing directory structure.
  Conflicts are avoided through the use of the Python module namespace, but
  may still occur in case of module clashes.
@@ -696,7 +697,7 @@ reference "fig:Comparison-of-db-and-fs"
 
 \end_inset
 
-(b) showcases the filesystem-driven style, presenting the directory structure
+(b) showcases the filesystem-oriented style, presenting the directory structure
  produced by RubyGems, the package manager for Ruby.
  Each package has its own subtree under a versioned directory, containing
  a Unix substructure with 
@@ -752,7 +753,7 @@ ns shouldn't care what language they are written in, but on the other hand
 \end_layout
 
 \begin_layout Standard
-The major trade-off between the filesystem-driven and the database-driven
+The major trade-off between the filesystem-oriented and the database-oriented
  approaches is whether applications should be aware of the file structure
  defined by the manager or whether the manager should adapt to the file
  structure defined by applications.
@@ -762,7 +763,7 @@ The major trade-off between the filesystem-driven and the database-driven
 \end_layout
 
 \begin_layout Standard
-In filesystem-driven managers the mapping of files to packages is simple.
+In filesystem-oriented managers the mapping of files to packages is simple.
  File conflicts are naturally avoided by storing files of different packages
  in separate subtrees.
  Versioning conflicts between variants of the same package can also be handled
@@ -778,21 +779,21 @@ In filesystem-driven managers the mapping of files to packages is simple.
 \end_layout
 
 \begin_layout Standard
-Conversely, in database-driven managers the mapping of files to packages
+Conversely, in database-oriented managers the mapping of files to packages
  is more complicated.
  Applications may install files wherever they please, and the package manager
  needs to keep track.
  This includes handling potential conflicts if two packages want to use
  the same pathname.
- Database-driven systems will usually report on these conflicts and forbid
+ Database-oriented systems will usually report on these conflicts and forbid
  them.
  It is up to the integrator (such as a distribution developer) who is building
  packages to resolve the conflict somehow.
  Also, the package manager needs to verify that the database and the contents
- of the filesystem remain in sync, which is trivial in the filesystem-driven
+ of the filesystem remain in sync, which is trivial in the filesystem-oriented
  approach.
- The run-time lookup of files on database-driven systems, on its turn, is
- greatly simplified.
+ The run-time lookup of files on database-oriented systems, on its turn,
+ is greatly simplified.
  In most cases it will be a non-issue, since each file is in the location
  the application expected it to be in the first place.
  However, it does become an issue when the file has been relocated by the
@@ -804,7 +805,7 @@ Conversely, in database-driven managers the mapping of files to packages
 status open
 
 \begin_layout Plain Layout
-Challenges with database-driven systems
+Challenges with database-oriented systems
 \end_layout
 
 \end_inset
@@ -813,8 +814,8 @@ Challenges with database-driven systems
 \end_layout
 
 \begin_layout Standard
-Repository maintainers of database-driven package managers often solve versionin
-g conflicts by resorting to filesystem-driven approaches.
+Repository maintainers of database-oriented package managers often solve
+ versioning conflicts by resorting to filesystem-oriented approaches.
  For example, the maintainer of Debian packages for the Lua virtual machine
  patches its Makefile to install C headers under versioned directories such
  as 
@@ -879,9 +880,9 @@ libfoo.so.1
 libfoo.so
 \family default
  symbolic link for user convenience.
- Note that, as typical of filesystem-driven approaches, there needs to be
- some cooperation for run-time lookup, and indeed the dynamic linker is
- aware of this structure and makes use of versioned filenames.
+ Note that, as typical of filesystem-oriented approaches, there needs to
+ be some cooperation for run-time lookup, and indeed the dynamic linker
+ is aware of this structure and makes use of versioned filenames.
 \end_layout
 
 \begin_layout Standard
@@ -889,7 +890,7 @@ libfoo.so
 status open
 
 \begin_layout Plain Layout
-Challenges with filesystem-driven systems
+Challenges with filesystem-oriented systems
 \end_layout
 
 \end_inset
@@ -898,12 +899,12 @@ Challenges with filesystem-driven systems
 \end_layout
 
 \begin_layout Standard
-Filesystem-driven managers also present their own set of challenges, as
+Filesystem-oriented managers also present their own set of challenges, as
  the description of packages as set of files does not present a full picture.
  Packages, especially in system-wide installations, often need to perform
  global changes to the system, such as adding users and setting environment
  variables.
- Some applications also include database-driven portions which are assumed
+ Some applications also include database-oriented portions which are assumed
  to be updated by installation scripts, such as the icon cache for the GTK+
  widget library: any package that installs new icons has to refresh this
  global cache.
@@ -920,7 +921,7 @@ Filesystem-driven managers also present their own set of challenges, as
 \family typewriter
 /opt
 \family default
- directory is a traditional location for filesystem-driven organization
+ directory is a traditional location for filesystem-oriented organization
  of additional packages.
  Core system services are often harder to relocate.
 \end_layout
@@ -962,7 +963,7 @@ key "Pennington2002GConf"
 \begin_layout Standard
 In modern Linux distributions, the package manager is the most central component
  for organizing the operating system.
- Database-driven solutions often are considered un-Unix-like (GConf, for
+ Database-oriented solutions often are considered un-Unix-like (GConf, for
  instance, raises comparisons to the Windows Registry 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -972,7 +973,7 @@ key "Wallen2003GConfWin"
 
 ).
  It is remarkable that, in spite of the Unix philosophy, most Linux package
- managers are primarily database-driven.
+ managers are primarily database-oriented.
 \end_layout
 
 \begin_layout Standard
@@ -1006,7 +1007,7 @@ status open
 \begin_layout Plain Layout
 
 \size footnotesize
-Filesystem-driven
+Filesystem-oriented
 \end_layout
 
 \end_inset
@@ -1017,7 +1018,7 @@ Filesystem-driven
 \begin_layout Plain Layout
 
 \size footnotesize
-Database-driven
+Database-oriented
 \end_layout
 
 \end_inset
@@ -1381,8 +1382,8 @@ key "Muhammad2002WSL"
 
  is a Linux distribution based on the concept of installing each package
  in a separate installation prefix.
- It was the first Linux distribution to be entirely based on a filesystem-driven
- approach to package management.
+ It was the first Linux distribution to be entirely based on a filesystem-orient
+ed approach to package management.
  Each program is installed under its own versioned directory, such as 
 \family typewriter
 /Programs/Bash/4.3.28
@@ -1832,12 +1833,12 @@ Still, the compatibility gains for maintenance greatly outweigh the losses,
 \end_layout
 
 \begin_layout Subsection
-Other filesystem-driven approaches
+Other filesystem-oriented approaches
 \end_layout
 
 \begin_layout Standard
-One of the earliest filesystem-driven package managers to note is GNU Stow
- 
+One of the earliest filesystem-oriented package managers to note is GNU
+ Stow 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "stow"
@@ -3461,7 +3462,7 @@ As it also happened with GoboLinux, having a high-level description format
 status open
 
 \begin_layout Plain Layout
-went from filesystem-driven to database-driven
+went from filesystem-oriented to database-oriented
 \end_layout
 
 \end_inset
@@ -3486,7 +3487,7 @@ TODO illustrate with figures
 The design changes that LuaRocks underwent from version 1.0 to version 2.0
  were due to lessons learned on the specificities of language-specific package
  management.
- The original design of LuaRocks was filesystem-driven, like GoboLinux.
+ The original design of LuaRocks was filesystem-oriented, like GoboLinux.
  Each version of an installed package was given its own directory and each
  category of files got its own subdirectory.
  For example, for module 
@@ -3547,7 +3548,7 @@ require 'rubygems'
 \end_inset
 
 .
- For LuaRocks 2.0, the design was changed to be database-driven, so that
+ For LuaRocks 2.0, the design was changed to be database-oriented, so that
  Lua modules could be installed into a typical Unix-like layout that matched
  the default configuration of the Lua interpreter's package loader.
  Since now Lua modules from all packages were installed into a single directory
@@ -3773,7 +3774,7 @@ In the realm of programming languages, the existing conceptual organization
 
 \begin_layout Standard
 Similar methods of classification are needed for package managers.
- By identifying families of filesystem-driven and database-driven package
+ By identifying families of filesystem-oriented and database-oriented package
  managers, we were able to point out issues common to them and the general
  solutions in use.
  It is notable how many of the package managers we researched for this work
@@ -3784,14 +3785,14 @@ Similar methods of classification are needed for package managers.
 \begin_layout Standard
 Package managers deal fundamentally with the mapping between the file-level
  organization of the filesystem and the higher-level concept of packages.
- We observed that filesystem-driven designs are preferrable as they tend
+ We observed that filesystem-oriented designs are preferrable as they tend
  to have less problems with conflict resolution, but they require some level
  of control on how run-time lookup happens, to ensure that it is consistent
  for all packages.
  We observe that this control exists when language-specific package managers
  are bundled with the language environment, as is the case with npm for
  node.js and RubyGems for Ruby.
- These managers were free to adopt filesystem-driven designs since they
+ These managers were free to adopt filesystem-oriented designs since they
  adjusted their module loaders accordingly.
  The other way to exert this control over run-time lookup is to employ a
  system-wide lower-level solution as we did in GoboLinux with the 
@@ -3800,13 +3801,13 @@ Package managers deal fundamentally with the mapping between the file-level
 \family default
  tree of symbolic links or in the stowfs filesystem virtualization proposed
  for GNU Hurd.
- Database-driven designs, on the other hand, are more generally applicable,
+ Database-oriented designs, on the other hand, are more generally applicable,
  but are more opaque to their users and are more prone to package conflict
  and file-to-package synchronization issues.
- For these reasons, we advocate filesystem-driven systems in general, but
- we also recognize that there are situations where a database-driven solution
- works best to preserve compatibility with the ecosystem at play, as was
- the case with LuaRocks.
+ For these reasons, we advocate filesystem-oriented systems in general,
+ but we also recognize that there are situations where a database-oriented
+ solution works best to preserve compatibility with the ecosystem at play,
+ as was the case with LuaRocks.
 \end_layout
 
 \begin_layout Standard
