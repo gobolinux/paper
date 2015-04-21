@@ -2,7 +2,6 @@
 % Encoding: UTF8
 
 
-
 @Book{Arrundel2011Puppet,
   Title                    = {{Puppet} 3 Cookbook},
   Author                   = {Arrundel, John},
@@ -71,19 +70,19 @@
   Url                      = {http://doi.acm.org/10.1145/353171.353181}
 }
 
+@InProceedings{Colyer1992Depot,
+  Title                    = {Depot: A tool for managing software environments},
+  Author                   = {Colyer, Wallace and Wong, Walter},
+  Booktitle                = {Proceedings of the Sixth System Administration Conference (LISA VI), page},
+  Year                     = {1992},
+  Pages                    = {153}
+}
+
 @Misc{debian-ruby-packaging,
   Title                    = {Teams/{R}uby/{P}ackaging - {D}ebian Wiki},
 
   Author                   = {{Debian Ruby Team}},
   HowPublished             = {\url{https://wiki.debian.org/Teams/Ruby/Packaging}, accessed April 19, 2015}
-}
-
-@InProceedings{Colyer1992Depot,
-    title={Depot: A tool for managing software environments},
-    author={Colyer, Wallace and Wong, Walter},
-    booktitle={Proceedings of the Sixth System Administration Conference (LISA VI), page},
-    pages={153},
-    year={1992}
 }
 
 @InProceedings{Flatt:1998:CM:268946.268961,
@@ -219,16 +218,18 @@
 }
 
 @Article{Thiruvathukal2004Gentoo,
-    author = {Thiruvathukal, George K.},
-    journal = {Computing in Science Engineering},
-    title = {Gentoo Linux: the next generation of Linux},
-    year = {2004},
-    month = {Sept},
-    volume = {6},
-    number = {5},
-    pages = {66-74},
-    doi = {10.1109/MCSE.2004.37},
-    ISSN = {1521-9615}
+  Title                    = {{Gentoo Linux: the next generation of Linux}},
+  Author                   = {Thiruvathukal, George K.},
+  Journal                  = {Computing in Science Engineering},
+  Year                     = {2004},
+
+  Month                    = {Sept},
+  Number                   = {5},
+  Pages                    = {66-74},
+  Volume                   = {6},
+
+  Doi                      = {10.1109/MCSE.2004.37},
+  ISSN                     = {1521-9615}
 }
 
 @Electronic{Wadler1998EP,
@@ -236,7 +237,7 @@
   Author                   = {Wadler, Philip},
   HowPublished             = {Mailing list},
   Month                    = nov,
-  Url                      = {http://www.cs.purdue.edu/homes/jv/510s05/papers/wadler.txt},
+  Note                     = {\url{http://homepages.inf.ed.ac.uk/wadler/papers/expression/expression.txt}},
   Year                     = {1998},
 
   Abstract                 = {{The Expression Problem is a new name for an old problem. The goal is to define a datatype by cases, where one can add new cases to the datatype and new functions over the datatype, without recompiling existing code, and while retaining static type safety (e.g., no casts). For the concrete example, we take expressions as the data type, begin with one case (constants) and one function (evaluators), then add one more construct (plus) and one more function (conversion to a string).
@@ -287,13 +288,6 @@ Whether a language can solve the Expression Problem is a salient indicator of it
   Url                      = {http://bower.io}
 }
 
-@Misc{pbi,
-  Author                   = {Kristofer Paul Moore}, 
-  Title                    = {{The PBI format re-implemented for FreeBSD and PC-BSD}}
-  HowPublished             = {{The Technical BSD Conference - BSDCan}},
-  Year                     = {2011}
-}
-
 @Electronic{buildroot,
   Title                    = {Buildroot},
   HowPublished             = {\url{http://www.buildroot.org}},
@@ -305,15 +299,6 @@ Whether a language can solve the Expression Problem is a salient indicator of it
   Timestamp                = {2015-04-20}
 }
 
-@Electronic{encap,
-  Title                    = {Using the {Encap} Package Management System to Manage Non-System Packages},
-  HowPublished             = {\url{http://www.linuxjournal.com/article/6694}},
-  Year                     = {2003},
-
-  Owner                    = {lucasvr},
-  Timestamp                = {2015-04-20}
-}
-
 @Electronic{homebrew,
   Title                    = {{Homebrew} - The missing package manager for {OSX}},
   HowPublished             = {\url{http://brew.sh}},
@@ -321,15 +306,6 @@ Whether a language can solve the Expression Problem is a salient indicator of it
 
   Owner                    = {hisham},
   Timestamp                = {2015-03-12}
-}
-
-@Electronic{hurd,
-  Title                    = {Hurdish Package Manager for the {GNU} System, {GNU} {G}uix},
-  HowPublished             = {\url{https://www.gnu.org/software/hurd/community/gsoc/project_ideas/package_manager.html}
-  Year                     = {2014},
-
-  Owner                    = {lucasvr},
-  Timestamp                = {2015-04-20}
 }
 
 @Electronic{macports,
@@ -373,6 +349,15 @@ Whether a language can solve the Expression Problem is a salient indicator of it
   Title                    = {{Stow 2.2.0}},
   HowPublished             = {\url{http://www.gnu.org/software/stow/manual/stow.pdf}},
   Year                     = {2012},
+
+  Owner                    = {lucasvr},
+  Timestamp                = {2015-04-20}
+}
+
+@Electronic{encap,
+  Title                    = {Using the {Encap} Package Management System to Manage Non-System Packages},
+  HowPublished             = {\url{http://www.linuxjournal.com/article/6694}},
+  Year                     = {2003},
 
   Owner                    = {lucasvr},
   Timestamp                = {2015-04-20}
