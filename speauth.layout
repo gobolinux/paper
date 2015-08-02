@@ -1,0 +1,130 @@
+#% Do not delete the line below; configure depends on this
+#  \DeclareLaTeXClass[speauth]{Software: Practice and Experience}
+#  \DeclareCategory{Articles}
+# Article textclass definition file. Taken from initial LyX source code
+# Author : Matthias Ettrich <ettrich@informatik.uni-tuebingen.de>
+# Transposed by Pascal André <andre@via.ecp.fr>
+# Heavily modifed and enhanced by serveral developers.
+
+Format 49
+Input stdclass.inc
+
+SecNumDepth             3
+TocDepth                3
+
+NoStyle Chapter
+NoCounter chapter
+NoStyle Chapter*
+
+
+Style Part
+	Align                 Left
+	AlignPossible         Left
+	TopSep                2
+	BottomSep             1.5
+	Font
+	  Size                Larger
+	EndFont
+End
+
+
+Style Part*
+	Align                 Left
+	AlignPossible         Left
+	TopSep                2
+	BottomSep             1.5
+	Font
+	  Size                Larger
+	EndFont
+End
+
+Style Acknowledgement
+	LatexName             ack
+	LabelString "ACKNOWLEDGEMENT"
+	TopSep                2
+	LatexType             Environment
+	Margin                Static
+	NextNoIndent          1
+	LeftMargin            MMM
+	RightMargin           MMM
+	ParIndent             MM
+	ItemSep               0
+	TopSep                0.7
+	BottomSep             0.7
+	ParSep                1
+	Align                 Block
+	LabelType             Centered
+	LabelBottomSep        0.5
+	LabelFont
+	  Series              Medium
+	  Size		      Large
+	EndFont
+	HTMLLabelFirst        1
+	HTMLForceCSS          1
+	HTMLStyle
+		div.ack {
+			margin: 4ex;
+		}
+		div.ack_item {
+			font-size: small;
+			padding-top: 1ex;
+		}
+	EndHTMLStyle
+End
+
+Style Acknowledgements
+	CopyStyle Acknowledgement
+	LatexName             acks
+	LabelString "ACKNOWLEDGEMENTS"
+End
+
+Style Address
+	Category	      FrontMatter
+	Margin                Static
+	LatexType             Command
+	LatexName             address
+	ParSkip               0.4
+	BottomSep             1.5
+	ParSep                1.5
+	Align                 Left
+	AlignPossible         Block, Left, Right, Center
+	LabelType             No_Label
+	InTitle	              1
+End
+
+Style Keywords
+	Category              FrontMatter
+	Margin                Dynamic
+	LatexType             Command
+	InTitle               1
+	LatexName             keywords
+	LabelType             Static
+	LabelSep              M
+	LabelString           "KEY WORDS:"
+End
+
+Style Abstract
+	LabelString "SUMMARY"
+	LabelFont
+	  Series              Medium
+	EndFont
+	InTitle 1
+End
+
+Style Section
+	Align                 Center
+	TopSep                2
+	AlignPossible         Block, Center, Left
+	Font
+	  Shape               Smallcaps
+	  Series              Medium
+	EndFont
+End
+
+Style Subsection
+	TopSep                2
+	Font
+	  Series              Medium
+	  Shape               Italic
+	EndFont
+End

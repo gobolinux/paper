@@ -1,46 +1,46 @@
 %% LyX 2.1.0 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[10pt,twocolumn,english]{article}
+\documentclass[letterpaper,english,times]{speauth}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[letterpaper]{geometry}
-\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
 \usepackage{array}
 \usepackage{verbatim}
 \usepackage{textcomp}
 \usepackage{url}
-\usepackage{multirow}
 \usepackage{graphicx}
 
 \makeatletter
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\pdfpageheight\paperheight
+\pdfpagewidth\paperwidth
+
 %% Because html converters don't know tabularnewline
 \providecommand{\tabularnewline}{\\}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-\usepackage{usenix,url}
-\usepackage[sort,nocompress]{cite}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newcommand{\lyxaddress}[1]{
+\par {\raggedright #1
+\vspace{1.4em}
+\noindent\par}
+}
 
 \makeatother
 
 \usepackage{babel}
 \begin{document}
 
-\title{Understanding Package Management\\
-Through the Lens of Programming Languages}
+\title{Understanding package management\\
+through the lens of programming languages}
 
 
-\author{{\rm Hisham Muhammad}\\
-PUC-Rio\\
-Rio de Janeiro, Brazil\\
-\and{\rm Lucas Correia Villa Real}\\
-IBM Research\\
-São Paulo, Brazil\\
-\and{\rm Michael Homer}\\
-Victoria University of Wellington\\
-Wellington, New Zealand}
-\maketitle
+\author{Hisham~Muhammad\affil{1}, Lucas~Correia~Villa~Real\affil{2}
+and Michael~Homer\affil{3}}
+
+
+\address{\affilnum{1}PUC-Rio - Rio de Janeiro, Brazil\break\affilnum{2}IBM
+Research - São Paulo, Brazil\break\affilnum{3}Victoria University
+of Wellington - Wellington, New Zealand}
 \begin{abstract}
 Package management is instrumental for programming languages, operating
 systems and system administration, and yet it is neglected by all
@@ -57,10 +57,12 @@ and a scripting language. We categorize families of package managers
 and discuss their design implications beyond particular implementations.
 We also identify possibilities in the still largely unexplored area
 of package manager interoperability.
-
-\noindent \textbf{Tags:} package management, operating systems, module
-systems, filesystem hierarchy
 \end{abstract}
+
+\keywords{\noindent package management, operating systems, module systems,
+filesystem hierarchy}
+
+\maketitle
 
 \section{Introduction}
 
@@ -203,14 +205,27 @@ of files to packages, can be considered a central database for package
 management as well.
 
 \begin{figure*}[t]
-\begin{minipage}[t]{1\columnwidth}%
-\begin{tabular}{>{\centering}p{0.99\columnwidth}>{\centering}p{0.99\columnwidth}}
-\includegraphics[scale=0.8]{python_pip} & \includegraphics[scale=0.8]{ruby_rubygems}\tabularnewline
-(a) Database-oriented management of Python modules.\\
-Modules for all packages are stored together under \texttt{/usr/lib/python2.7/site-packages/}. & (b) Ruby modules managed with RubyGems.\\
-Each package gets its own subdirectory under \texttt{/usr/lib/ruby/gems/1.9.1/gems/}.\tabularnewline
-\end{tabular}%
-\end{minipage}\protect\caption{\label{fig:Comparison-of-db-and-fs}Comparison of database-oriented
+\begin{centering}
+\includegraphics[scale=0.8]{python_pip}
+\par\end{centering}
+
+\begin{centering}
+(a) Database-oriented management of Python modules. Modules for all
+packages are stored together under \texttt{/usr/lib/python2.7/site-packages/}.\\
+~
+\par\end{centering}
+
+\begin{centering}
+\includegraphics[scale=0.8]{ruby_rubygems}
+\par\end{centering}
+
+\begin{centering}
+(b) Ruby modules managed with RubyGems. Each package gets its own
+subdirectory under \texttt{/usr/lib/ruby/gems/1.9.1/gems/}.\\
+~
+\par\end{centering}
+
+\protect\caption{\label{fig:Comparison-of-db-and-fs}Comparison of database-oriented
 and filesystem-oriented package management styles.}
 \end{figure*}
 
@@ -466,12 +481,26 @@ traditional Unix hierarchy, as \texttt{/usr} is a symbolic link to
 \texttt{/System/Index}. 
 
 \begin{figure*}[t]
-\begin{tabular}{>{\raggedright}m{0.45\paperwidth}>{\raggedright}m{0.5\paperwidth}}
-\includegraphics[scale=0.8]{gobo_systemindex} & \includegraphics[scale=0.8]{gobo_programs}\tabularnewline
-(a) The filesystem is indexed with the use of \\
-directories and symbolic links. & \multirow{1}{0.5\paperwidth}{(b) Packages are managed through a \\
-versioned directory tree.}\tabularnewline
-\end{tabular}\protect\caption{\label{fig:gobofs}GoboLinux file system hierarchy}
+\begin{centering}
+\includegraphics[scale=0.8]{gobo_systemindex}
+\par\end{centering}
+
+\begin{centering}
+(a) The filesystem is indexed with the use of directories and symbolic
+links.\\
+~
+\par\end{centering}
+
+\begin{centering}
+\includegraphics[scale=0.8]{gobo_programs}
+\par\end{centering}
+
+\begin{centering}
+(b) Packages are managed through a versioned directory tree.\\
+~
+\par\end{centering}
+
+\protect\caption{\label{fig:gobofs}GoboLinux file system hierarchy}
 \end{figure*}
 
 
@@ -1097,7 +1126,12 @@ filesystem organization and with run-time systems. Doing this from
 early on keeps possibilities open for better designs that less prone
 to ``dependency hell'' and versioning conflicts.
 
-\bibliographystyle{plain}
+\begin{acks}
+Gobo
+\end{acks}
+\renewcommand{\refname}{REFERENCES}
+
+\bibliographystyle{wileyj}
 \bibliography{gobo}
 
 \end{document}
