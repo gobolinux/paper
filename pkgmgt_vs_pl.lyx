@@ -338,7 +338,7 @@ The combinations of package managers change as we move to a different operating
  Simply ignoring these environments and managing modules and dependencies
  by hand is tempting, but the complexity of heterogeneous environments and
  keeping track of dependency updates can become burdensome — all these package
- managers were created to solve pratical problems which the developer would
+ managers were created to solve practical problems which the developer would
  have to otherwise directly handle, after all.
  Another alternative that is often proposed, especially by users of operating
  systems that feature a system-provided package manager (as is the case
@@ -459,7 +459,7 @@ In the world of package managers, we can also identify general paradigms,
  by looking at their core concepts and design trade-offs.
  Package managers are programs that map relations between files and packages
  (which correspond to sets of files), and between packages (dependencies),
- allowing users to perform maintainance of their systems in terms of packages
+ allowing users to perform maintenance of their systems in terms of packages
  rather than at the level of individual files.
  The central design choice in a package manager, therefore, is how to perform
  those mappings.
@@ -3234,7 +3234,7 @@ g into native packages is untenable: for example, while the repository for
  the Debian Linux distribution features 43,000 packages in total, the Maven
  Central repository for Java alone contains over 103,000 packages, with
  the advantage that the repository is portable to various platforms, some
- of which lacking a built-in universal package manager (Microsoft Windows
+ of which lack a built-in universal package manager (Microsoft Windows
  being a notable case).
  Still, this kind of effort duplication does happen: the Debian repository
  contains 715 packages of Ruby modules; this is a far cry from the 100,000
@@ -3381,7 +3381,7 @@ LR supports relocatable packages
 \begin_layout Standard
 LuaRocks installs all packages into a sandbox directory and later moves
  them to their final destinations.
- The actual installation prefix is never informed to the build system under
+ The actual installation prefix is never told to the build system under
  execution.
  This prevents a package from hardcoding its own installation directory
  in its source code.
@@ -3435,7 +3435,7 @@ LR changed its directory layout like Gobo
 \end_layout
 
 \begin_layout Standard
-As it also happened with GoboLinux, having a high-level description format
+As also happened with GoboLinux, having a high-level description format
  allowed us to make radical changes to the installation layout once that
  proved necessary.
  Since LuaRocks does not provide to specification files any knowledge of
