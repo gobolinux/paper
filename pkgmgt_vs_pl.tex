@@ -1,12 +1,14 @@
 %% LyX 2.1.0 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,times,10pt]{sigplanconf}
+\usepackage{mathptmx}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{array}
 \usepackage{verbatim}
 \usepackage{textcomp}
 \usepackage{url}
+\usepackage{multirow}
 \usepackage{graphicx}
 
 \makeatletter
@@ -20,23 +22,26 @@
 \usepackage{babel}
 \begin{document}
 
-% XXX LyX is not exporting these -- I don't know why.
-\conferenceinfo{Onward! 2016}{Month d--d, 20yy, City, ST, Country} 
-\copyrightyear{2016} 
-\copyrightdata{978-1-nnnn-nnnn-n/yy/mm} 
-\doi{nnnnnnn.nnnnnnn}
-
 \title{Understanding package management\\
 through the lens of programming languages}
 
 
-\authorinfo{Hisham Muhammad}{PUC-Rio - Rio de Janeiro, Brazil}{hisham.hm@gmail.com}
+\authorinfo{Hisham Muhammad}{PUC-Rio - Rio de Janeiro, Brazil}{hisham.hm@gmail.com}{}
 
 
-\authorinfo{Lucas C. Villa Real}{IBM Research - Sao Paulo, Brazil}{lucasvr@br.ibm.com}
+\authorinfo{Lucas C. Villa Real}{IBM Research - Sao Paulo, Brazil}{lucasvr@br.ibm.com}{}
 
 
-\authorinfo{Michael Homer}{Victoria University of Wellington - Wellington, New Zealand}{michael@gobolinux.org}
+\authorinfo{Michael Homer}{Victoria University of Wellington - Wellington, New Zealand}{michael@gobolinux.org}{}
+
+
+\conferenceinfo{Onward! 2016}{}
+
+
+\CopyrightYear{2016}
+
+
+\copyrightdata{978-1-nnnn-nnnn-n/yy/mm}
 \maketitle
 \begin{abstract}
 Package management is instrumental for programming languages, operating
@@ -201,27 +206,14 @@ of files to packages, can be considered a central database for package
 management as well.
 
 \begin{figure*}[t]
-\begin{centering}
-\includegraphics[scale=0.8]{python_pip}
-\par\end{centering}
-
-\begin{centering}
-(a) Database-oriented management of Python modules. Modules for all
-packages are stored together under \texttt{/usr/lib/python2.7/site-packages/}.\\
-~
-\par\end{centering}
-
-\begin{centering}
-\includegraphics[scale=0.8]{ruby_rubygems}
-\par\end{centering}
-
-\begin{centering}
-(b) Ruby modules managed with RubyGems. Each package gets its own
-subdirectory under \texttt{/usr/lib/ruby/gems/1.9.1/gems/}.\\
-~
-\par\end{centering}
-
-\protect\caption{\label{fig:Comparison-of-db-and-fs}Comparison of database-oriented
+\begin{minipage}[t]{1\columnwidth}%
+\begin{tabular}{>{\centering}p{0.99\columnwidth}>{\centering}p{0.99\columnwidth}}
+\includegraphics[scale=0.8]{/Users/hisham/ac/gobo/python_pip} & \includegraphics[scale=0.8]{/Users/hisham/ac/gobo/ruby_rubygems}\tabularnewline
+(a) Database-oriented management of Python modules.\\
+Modules for all packages are stored together under \texttt{/usr/lib/python2.7/site-packages/}. & (b) Ruby modules managed with RubyGems.\\
+Each package gets its own subdirectory under \texttt{/usr/lib/ruby/gems/1.9.1/gems/}.\tabularnewline
+\end{tabular}%
+\end{minipage}\protect\caption{\label{fig:Comparison-of-db-and-fs}Comparison of database-oriented
 and filesystem-oriented package management styles.}
 \end{figure*}
 
@@ -477,26 +469,11 @@ traditional Unix hierarchy, as \texttt{/usr} is a symbolic link to
 \texttt{/System/Index}. 
 
 \begin{figure*}[t]
-\begin{centering}
-\includegraphics[scale=0.8]{gobo_systemindex}
-\par\end{centering}
-
-\begin{centering}
-(a) The filesystem is indexed with the use of directories and symbolic
-links.\\
-~
-\par\end{centering}
-
-\begin{centering}
-\includegraphics[scale=0.8]{gobo_programs}
-\par\end{centering}
-
-\begin{centering}
-(b) Packages are managed through a versioned directory tree.\\
-~
-\par\end{centering}
-
-\protect\caption{\label{fig:gobofs}GoboLinux file system hierarchy}
+\begin{tabular}{>{\raggedright}m{0.45\paperwidth}>{\raggedright}m{0.5\paperwidth}}
+\includegraphics[scale=0.8]{/Users/hisham/ac/gobo/gobo_systemindex} & \includegraphics[scale=0.8]{/Users/hisham/ac/gobo/gobo_programs}\tabularnewline
+(a) The filesystem is indexed with the use of \\
+directories and symbolic links. & \multirow{1}{0.5\paperwidth}{(b) Versioned directory tree.}\tabularnewline
+\end{tabular}\protect\caption{\label{fig:gobofs}GoboLinux file system hierarchy}
 \end{figure*}
 
 
