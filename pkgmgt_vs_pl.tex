@@ -1,6 +1,6 @@
 %% LyX 2.1.0 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
-\documentclass[letterpaper,english,times]{speauth}
+\documentclass[english,times,10pt]{sigplanconf}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{array}
@@ -12,35 +12,32 @@
 \makeatletter
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
-\pdfpageheight\paperheight
-\pdfpagewidth\paperwidth
-
 %% Because html converters don't know tabularnewline
 \providecommand{\tabularnewline}{\\}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
-\newcommand{\lyxaddress}[1]{
-\par {\raggedright #1
-\vspace{1.4em}
-\noindent\par}
-}
 
 \makeatother
 
 \usepackage{babel}
 \begin{document}
 
+% XXX LyX is not exporting these -- I don't know why.
+\conferenceinfo{Onward! 2016}{Month d--d, 20yy, City, ST, Country} 
+\copyrightyear{2016} 
+\copyrightdata{978-1-nnnn-nnnn-n/yy/mm} 
+\doi{nnnnnnn.nnnnnnn}
+
 \title{Understanding package management\\
 through the lens of programming languages}
 
 
-\author{Hisham~Muhammad\affil{1}, Lucas~Correia~Villa~Real\affil{2}
-and Michael~Homer\affil{3}}
+\authorinfo{Hisham Muhammad}{PUC-Rio - Rio de Janeiro, Brazil}{hisham.hm@gmail.com}
 
 
-\address{\affilnum{1}PUC-Rio - Rio de Janeiro, Brazil\break\affilnum{2}IBM
-Research - São Paulo, Brazil\break\affilnum{3}Victoria University
-of Wellington - Wellington, New Zealand}
+\authorinfo{Lucas C. Villa Real}{IBM Research - Sao Paulo, Brazil}{lucasvr@br.ibm.com}
+
+
+\authorinfo{Michael Homer}{Victoria University of Wellington - Wellington, New Zealand}{michael@gobolinux.org}
+\maketitle
 \begin{abstract}
 Package management is instrumental for programming languages, operating
 systems and system administration, and yet it is neglected by all
@@ -62,7 +59,6 @@ of package manager interoperability.
 \keywords{\noindent package management, operating systems, module systems,
 filesystem hierarchy}
 
-\maketitle
 
 \section{Introduction}
 
@@ -427,7 +423,7 @@ In this way only a single entry in PATH is needed to find every executable
 and libraries can be loaded using the ordinary linker mechanisms without
 further configuration. An additional layer of fixed symlinks provides
 backwards compatibility with the conventional Filesystem Hierarchy
-Standard~\cite{fhs}.
+Standard\cite{fhs}.
 
 Since packages become self-described through the GoboLinux filesystem
 hierarchy, the distribution features its own set of system management
@@ -893,8 +889,8 @@ the built-in build system.
 
 LuaRocks installs all packages into a sandbox directory and later
 moves them to their final destinations. The actual installation prefix
-is never told to the build system under execution. This prevents
-a package from hardcoding its own installation directory in its source
+is never told to the build system under execution. This prevents a
+package from hardcoding its own installation directory in its source
 code. While the ability to do this is a feature sometimes requested
 by developers (as it would make it easier to load asset files, for
 example), disallowing hardcoded paths ensures that every package built
@@ -909,9 +905,9 @@ install datafile}%
 
 
 
-As also happened with GoboLinux, having a high-level description
-format allowed us to make radical changes to the installation layout
-once that proved necessary. Since LuaRocks does not provide to specification
+As also happened with GoboLinux, having a high-level description format
+allowed us to make radical changes to the installation layout once
+that proved necessary. Since LuaRocks does not provide to specification
 files any knowledge of the final directory structure, this change
 was even less impacting for users than the change on GoboLinux: all
 existing rockspecs could be used in the new directory layout without
@@ -1006,7 +1002,7 @@ integrate them to the system.
 
 In GoboLinux we researched the idea of building a foreign function
 interface (FFI) of sorts into our general-purpose package manager,
-which we called Aliens~\cite{Homer2010LCA}. Aliens provides an API
+which we called Aliens\cite{Homer2010LCA}. Aliens provides an API
 to write shims that connect the general-purpose system package manager
 with domain-specific package managers.
 
@@ -1126,9 +1122,6 @@ filesystem organization and with run-time systems. Doing this from
 early on keeps possibilities open for better designs that less prone
 to ``dependency hell'' and versioning conflicts.
 
-\begin{acks}
-Gobo
-\end{acks}
 \renewcommand{\refname}{REFERENCES}
 
 \bibliographystyle{wileyj}

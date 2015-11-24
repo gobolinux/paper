@@ -182,6 +182,27 @@ michael@gobolinux.org
 
 \end_layout
 
+\begin_layout Conference
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Onward! 2016
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout CopyrightYear
+2016
+\end_layout
+
+\begin_layout Copyrightdata
+978-1-nnnn-nnnn-n/yy/mm
+\end_layout
+
 \begin_layout Abstract
 Package management is instrumental for programming languages, operating
  systems and system administration, and yet it is neglected by all three
