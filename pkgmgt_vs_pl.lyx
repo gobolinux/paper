@@ -10,7 +10,7 @@
 \language_package default
 \inputencoding utf8
 \fontencoding global
-\font_roman default
+\font_roman times
 \font_sans default
 \font_typewriter default
 \font_math auto
