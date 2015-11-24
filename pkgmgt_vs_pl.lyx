@@ -2,8 +2,8 @@
 \lyxformat 474
 \begin_document
 \begin_header
-\textclass speauth
-\options times
+\textclass sigplanconf
+\options times,10pt
 \use_default_options true
 \maintain_unincluded_children false
 \language english
@@ -28,7 +28,7 @@
 \paperfontsize default
 \spacing single
 \use_hyperref false
-\papersize letterpaper
+\papersize default
 \use_geometry false
 \use_package amsmath 1
 \use_package amssymb 1
@@ -83,112 +83,103 @@ through the lens of programming languages
 \end_layout
 
 \begin_layout Author
-Hisham
-\begin_inset space ~
-\end_inset
-
-Muhammad
-\begin_inset ERT
+\begin_inset Argument 1
 status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-affil{1}
+Hisham Muhammad
 \end_layout
 
 \end_inset
 
-, Lucas
-\begin_inset space ~
-\end_inset
 
-Correia
-\begin_inset space ~
-\end_inset
-
-Villa
-\begin_inset space ~
-\end_inset
-
-Real
-\begin_inset ERT
+\begin_inset Argument 2
 status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-affil{2}
-\end_layout
-
-\end_inset
-
- and Michael
-\begin_inset space ~
-\end_inset
-
-Homer
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-affil{3}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Address
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-affilnum{1}
-\end_layout
-
-\end_inset
-
 PUC-Rio - Rio de Janeiro, Brazil
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-break
-\backslash
-affilnum{2}
 \end_layout
 
 \end_inset
 
-IBM Research - São Paulo, Brazil
-\begin_inset ERT
+
+\begin_inset Argument 3
 status open
 
 \begin_layout Plain Layout
-
-
-\backslash
-break
-\backslash
-affilnum{3}
+hisham.hm@gmail.com
 \end_layout
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Author
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Lucas C.
+ Villa Real
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+IBM Research - Sao Paulo, Brazil
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 3
+status open
+
+\begin_layout Plain Layout
+lucasvr@br.ibm.com
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Michael Homer
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
 Victoria University of Wellington - Wellington, New Zealand
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 3
+status open
+
+\begin_layout Plain Layout
+michael@gobolinux.org
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Abstract
@@ -3234,8 +3225,8 @@ g into native packages is untenable: for example, while the repository for
  the Debian Linux distribution features 43,000 packages in total, the Maven
  Central repository for Java alone contains over 103,000 packages, with
  the advantage that the repository is portable to various platforms, some
- of which lack a built-in universal package manager (Microsoft Windows
- being a notable case).
+ of which lack a built-in universal package manager (Microsoft Windows being
+ a notable case).
  Still, this kind of effort duplication does happen: the Debian repository
  contains 715 packages of Ruby modules; this is a far cry from the 100,000
  modules in the RubyGems repository.
