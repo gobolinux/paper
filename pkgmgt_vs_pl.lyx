@@ -548,12 +548,35 @@ uninstall
 placement t
 wide true
 sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
 status open
 
 \begin_layout Plain Layout
-\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top" width="99col%">
+<column alignment="center" valignment="top" width="99col%">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename python_pip.eps
+	filename /Users/hisham/ac/gobo/python_pip.eps
 	scale 80
 
 \end_inset
@@ -561,54 +584,70 @@ status open
 
 \end_layout
 
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
-\align center
+\begin_inset Graphics
+	filename /Users/hisham/ac/gobo/ruby_rubygems.eps
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 (a) Database-oriented management of Python modules.
- Modules for all packages are stored together under 
+\begin_inset Newline newline
+\end_inset
+
+Modules for all packages are stored together under 
 \family typewriter
 /usr/lib/python2.7/site-packages/
 \family default
 .
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(b) Ruby modules managed with RubyGems.
 \begin_inset Newline newline
 \end_inset
 
-
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ruby_rubygems.eps
-	scale 80
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-(b) Ruby modules managed with RubyGems.
- Each package gets its own subdirectory under 
+Each package gets its own subdirectory under 
 \family typewriter
 /usr/lib/ruby/gems/1.9.1/gems/
 \family default
 .
-\begin_inset Newline newline
+\end_layout
+
 \end_inset
+</cell>
+</row>
+</lyxtabular>
 
-
-\begin_inset space ~
 \end_inset
 
 
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
+
+
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -1572,9 +1611,18 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="middle" width="45page%">
+<column alignment="left" valignment="middle" width="50page%">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 \begin_inset Graphics
-	filename gobo_systemindex.eps
+	filename /Users/hisham/ac/gobo/gobo_systemindex.eps
 	scale 80
 
 \end_inset
@@ -1582,23 +1630,14 @@ status open
 
 \end_layout
 
-\begin_layout Plain Layout
-\align center
-(a) The filesystem is indexed with the use of directories and symbolic links.
-\begin_inset Newline newline
 \end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
 
 \begin_layout Plain Layout
-\align center
 \begin_inset Graphics
-	filename gobo_programs.eps
+	filename /Users/hisham/ac/gobo/gobo_programs.eps
 	scale 80
 
 \end_inset
@@ -1606,20 +1645,38 @@ status open
 
 \end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
 \begin_layout Plain Layout
-\align center
-(b) Packages are managed through a versioned directory tree.
+(a) The filesystem is indexed with the use of 
 \begin_inset Newline newline
 \end_inset
 
+directories and symbolic links.
+\end_layout
 
-\begin_inset space ~
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(b) Versioned directory tree.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
 \end_inset
 
 
-\end_layout
-
-\begin_layout Plain Layout
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
