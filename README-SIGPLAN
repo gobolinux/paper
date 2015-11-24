@@ -1,0 +1,24 @@
+The following steps are needed to enable the ACM Sigplan document class on LyX.
+
+
+1) On LyX:
+- Go to 'Tools' -> 'TeX Information'
+- Enable '[x] Show path'
+- Choose 'LaTeX classes' from the drop-down menu and mind the directory prefix
+  (e.g.: /Programs/TeX-Live/Current/texmf-dist/tex/latex)
+
+
+2) Close LyX and run (adjust the CLASS_DIR accordingly):
+$ CLASS_DIR=/Programs/TeX-Live/Current/texmf-dist/tex/latex
+$ mkdir -p $CLASS_DIR/sigplanconf
+$ cp sigplanconf.cls $CLASS_DIR/sigplanconf
+$ texhash
+
+
+3) Overwrite the existing (and broken) Sigplan layout from LyX with ours:
+$ cp sigplanconf.layout /Programs/LyX/Current/share/lyx/layouts
+
+
+4) Open LyX and:
+- Go to 'Tools' -> 'Reconfigure'
+- Restart LyX and be happy
