@@ -1,4 +1,4 @@
-%% LyX 2.1.0 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.1.2.2 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,times,10pt]{sigplanconf}
 \usepackage{mathptmx}
@@ -32,7 +32,7 @@ through the lens of programming languages}
 \authorinfo{Lucas C. Villa Real}{IBM Research - Sao Paulo, Brazil}{lucasvr@br.ibm.com}{}
 
 
-\authorinfo{Michael Homer}{Victoria University of Wellington - Wellington, New Zealand}{michael@gobolinux.org}{}
+\authorinfo{Michael Homer}{Victoria University of Wellington - Wellington, New Zealand}{mwh@ecs.vuw.ac.nz}{}
 
 
 \conferenceinfo{Onward! 2016}{}
@@ -50,15 +50,13 @@ three areas as an implementation detail. For this reason, package
 management lacks the same kind of conceptual organization present
 in other disciplines. Moreover, we lack terminology to classify them
 or to reason about their design trade-offs or issues that affect families
-of similar managers. The multitude of package managers in modern systems
-should be embraced, so we could start reasoning about them the way
-we do about ecosystems of programming languages. In this paper, we
-look at package management systems through this lens, sharing our
-experience writing package managers for both a Linux distribution
-and a scripting language. We categorize families of package managers
-and discuss their design implications beyond particular implementations.
-We also identify possibilities in the still largely unexplored area
-of package manager interoperability.
+of similar managers. In this paper, we share our experience from over
+a decade of writing package managers for both a Linux distribution
+and a scripting language, and draw on that experience to categorize
+families of package managers and discuss their design implications
+beyond particular implementations. We also identify possibilities
+in the still largely unexplored area of package manager interoperability.
+
 \end{abstract}
 
 \keywords{\noindent package management, operating systems, module systems,
@@ -135,17 +133,21 @@ different paradigms, with well-known tradeoffs. We also accept that
 there is room for domain-specific languages (DSLs) and for general-purpose
 languages. Most importantly, we know how to set boundaries for each
 language and how to make DSLs and general-purpose languages interact.
-
-We argue that all of these observations can be made with regard to
-package management as well. In this paper, we discuss how these observations
-map from the world of programming languages to that of package managers.
 Most existing package management systems, however, are still oblivious
 to the fact that they exist as part of a larger ecosystem, with parts
-of it handled by other package managers. By discussing how programming
-languages deal with these issues, we point to directions on how package
-managers could follow their example, drawing on our experiences developing
-both a system-wide package manager \cite{Muhammad2002WSL,Homer2010LCA}
-and a language-specific package manager \cite{Muhammad2013LuaRocks}. 
+of it handled by other package managers.
+
+In this paper we draw on our own unique combination of experiences
+on all sides of this topic: developing a system-wide package manager
+for a Linux distribution \cite{Muhammad2002WSL,Homer2010LCA}, creating
+a language-specific package manager \cite{Muhammad2013LuaRocks},
+and integrating system and language-specific package managers \cite{Homer2010LCA},
+as well as being simply developers and end users of other software.
+We will present these experiences and propose categorizations and
+commonalities we have found in them, and aim to show that — as all
+of the observations about languages above can be made equally about
+package management — package management can and should follow the
+lead of programming languages in the solution space as well.
 
 
 \section{Paradigms of package management: filesystem-oriented vs. database-oriented}
@@ -208,7 +210,7 @@ management as well.
 \begin{figure*}[t]
 \begin{minipage}[t]{1\columnwidth}%
 \begin{tabular}{>{\centering}p{0.99\columnwidth}>{\centering}p{0.99\columnwidth}}
-\includegraphics[scale=0.8]{/Users/hisham/ac/gobo/python_pip} & \includegraphics[scale=0.8]{/Users/hisham/ac/gobo/ruby_rubygems}\tabularnewline
+\includegraphics[scale=0.8,bb = 0 0 200 100, draft, type=eps]{/Users/hisham/ac/gobo/python_pip.eps} & \includegraphics[scale=0.8,bb = 0 0 200 100, draft, type=eps]{/Users/hisham/ac/gobo/ruby_rubygems.eps}\tabularnewline
 (a) Database-oriented management of Python modules.\\
 Modules for all packages are stored together under \texttt{/usr/lib/python2.7/site-packages/}. & (b) Ruby modules managed with RubyGems.\\
 Each package gets its own subdirectory under \texttt{/usr/lib/ruby/gems/1.9.1/gems/}.\tabularnewline
@@ -470,7 +472,7 @@ traditional Unix hierarchy, as \texttt{/usr} is a symbolic link to
 
 \begin{figure*}[t]
 \begin{tabular}{>{\raggedright}m{0.45\paperwidth}>{\raggedright}m{0.5\paperwidth}}
-\includegraphics[scale=0.8]{/Users/hisham/ac/gobo/gobo_systemindex} & \includegraphics[scale=0.8]{/Users/hisham/ac/gobo/gobo_programs}\tabularnewline
+\includegraphics[scale=0.8,bb = 0 0 200 100, draft, type=eps]{/Users/hisham/ac/gobo/gobo_systemindex.eps} & \includegraphics[scale=0.8,bb = 0 0 200 100, draft, type=eps]{/Users/hisham/ac/gobo/gobo_programs.eps}\tabularnewline
 (a) The filesystem is indexed with the use of \\
 directories and symbolic links. & \multirow{1}{0.5\paperwidth}{(b) Versioned directory tree.}\tabularnewline
 \end{tabular}\protect\caption{\label{fig:gobofs}GoboLinux file system hierarchy}
@@ -1022,18 +1024,18 @@ and Aliens, attempt to bridge the gap, with reasonable success.
 
 \section{Conclusion}
 
-In this paper, we presented an analysis of the landscape of existing
-methodologies for package management, substantiated by our practical
-experiences in the development and maintenance over the years of a
-system-wide package manager for a Linux distribution and a portable
-package manager for a scripting language. Package management is an
-area that is notably neglected in academic studies, but is one of
-practical impact in the design of modern operating systems and module
-systems for programming languages, and a central issue in system administration.
-With this work, we provide the beginnings of a conceptual organization
-of approaches for package management, an area that lacks even common
-terminology, and where many of the same design issues are faced and
-dealt with time and again.
+In this paper, we presented our practical experiences in the development
+and maintenance over the years of a system-wide package manager for
+a Linux distribution and a portable package manager for a scripting
+language, and an analysis of the landscape of existing methodologies
+for package management. Package management is an area that is notably
+neglected in academic studies, but is one of practical impact in the
+design of modern operating systems and module systems for programming
+languages, and a central issue in system administration. With this
+work, we provide the beginnings of a conceptual organization of approaches
+for package management, an area that lacks even common terminology,
+and where many of the same design issues are faced and dealt with
+time and again.
 
 In the realm of programming languages, the existing conceptual organization
 is useful in various levels. As one learns about a new programming
