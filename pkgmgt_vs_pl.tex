@@ -112,7 +112,7 @@ and versioning rules and deployment conventions. Simply ignoring these
 environments and managing modules and dependencies by hand is tempting,
 but the complexity of heterogeneous environments and keeping track
 of dependency updates can become burdensome — all these package managers
-were created to solve practical problems which the developer would
+were created to solve pratical problems which the developer would
 have to otherwise directly handle, after all. Another alternative
 that is often proposed, especially by users of operating systems that
 feature a system-provided package manager (as is the case of most
@@ -173,7 +173,7 @@ In the world of package managers, we can also identify general paradigms,
 by looking at their core concepts and design trade-offs. Package managers
 are programs that map relations between files and packages (which
 correspond to sets of files), and between packages (dependencies),
-allowing users to perform maintenance of their systems in terms of
+allowing users to perform maintainance of their systems in terms of
 packages rather than at the level of individual files. The central
 design choice in a package manager, therefore, is how to perform those
 mappings.
@@ -427,7 +427,7 @@ In this way only a single entry in PATH is needed to find every executable
 and libraries can be loaded using the ordinary linker mechanisms without
 further configuration. An additional layer of fixed symlinks provides
 backwards compatibility with the conventional Filesystem Hierarchy
-Standard~\cite{fhs}.
+Standard\cite{fhs}.
 
 Since packages become self-described through the GoboLinux filesystem
 hierarchy, the distribution features its own set of system management
@@ -824,7 +824,7 @@ packages is untenable: for example, while the repository for the Debian
 Linux distribution features 43,000 packages in total, the Maven Central
 repository for Java alone contains over 103,000 packages, with the
 advantage that the repository is portable to various platforms, some
-of which lack a built-in universal package manager (Microsoft Windows
+of which lacking a built-in universal package manager (Microsoft Windows
 being a notable case). Still, this kind of effort duplication does
 happen: the Debian repository contains 715 packages of Ruby modules;
 this is a far cry from the 100,000 modules in the RubyGems repository.
@@ -893,7 +893,7 @@ the built-in build system.
 
 LuaRocks installs all packages into a sandbox directory and later
 moves them to their final destinations. The actual installation prefix
-is never told to the build system under execution. This prevents
+is never informed to the build system under execution. This prevents
 a package from hardcoding its own installation directory in its source
 code. While the ability to do this is a feature sometimes requested
 by developers (as it would make it easier to load asset files, for
@@ -909,7 +909,7 @@ install datafile}%
 
 
 
-As also happened with GoboLinux, having a high-level description
+As it also happened with GoboLinux, having a high-level description
 format allowed us to make radical changes to the installation layout
 once that proved necessary. Since LuaRocks does not provide to specification
 files any knowledge of the final directory structure, this change
@@ -1006,7 +1006,7 @@ integrate them to the system.
 
 In GoboLinux we researched the idea of building a foreign function
 interface (FFI) of sorts into our general-purpose package manager,
-which we called Aliens~\cite{Homer2010LCA}. Aliens provides an API
+which we called Aliens\cite{Homer2010LCA}. Aliens provides an API
 to write shims that connect the general-purpose system package manager
 with domain-specific package managers.
 
