@@ -426,6 +426,955 @@ key "Homer2010LCA"
 \end_layout
 
 \begin_layout Section
+Background: package management
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+[2016] 
+\end_layout
+
+\begin_layout Itemize
+What is package management
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+What are the tasks of a package manager
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+What are the kinds of package managers, from a user's perspective
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+the OS managers vs language manager distinction appears here (we can use
+ the section about it below to 
+\emph on
+justify
+\emph default
+ it)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Some examples of important package managers, as a light 
+\begin_inset Quotes eld
+\end_inset
+
+related work
+\begin_inset Quotes erd
+\end_inset
+
+ of sorts?
+\end_layout
+
+\begin_layout Itemize
+Any other background info we need to provide the reader before reporting
+ the 3 experiences in the next section?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Experiences in package management
+\end_layout
+
+\begin_layout Subsection
+GoboLinux
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GoboLinux"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[2016]
+\end_layout
+
+\begin_layout Plain Layout
+This section (and the whole paper?) pretty much assumes the reader is familiar
+ with traditional Unix trees.
+ If we try to read this by having in mind 
+\begin_inset Quotes eld
+\end_inset
+
+how would I explain how Gobo is different from other Linuxes to a Windows
+ user
+\begin_inset Quotes erd
+\end_inset
+
+ this section would probably grow a bit.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+GoboLinux 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2002WSL"
+
+\end_inset
+
+ is a Linux distribution based on the concept of installing each package
+ in a separate installation prefix.
+ It was the first Linux distribution to be entirely based on a filesystem-orient
+ed approach to package management.
+ Each program is installed under its own versioned directory, such as 
+\family typewriter
+/Programs/Bash/4.3.28
+\family default
+ and 
+\family typewriter
+/Programs/GTK+/3.16.0
+\family default
+.
+ This direct mapping of the package structure to the directory layout allows
+ one to inspect the system using standard Unix commands.
+ For example, to get a list of installed packages, one only needs to issue
+ 
+\family typewriter
+ls /Programs
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+As well as the individual program trees, a tree of symbolic links also exists
+ created collecting references to the files of every program in the system
+ together.
+ A single directory contains symlinks matching the structure of the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+lib
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+ directory of every program, paralleling the contents of 
+\family typewriter
+/usr/lib
+\family default
+ in a conventional layout.
+ In this way only a single entry in PATH is needed to find every executable
+ and libraries can be loaded using the ordinary linker mechanisms without
+ further configuration.
+ An additional layer of fixed symlinks provides backwards compatibility
+ with the conventional Filesystem Hierarchy Standard
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fhs"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Since packages become self-described through the GoboLinux filesystem hierarchy,
+ the distribution features its own set of system management tools built
+ around scripting languages.
+ At first, these scripts automated tasks such as the installation of new
+ packages (simply compressed tar archives) and their 
+\begin_inset Quotes eld
+\end_inset
+
+activation
+\begin_inset Quotes erd
+\end_inset
+
+ in the system (namely, the creation of symbolic links to their libraries,
+ headers, executables, and manuals) as well as their removal (achieved by
+ deleting their directory and the now-broken symbolic links).
+ Over time, these scripts inevitably became more complex as they were integrated
+ with other system tools and served as the pillars for 
+\emph on
+Compile
+\emph default
+, GoboLinux's build system.
+\end_layout
+
+\begin_layout Standard
+Taking inspiration from Gentoo's Portage system (which was itself inspired
+ from BSD Ports) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Thiruvathukal2004Gentoo"
+
+\end_inset
+
+, Compile makes use of recipes that describe how to fetch the source code
+ of a piece of software and the sequence of commands required to build and
+ install it.
+ Because recipes are frequently hand-written, it is essential to make them
+ as simple as possible so that users are encouraged to contribute to the
+ distribution's ecosystem.
+ The approach adopted by Compile is to embed as much code as possible in
+ its build systems' backends (e.g.
+ Autoconf, Makefile, xmkmf, CMake), allowing the majority of recipes to
+ be described with little more than a couple of lines.
+ More complex build cases can be described by extending recipes with regular
+ shell scripting.
+ Compile can also enable the installation of packages through third-party
+ package managers.
+ More details of that feature are given in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:GoboLinux-Aliens"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Up to GoboLinux 014.01, packages built with Compile had their prefixes set
+ to their versioned directory during their compilation.
+ That had a consequence in a considerable extent of software that use their
+ prefix directory for run-time lookups of 
+\shape italic
+shared 
+\shape default
+files (i.e.
+ those under
+\family typewriter
+ /usr/share
+\family default
+) and impacted the layout of the GoboLinux directory tree and its management
+ scripts.
+ Each versioned directory received a 
+\family typewriter
+Shared
+\family default
+ sub-directory containing that package´s own files and a symbolic link named
+ 
+\family typewriter
+share p
+\family default
+ointing back to 
+\family typewriter
+/System/Links/Shared
+\family default
+ (which managed links to the files of each package's 
+\family typewriter
+Shared
+\family default
+ directory), leading to code growth and a deviation to the distribution's
+ original design.
+ As the Linux userland ecosystem evolved, some new packages started to share
+ files through 
+\family typewriter
+/usr/lib{64}
+\family default
+, too.
+ It is easy to picture how complicated the task of a modern package manager
+ can be nowadays, as even subtle changes to filesystem namespace semantics
+ can have profound impact on the organization of this class of software.
+ In GoboLinux, we fixed this problem once and for all by introducing major
+ changes to the system's directory layout and by using a new compilation
+ prefix 
+\family typewriter
+/System/Index
+\family default
+ common to all packages (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:gobofs"
+
+\end_inset
+
+).
+ Through this structure, even though packages are organized in self-contained
+ directories under 
+\family typewriter
+/Programs
+\family default
+, applications can find their files through the traditional Unix hierarchy,
+ as 
+\family typewriter
+/usr
+\family default
+ is a symbolic link to 
+\family typewriter
+/System/Index
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement t
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename gobo_systemindex.eps
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+(a) The filesystem is indexed with the use of directories and symbolic links.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename gobo_programs.eps
+	scale 80
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+(b) Packages are managed through a versioned directory tree.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:gobofs"
+
+\end_inset
+
+GoboLinux file system hierarchy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
+The mostly declarative style of GoboLinux recipes proved to be a success
+ among users and gave us greater freedom when modifying the build process.
+ We made major changes to the system's directory layout between releases
+ 014 and 015 of the distribution, and the use of high-level descriptions
+ and our cautious avoidance of hardcoded paths allowed us to reuse the majority
+ of recipes with no changes.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW, moved from 2.0
+\end_layout
+
+\end_inset
+
+parts of the Unix FS hierarchy which assume a single directory: /usr/share/icons
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+effect this had on share/ in Gobo
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+having to symlink /P/Foo/x.y/share into /S/L/share
+\end_layout
+
+\begin_layout Itemize
+launching helper indexing such as gtk-update-icon-cache upon each installation
+ 
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW
+\end_layout
+
+\end_inset
+
+discuss symlinks
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+virtualized
+\begin_inset Quotes erd
+\end_inset
+
+ Unix directories of GoboLinux avoid some compatibility issues that affect
+ other distributions: all executables appear at the same time in /bin, /sbin,
+ /usr/bin and so on.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+the build system, the tooling for generating packages, is the central piece
+ of a package management system.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+not clear at first, but looking at package management systems they all integrate
+ the build process.
+ Why?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Discuss the challenges of GoboLinux through the prism of its build system
+ (?)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tried to make it easy for users to build packages.
+\end_layout
+
+\begin_layout Itemize
+Took inspiration from systems such as Gentoo, which was itself inspired
+ from BSD Ports.
+\end_layout
+
+\begin_layout Itemize
+aim was to make the simple cases super-simple (like a 3-line script) and
+ the complex cases possible (leveraging the generality of shell scripts)
+\end_layout
+
+\begin_layout Itemize
+This worked up to a point.
+ Eventually, started requiring more and more metadata, even for the so-called
+ simple cases.
+\end_layout
+
+\begin_layout Itemize
+Further, this metadata had to be integrated with the deployed system.
+ 
+\end_layout
+
+\begin_layout Itemize
+The ArchLinux build system seems to be a modern-day successor of this style
+ of build system in the Linux space.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW
+\end_layout
+
+\end_inset
+
+tie in with the discussion of above section about includes? Gobo pre-/S/I
+ didn't need versioned includes when applications detect the install prefix
+ of libraries they depended on (e.g.
+ via pkgconfig); with /S/I, pkgconfig will return includedir as /usr/include,
+ so this becomes an issue: the recipe needs to point the conflicting program
+ to /P/Foo/x.y/include, or the user needs to temporarily symlink the desired
+ version (which is more fragile).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Still, the compatibility gains for maintenance greatly outweigh the losses,
+ of course.
+\end_layout
+
+\end_deeper
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+LuaRocks
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[2016] language-specific pkg managers will have to be introduced in the
+ Background section.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+LuaRocks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2013LuaRocks"
+
+\end_inset
+
+ is a package manager for the ecosystem of the Lua programming language.
+ It was developed building on our previous experience writing package management
+ tools for GoboLinux and adapting them to the realities of a language-specific
+ manager.
+\end_layout
+
+\begin_layout Standard
+The package specification format (
+\emph on
+rockspec
+\emph default
+) was largely influenced by GoboLinux, and LuaRocks pushes the use of declarativ
+e specifications even further.
+ While the 
+\family typewriter
+.rockspec
+\family default
+ files themselves are actually Lua scripts, LuaRocks loads them using a
+ restricted execution environment that disables the Lua standard libraries;
+ they essentially consist of variable declarations, describing the package
+ via Lua tables (Lua's single data structure, which combines numeric and
+ associative arrays).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+LR has a plugin-based build system like Gobo
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Another design feature inherited from GoboLinux was the support for multiple
+ build back-ends.
+ In most language ecosystems, at any point in time a single build tool is
+ well-established as a standard (such as 
+\family typewriter
+easy_install
+\family default
+ and later 
+\family typewriter
+pip
+\family default
+ for Python, Rake for Ruby, ExtUtils::MakeMaker and later Module::Build
+ for Perl).
+ In the Lua world, by the time LuaRocks was conceived, in spite of several
+ contenders, there was no clear winner as a standard build tool.
+ To deal with the variety of build systems, OS-level package managers typically
+ let developers call their preferred build tools explicitly in imperative
+ scripts.
+ LuaRocks attempted to solve this in a more controlled manner, with a system
+ of plugins for the various tools, akin to the one used in GoboLinux.
+ In LuaRocks, each plugin is implemented as a Lua module, selected through
+ an entry in the rockspec.
+ For example, using 
+\family typewriter
+build.type="cmake"
+\family default
+ causes LuaRocks to invoke CMake with the appropriate arguments.
+ We also included a simple built-in build system, invoked via 
+\family typewriter
+build.type="builtin"
+\family default
+, which is able to install Lua files and portably compile C code into Lua
+ modules.
+ This proved a success among developers: at the time of this writing, 75%
+ of all packages in the LuaRocks repository use the built-in build system.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+LR supports relocatable packages
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+LuaRocks installs all packages into a sandbox directory and later moves
+ them to their final destinations.
+ The actual installation prefix is never told to the build system under
+ execution.
+ This prevents a package from hardcoding its own installation directory
+ in its source code.
+ While the ability to do this is a feature sometimes requested by developers
+ (as it would make it easier to load asset files, for example), disallowing
+ hardcoded paths ensures that every package built is relocatable.
+ Having fully relocatable packages is rare on Unix, but is an expected feature
+ on Windows.
+ Having to cater to such conflicting requirements is a constant in writing
+ portable software; to alleviate the issue of finding asset files, one of
+ the authors developed a Lua module called 
+\family typewriter
+datafile
+\family default
+ 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://github.com/hishamhm/datafile
+\end_layout
+
+\end_inset
+
+, also available via 
+\family typewriter
+luarocks install datafile
+\end_layout
+
+\end_inset
+
+, which resolves directory locations portably at run-time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+LR changed its directory layout like Gobo
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As also happened with GoboLinux, having a high-level description format
+ allowed us to make radical changes to the installation layout once that
+ proved necessary.
+ Since LuaRocks does not provide to specification files any knowledge of
+ the final directory structure, this change was even less impacting for
+ users than the change on GoboLinux: all existing rockspecs could be used
+ in the new directory layout without any changes.
+ This level of information hiding, extending not only the installation prefix,
+ but to all subdirectories, was only possible because we were dealing with
+ a language-specific manager, where we could make assumptions about the
+ contents of files (Lua source code and binary dynamic libraries) and how
+ they would be later used (as command-line scripts or loaded by Lua through
+ its package loader system).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+went from filesystem-oriented to database-oriented
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+TODO illustrate with figures
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The design changes that LuaRocks underwent from version 1.0 to version 2.0
+ were due to lessons learned on the specificities of language-specific package
+ management.
+ The original design of LuaRocks was filesystem-oriented, like GoboLinux.
+ Each version of an installed package was given its own directory and each
+ category of files got its own subdirectory.
+ For example, for module 
+\family typewriter
+lpeg 0.12-1
+\family default
+ one would store Lua files in 
+\family typewriter
+$PREFIX/lib/luarocks/rocks/lpeg/0.12-1/lua
+\family default
+.
+ LuaRocks included then a custom wrapper for Lua's 
+\family typewriter
+require()
+\family default
+ function in module 
+\family typewriter
+luarocks.require
+\family default
+.
+ Once this module was loaded (either via plain 
+\family typewriter
+require()
+\family default
+ or via a command-line flag), subsequent calls to 
+\family typewriter
+require()
+\family default
+ would match module names to file locations, taking into account the dependency
+ trees of previously loaded modules.
+ This allowed multiple versions of a module to coexist in an installation,
+ and let modules load the correct versions of their dependencies transparently.
+ The approach of loading a custom 
+\family typewriter
+require()
+\family default
+ function is the same as adopted by RubyGems.
+ However, many Lua users perceived the wrapper as tampering with a standard
+ library function, and disliked having to perform an initial setup in their
+ scripts for using modules installed via LuaRocks 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Since Ruby 1.9, the interpreter preloads the 
+\family typewriter
+rubygems
+\family default
+ module automatically; in prior versions uses had to add 
+\family typewriter
+require 'rubygems'
+\family default
+ explicitly.
+ This was never an option for Lua due to the language's minimalistic design,
+ rendering LuaRocks as a strictly optional component.
+\end_layout
+
+\end_inset
+
+.
+ For LuaRocks 2.0, the design was changed to be database-oriented, so that
+ Lua modules could be installed into a typical Unix-like layout that matched
+ the default configuration of the Lua interpreter's package loader.
+ Since now Lua modules from all packages were installed into a single directory
+ such as 
+\family typewriter
+$PREFIX/share/lua/5.3
+\family default
+, a database had to be put in place matching files to packages.
+ We kept to Lua's minimalistic approach, using a plain-text manifest file
+ (loadable as Lua code) as a database.
+ Supporting multiple versions of the same package installed at the same
+ time is still possible, but requires the now-optional custom package loader,
+ which produces versioned filenames such as 
+\family typewriter
+$PREFIX/lib/5.3/lpeg-0.11-1.so
+\family default
+ when the dependency graph requires an old version of a module.
+\end_layout
+
+\begin_layout Subsection
+GoboLinux Aliens
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:GoboLinux-Aliens"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In GoboLinux we researched the idea of building a foreign function interface
+ (FFI) of sorts into our general-purpose package manager, which we called
+ Aliens
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Homer2010LCA"
+
+\end_inset
+
+.
+ Aliens provides an API to write shims that connect the general-purpose
+ system package manager with domain-specific package managers.
+\end_layout
+
+\begin_layout Standard
+With Aliens, packages in the general-purpose manager may express a dependency
+ on a package provided by a supported domain-specific manager: for example,
+ a package that requires the Perl 
+\family typewriter
+XML::Parser
+\family default
+ module, available from CPAN, can express a dependency 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+CPAN:XML::Parser >= 2.34
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The Aliens system directs such a dependency to a translating shim, which
+ uses the CPAN tool to confirm whether it is satisfied, to install the package
+ (and its dependencies) if required, and to upgrade it, communicating any
+ necessary information back to the general-purpose manager.
+ The shim can then make symbolic links for any binaries or native libraries
+ that have been installed.
+ Any package in one of the supported domain-specific managers is automatically
+ available in this way, without creating wrapper packages.
+\end_layout
+
+\begin_layout Standard
+The domain-specific managers themselves are not modified in this process.
+ Each system is given complete control of a directory tree, and the relevant
+ languages configured to search in that tree.
+ This protects against changes in the functioning of the third-party systems,
+ and allows users to access them directly as well.
+ A drawback, however, is that the domain-specific managers do not have reciproca
+l access to the wider system: installing a RubyGem that depends on a native
+ library will not innately result in the native dependency being satisfied.
+ The cross-platform nature of these systems makes even specifying such informati
+on in a machine-readable way difficult, although some, notably LuaRocks,
+ make the attempt.
+\end_layout
+
+\begin_layout Standard
+Not all domain-specific package managers lend themselves to this integration.
+ Some are resistant to placing their files within a restricted directory
+ tree, preferring to install into the global filesystem hierarchy where
+ they may interfere with each other and the system, while others do not
+ mechanize well.
+ This limited coverage is an additional drawback of the Aliens approach,
+ but one that is limited to failing to solve an existing problem, rather
+ than creating a new one.
+ As with programming languages, a consensus implementation platform would
+ inevitably be simpler, but social and technical factors make it impractical.
+ FFIs, and Aliens, attempt to bridge the gap, with reasonable success.
+\end_layout
+
+\begin_layout Section
+Lessons learned
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[2016]
+\end_layout
+
+\begin_layout Plain Layout
+At this point, I'd add an introductory paragraph sort-of restating what
+ we said in the intro about the analogies, but being even clearer about
+ it: let's say that in this section we will lay out considerations about
+ the landscape of package managers, organized as a series of analogies to
+ pieces of programming lanugage knowledge (err, don't know how to best phrase
+ this — but what I want to say is that in each subsection we take a well-agreed
+ notion from the PL community and trace a parallel to a related concept
+ in the world of package management).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Paradigms of package management: filesystem-oriented vs.
  database-oriented
 \end_layout
@@ -513,7 +1462,8 @@ database-oriented
  Most package managers for Linux distributions, such as RPM and dpkg/APT,
  are database-oriented.
  Filesystem-oriented package management is more often seen in language-specific
- package managers, such as npm and Bower, but as we discuss in Section 
+ package managers, such as npm and Bower, but as we discussed in Section
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sub:GoboLinux"
@@ -1360,459 +2310,6 @@ More db examples??
 
 \end_layout
 
-\begin_layout Subsection
-GoboLinux
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:GoboLinux"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-GoboLinux 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Muhammad2002WSL"
-
-\end_inset
-
- is a Linux distribution based on the concept of installing each package
- in a separate installation prefix.
- It was the first Linux distribution to be entirely based on a filesystem-orient
-ed approach to package management.
- Each program is installed under its own versioned directory, such as 
-\family typewriter
-/Programs/Bash/4.3.28
-\family default
- and 
-\family typewriter
-/Programs/GTK+/3.16.0
-\family default
-.
- This direct mapping of the package structure to the directory layout allows
- one to inspect the system using standard Unix commands.
- For example, to get a list of installed packages, one only needs to issue
- 
-\family typewriter
-ls /Programs
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-As well as the individual program trees, a tree of symbolic links also exists
- created collecting references to the files of every program in the system
- together.
- A single directory contains symlinks matching the structure of the 
-\begin_inset Quotes eld
-\end_inset
-
-
-\family typewriter
-lib
-\family default
-
-\begin_inset Quotes erd
-\end_inset
-
- directory of every program, paralleling the contents of 
-\family typewriter
-/usr/lib
-\family default
- in a conventional layout.
- In this way only a single entry in PATH is needed to find every executable
- and libraries can be loaded using the ordinary linker mechanisms without
- further configuration.
- An additional layer of fixed symlinks provides backwards compatibility
- with the conventional Filesystem Hierarchy Standard
-\begin_inset CommandInset citation
-LatexCommand cite
-key "fhs"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Since packages become self-described through the GoboLinux filesystem hierarchy,
- the distribution features its own set of system management tools built
- around scripting languages.
- At first, these scripts automated tasks such as the installation of new
- packages (simply compressed tar archives) and their 
-\begin_inset Quotes eld
-\end_inset
-
-activation
-\begin_inset Quotes erd
-\end_inset
-
- in the system (namely, the creation of symbolic links to their libraries,
- headers, executables, and manuals) as well as their removal (achieved by
- deleting their directory and the now-broken symbolic links).
- Over time, these scripts inevitably became more complex as they were integrated
- with other system tools and served as the pillars for 
-\emph on
-Compile
-\emph default
-, GoboLinux's build system.
-\end_layout
-
-\begin_layout Standard
-Taking inspiration from Gentoo's Portage system (which was itself inspired
- from BSD Ports) 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Thiruvathukal2004Gentoo"
-
-\end_inset
-
-, Compile makes use of recipes that describe how to fetch the source code
- of a piece of software and the sequence of commands required to build and
- install it.
- Because recipes are frequently hand-written, it is essential to make them
- as simple as possible so that users are encouraged to contribute to the
- distribution's ecosystem.
- The approach adopted by Compile is to embed as much code as possible in
- its build systems' backends (e.g.
- Autoconf, Makefile, xmkmf, CMake), allowing the majority of recipes to
- be described with little more than a couple of lines.
- More complex build cases can be described by extending recipes with regular
- shell scripting.
- Compile can also enable the installation of packages through third-party
- package managers.
- More details of that feature are given in Section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:GoboLinux-Aliens"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Up to GoboLinux 014.01, packages built with Compile had their prefixes set
- to their versioned directory during their compilation.
- That had a consequence in a considerable extent of software that use their
- prefix directory for run-time lookups of 
-\shape italic
-shared 
-\shape default
-files (i.e.
- those under
-\family typewriter
- /usr/share
-\family default
-) and impacted the layout of the GoboLinux directory tree and its management
- scripts.
- Each versioned directory received a 
-\family typewriter
-Shared
-\family default
- sub-directory containing that package´s own files and a symbolic link named
- 
-\family typewriter
-share p
-\family default
-ointing back to 
-\family typewriter
-/System/Links/Shared
-\family default
- (which managed links to the files of each package's 
-\family typewriter
-Shared
-\family default
- directory), leading to code growth and a deviation to the distribution's
- original design.
- As the Linux userland ecosystem evolved, some new packages started to share
- files through 
-\family typewriter
-/usr/lib{64}
-\family default
-, too.
- It is easy to picture how complicated the task of a modern package manager
- can be nowadays, as even subtle changes to filesystem namespace semantics
- can have profound impact on the organization of this class of software.
- In GoboLinux, we fixed this problem once and for all by introducing major
- changes to the system's directory layout and by using a new compilation
- prefix 
-\family typewriter
-/System/Index
-\family default
- common to all packages (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:gobofs"
-
-\end_inset
-
-).
- Through this structure, even though packages are organized in self-contained
- directories under 
-\family typewriter
-/Programs
-\family default
-, applications can find their files through the traditional Unix hierarchy,
- as 
-\family typewriter
-/usr
-\family default
- is a symbolic link to 
-\family typewriter
-/System/Index
-\family default
-.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement t
-wide true
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename gobo_systemindex.eps
-	scale 80
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-(a) The filesystem is indexed with the use of directories and symbolic links.
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename gobo_programs.eps
-	scale 80
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-(b) Packages are managed through a versioned directory tree.
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:gobofs"
-
-\end_inset
-
-GoboLinux file system hierarchy
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Plain Layout
-The mostly declarative style of GoboLinux recipes proved to be a success
- among users and gave us greater freedom when modifying the build process.
- We made major changes to the system's directory layout between releases
- 014 and 015 of the distribution, and the use of high-level descriptions
- and our cautious avoidance of hardcoded paths allowed us to reuse the majority
- of recipes with no changes.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Itemize
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-NEW, moved from 2.0
-\end_layout
-
-\end_inset
-
-parts of the Unix FS hierarchy which assume a single directory: /usr/share/icons
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-effect this had on share/ in Gobo
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-having to symlink /P/Foo/x.y/share into /S/L/share
-\end_layout
-
-\begin_layout Itemize
-launching helper indexing such as gtk-update-icon-cache upon each installation
- 
-\end_layout
-
-\end_deeper
-\end_deeper
-\begin_layout Itemize
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-NEW
-\end_layout
-
-\end_inset
-
-discuss symlinks
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-The 
-\begin_inset Quotes eld
-\end_inset
-
-virtualized
-\begin_inset Quotes erd
-\end_inset
-
- Unix directories of GoboLinux avoid some compatibility issues that affect
- other distributions: all executables appear at the same time in /bin, /sbin,
- /usr/bin and so on.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-the build system, the tooling for generating packages, is the central piece
- of a package management system.
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-not clear at first, but looking at package management systems they all integrate
- the build process.
- Why?
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Discuss the challenges of GoboLinux through the prism of its build system
- (?)
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Tried to make it easy for users to build packages.
-\end_layout
-
-\begin_layout Itemize
-Took inspiration from systems such as Gentoo, which was itself inspired
- from BSD Ports.
-\end_layout
-
-\begin_layout Itemize
-aim was to make the simple cases super-simple (like a 3-line script) and
- the complex cases possible (leveraging the generality of shell scripts)
-\end_layout
-
-\begin_layout Itemize
-This worked up to a point.
- Eventually, started requiring more and more metadata, even for the so-called
- simple cases.
-\end_layout
-
-\begin_layout Itemize
-Further, this metadata had to be integrated with the deployed system.
- 
-\end_layout
-
-\begin_layout Itemize
-The ArchLinux build system seems to be a modern-day successor of this style
- of build system in the Linux space.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-NEW
-\end_layout
-
-\end_inset
-
-tie in with the discussion of above section about includes? Gobo pre-/S/I
- didn't need versioned includes when applications detect the install prefix
- of libraries they depended on (e.g.
- via pkgconfig); with /S/I, pkgconfig will return includedir as /usr/include,
- so this becomes an issue: the recipe needs to point the conflicting program
- to /P/Foo/x.y/include, or the user needs to temporarily symlink the desired
- version (which is more fragile).
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Still, the compatibility gains for maintenance greatly outweigh the losses,
- of course.
-\end_layout
-
-\end_deeper
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Other filesystem-oriented approaches
-\end_layout
-
 \begin_layout Standard
 One of the earliest filesystem-oriented package managers to note is GNU
  Stow 
@@ -1973,6 +2470,27 @@ containers
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+[2016]
+\end_layout
+
+\begin_layout Plain Layout
+We could further discuss the rise of container management here 
+\end_layout
+
+\begin_layout Plain Layout
+Examples? (Kubernetes, etc.)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Comment
 status collapsed
 
@@ -2128,7 +2646,7 @@ However, Glauber Costa, one of the developers of the Linux Containers system,
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Language-specific vs.
  language-agnostic package managers
 \end_layout
@@ -3251,8 +3769,8 @@ g into native packages is untenable: for example, while the repository for
  the Debian Linux distribution features 43,000 packages in total, the Maven
  Central repository for Java alone contains over 103,000 packages, with
  the advantage that the repository is portable to various platforms, some
- of which lack a built-in universal package manager (Microsoft Windows
- being a notable case).
+ of which lack a built-in universal package manager (Microsoft Windows being
+ a notable case).
  Still, this kind of effort duplication does happen: the Debian repository
  contains 715 packages of Ruby modules; this is a far cry from the 100,000
  modules in the RubyGems repository.
@@ -3296,289 +3814,6 @@ s, but that often requires patching packages for removing hardcoded pathnames.
 \end_layout
 
 \begin_layout Subsection
-LuaRocks
-\end_layout
-
-\begin_layout Standard
-LuaRocks 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Muhammad2013LuaRocks"
-
-\end_inset
-
- is a package manager for the Lua ecosystem.
- It was developed building on our previous experience writing package management
- tools for GoboLinux and adapting them to the realities of a language-specific
- manager.
-\end_layout
-
-\begin_layout Standard
-The package specification format (
-\emph on
-rockspec
-\emph default
-) was largely influenced by GoboLinux, and LuaRocks pushes the use of declarativ
-e specifications even further.
- While the 
-\family typewriter
-.rockspec
-\family default
- files themselves are actually Lua scripts, LuaRocks loads them using a
- restricted execution environment that disables the Lua standard libraries;
- they essentially consist of variable declarations, describing the package
- via Lua tables (Lua's single data structure, which combines numeric and
- associative arrays).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-LR has a plugin-based build system like Gobo
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Another design feature inherited from GoboLinux was the support for multiple
- build back-ends.
- In most language ecosystems, at any point in time a single build tool is
- well-established as a standard (such as 
-\family typewriter
-easy_install
-\family default
- and later 
-\family typewriter
-pip
-\family default
- for Python, Rake for Ruby, ExtUtils::MakeMaker and later Module::Build
- for Perl).
- In the Lua world, by the time LuaRocks was conceived, in spite of several
- contenders, there was no clear winner as a standard build tool.
- To deal with the variety of build systems, OS-level package managers typically
- let developers call their preferred build tools explicitly in imperative
- scripts.
- LuaRocks attempted to solve this in a more controlled manner, with a system
- of plugins for the various tools, akin to the one used in GoboLinux.
- In LuaRocks, each plugin is implemented as a Lua module, selected through
- an entry in the rockspec.
- For example, using 
-\family typewriter
-build.type="cmake"
-\family default
- causes LuaRocks to invoke CMake with the appropriate arguments.
- We also included a simple built-in build system, invoked via 
-\family typewriter
-build.type="builtin"
-\family default
-, which is able to install Lua files and portably compile C code into Lua
- modules.
- This proved a success among developers: at the time of this writing, 75%
- of all packages in the LuaRocks repository use the built-in build system.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-LR supports relocatable packages
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-LuaRocks installs all packages into a sandbox directory and later moves
- them to their final destinations.
- The actual installation prefix is never told to the build system under
- execution.
- This prevents a package from hardcoding its own installation directory
- in its source code.
- While the ability to do this is a feature sometimes requested by developers
- (as it would make it easier to load asset files, for example), disallowing
- hardcoded paths ensures that every package built is relocatable.
- Having fully relocatable packages is rare on Unix, but is an expected feature
- on Windows.
- Having to cater to such conflicting requirements is a constant in writing
- portable software; to alleviate the issue of finding asset files, one of
- the authors developed a Lua module called 
-\family typewriter
-datafile
-\family default
- 
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status open
-
-\begin_layout Plain Layout
-
-http://github.com/hishamhm/datafile
-\end_layout
-
-\end_inset
-
-, also available via 
-\family typewriter
-luarocks install datafile
-\end_layout
-
-\end_inset
-
-, which resolves directory locations portably at run-time.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-LR changed its directory layout like Gobo
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-As also happened with GoboLinux, having a high-level description format
- allowed us to make radical changes to the installation layout once that
- proved necessary.
- Since LuaRocks does not provide to specification files any knowledge of
- the final directory structure, this change was even less impacting for
- users than the change on GoboLinux: all existing rockspecs could be used
- in the new directory layout without any changes.
- This level of information hiding, extending not only the installation prefix,
- but to all subdirectories, was only possible because we were dealing with
- a language-specific manager, where we could make assumptions about the
- contents of files (Lua source code and binary dynamic libraries) and how
- they would be later used (as command-line scripts or loaded by Lua through
- its package loader system).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-went from filesystem-oriented to database-oriented
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-TODO illustrate with figures
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The design changes that LuaRocks underwent from version 1.0 to version 2.0
- were due to lessons learned on the specificities of language-specific package
- management.
- The original design of LuaRocks was filesystem-oriented, like GoboLinux.
- Each version of an installed package was given its own directory and each
- category of files got its own subdirectory.
- For example, for module 
-\family typewriter
-lpeg 0.12-1
-\family default
- one would store Lua files in 
-\family typewriter
-$PREFIX/lib/luarocks/rocks/lpeg/0.12-1/lua
-\family default
-.
- LuaRocks included then a custom wrapper for Lua's 
-\family typewriter
-require()
-\family default
- function in module 
-\family typewriter
-luarocks.require
-\family default
-.
- Once this module was loaded (either via plain 
-\family typewriter
-require()
-\family default
- or via a command-line flag), subsequent calls to 
-\family typewriter
-require()
-\family default
- would match module names to file locations, taking into account the dependency
- trees of previously loaded modules.
- This allowed multiple versions of a module to coexist in an installation,
- and let modules load the correct versions of their dependencies transparently.
- The approach of loading a custom 
-\family typewriter
-require()
-\family default
- function is the same as adopted by RubyGems.
- However, many Lua users perceived the wrapper as tampering with a standard
- library function, and disliked having to perform an initial setup in their
- scripts for using modules installed via LuaRocks 
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Since Ruby 1.9, the interpreter preloads the 
-\family typewriter
-rubygems
-\family default
- module automatically; in prior versions uses had to add 
-\family typewriter
-require 'rubygems'
-\family default
- explicitly.
- This was never an option for Lua due to the language's minimalistic design,
- rendering LuaRocks as a strictly optional component.
-\end_layout
-
-\end_inset
-
-.
- For LuaRocks 2.0, the design was changed to be database-oriented, so that
- Lua modules could be installed into a typical Unix-like layout that matched
- the default configuration of the Lua interpreter's package loader.
- Since now Lua modules from all packages were installed into a single directory
- such as 
-\family typewriter
-$PREFIX/share/lua/5.3
-\family default
-, a database had to be put in place matching files to packages.
- We kept to Lua's minimalistic approach, using a plain-text manifest file
- (loadable as Lua code) as a database.
- Supporting multiple versions of the same package installed at the same
- time is still possible, but requires the now-optional custom package loader,
- which produces versioned filenames such as 
-\family typewriter
-$PREFIX/lib/5.3/lpeg-0.11-1.so
-\family default
- when the dependency graph requires an old version of a module.
-\end_layout
-
-\begin_layout Section
 Integration between languages vs.
  integration between package managers
 \end_layout
@@ -3659,88 +3894,47 @@ s, which has its own package specification format.
  the system.
 \end_layout
 
-\begin_layout Subsection
-GoboLinux Aliens
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:GoboLinux-Aliens"
+\begin_layout Standard
+\begin_inset Note Note
+status open
 
+\begin_layout Plain Layout
+We lack a discussion on 
+\series bold
+dependency management
+\series default
+ approaches (a new section?):
+\end_layout
+
+\begin_layout Itemize
+Runtime support: LuaRocks luarocks.loader module, RubyGems rubygems module
+ (used as a footnote above), ...GoboLinux Runner?
+\end_layout
+
+\begin_layout Itemize
+Tracking versus duplication:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+db approaches do tracking, Gobo fs is a way of tracking
+\end_layout
+
+\begin_layout Itemize
+more and more systems do duplication: npm just duplicates all dependencies
+ (that this is now in fashion is an important recent development); containers
+ like Docker lead to duplication too
+\end_layout
+
+\begin_layout Itemize
+granularity of duplication: dmg images vs.
+ frameworks in OS X
+\end_layout
+
+\end_deeper
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-In GoboLinux we researched the idea of building a foreign function interface
- (FFI) of sorts into our general-purpose package manager, which we called
- Aliens
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Homer2010LCA"
-
-\end_inset
-
-.
- Aliens provides an API to write shims that connect the general-purpose
- system package manager with domain-specific package managers.
-\end_layout
-
-\begin_layout Standard
-With Aliens, packages in the general-purpose manager may express a dependency
- on a package provided by a supported domain-specific manager: for example,
- a package that requires the Perl 
-\family typewriter
-XML::Parser
-\family default
- module, available from CPAN, can express a dependency 
-\begin_inset Quotes eld
-\end_inset
-
-
-\family typewriter
-CPAN:XML::Parser >= 2.34
-\family default
-
-\begin_inset Quotes erd
-\end_inset
-
-.
- The Aliens system directs such a dependency to a translating shim, which
- uses the CPAN tool to confirm whether it is satisfied, to install the package
- (and its dependencies) if required, and to upgrade it, communicating any
- necessary information back to the general-purpose manager.
- The shim can then make symbolic links for any binaries or native libraries
- that have been installed.
- Any package in one of the supported domain-specific managers is automatically
- available in this way, without creating wrapper packages.
-\end_layout
-
-\begin_layout Standard
-The domain-specific managers themselves are not modified in this process.
- Each system is given complete control of a directory tree, and the relevant
- languages configured to search in that tree.
- This protects against changes in the functioning of the third-party systems,
- and allows users to access them directly as well.
- A drawback, however, is that the domain-specific managers do not have reciproca
-l access to the wider system: installing a RubyGem that depends on a native
- library will not innately result in the native dependency being satisfied.
- The cross-platform nature of these systems makes even specifying such informati
-on in a machine-readable way difficult, although some, notably LuaRocks,
- make the attempt.
-\end_layout
-
-\begin_layout Standard
-Not all domain-specific package managers lend themselves to this integration.
- Some are resistant to placing their files within a restricted directory
- tree, preferring to install into the global filesystem hierarchy where
- they may interfere with each other and the system, while others do not
- mechanize well.
- This limited coverage is an additional drawback of the Aliens approach,
- but one that is limited to failing to solve an existing problem, rather
- than creating a new one.
- As with programming languages, a consensus implementation platform would
- inevitably be simpler, but social and technical factors make it impractical.
- FFIs, and Aliens, attempt to bridge the gap, with reasonable success.
 \end_layout
 
 \begin_layout Section

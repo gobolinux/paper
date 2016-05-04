@@ -48,15 +48,13 @@ three areas as an implementation detail. For this reason, package
 management lacks the same kind of conceptual organization present
 in other disciplines. Moreover, we lack terminology to classify them
 or to reason about their design trade-offs or issues that affect families
-of similar managers. The multitude of package managers in modern systems
-should be embraced, so we could start reasoning about them the way
-we do about ecosystems of programming languages. In this paper, we
-look at package management systems through this lens, sharing our
-experience writing package managers for both a Linux distribution
-and a scripting language. We categorize families of package managers
-and discuss their design implications beyond particular implementations.
-We also identify possibilities in the still largely unexplored area
-of package manager interoperability.
+of similar managers. In this paper, we share our experience from over
+a decade of writing package managers for both a Linux distribution
+and a scripting language, and draw on that experience to categorize
+families of package managers and discuss their design implications
+beyond particular implementations. We also identify possibilities
+in the still largely unexplored area of package manager interoperability.
+
 \end{abstract}
 
 \keywords{\noindent package management, operating systems, module systems,
@@ -112,7 +110,7 @@ and versioning rules and deployment conventions. Simply ignoring these
 environments and managing modules and dependencies by hand is tempting,
 but the complexity of heterogeneous environments and keeping track
 of dependency updates can become burdensome — all these package managers
-were created to solve pratical problems which the developer would
+were created to solve practical problems which the developer would
 have to otherwise directly handle, after all. Another alternative
 that is often proposed, especially by users of operating systems that
 feature a system-provided package manager (as is the case of most
@@ -134,20 +132,365 @@ different paradigms, with well-known tradeoffs. We also accept that
 there is room for domain-specific languages (DSLs) and for general-purpose
 languages. Most importantly, we know how to set boundaries for each
 language and how to make DSLs and general-purpose languages interact.
-
-We argue that all of these observations can be made with regard to
-package management as well. In this paper, we discuss how these observations
-map from the world of programming languages to that of package managers.
 Most existing package management systems, however, are still oblivious
 to the fact that they exist as part of a larger ecosystem, with parts
-of it handled by other package managers. By discussing how programming
-languages deal with these issues, we point to directions on how package
-managers could follow their example, drawing on our experiences developing
-both a system-wide package manager \cite{Muhammad2002WSL,Homer2010LCA}
-and a language-specific package manager \cite{Muhammad2013LuaRocks}. 
+of it handled by other package managers.
+
+In this paper we draw on our own unique combination of experiences
+on all sides of this topic: developing a system-wide package manager
+for a Linux distribution \cite{Muhammad2002WSL,Homer2010LCA}, creating
+a language-specific package manager \cite{Muhammad2013LuaRocks},
+and integrating system and language-specific package managers \cite{Homer2010LCA},
+as well as being simply developers and end users of other software.
+We will present these experiences and propose categorizations and
+commonalities we have found in them, and aim to show that — as all
+of the observations about languages above can be made equally about
+package management — package management can and should follow the
+lead of programming languages in the solution space as well.
 
 
-\section{Paradigms of package management: filesystem-oriented vs. database-oriented}
+\section{Background: package management}
+
+
+
+
+\section{Experiences in package management}
+
+
+\subsection{GoboLinux\label{sub:GoboLinux}}
+
+
+
+GoboLinux \cite{Muhammad2002WSL} is a Linux distribution based on
+the concept of installing each package in a separate installation
+prefix. It was the first Linux distribution to be entirely based on
+a filesystem-oriented approach to package management. Each program
+is installed under its own versioned directory, such as \texttt{/Programs/Bash/4.3.28}
+and \texttt{/Programs/GTK+/3.16.0}. This direct mapping of the package
+structure to the directory layout allows one to inspect the system
+using standard Unix commands. For example, to get a list of installed
+packages, one only needs to issue \texttt{ls /Programs}.
+
+As well as the individual program trees, a tree of symbolic links
+also exists created collecting references to the files of every program
+in the system together. A single directory contains symlinks matching
+the structure of the ``\texttt{lib}'' directory of every program,
+paralleling the contents of \texttt{/usr/lib} in a conventional layout.
+In this way only a single entry in PATH is needed to find every executable
+and libraries can be loaded using the ordinary linker mechanisms without
+further configuration. An additional layer of fixed symlinks provides
+backwards compatibility with the conventional Filesystem Hierarchy
+Standard\cite{fhs}.
+
+Since packages become self-described through the GoboLinux filesystem
+hierarchy, the distribution features its own set of system management
+tools built around scripting languages. At first, these scripts automated
+tasks such as the installation of new packages (simply compressed
+tar archives) and their ``activation'' in the system (namely, the
+creation of symbolic links to their libraries, headers, executables,
+and manuals) as well as their removal (achieved by deleting their
+directory and the now-broken symbolic links). Over time, these scripts
+inevitably became more complex as they were integrated with other
+system tools and served as the pillars for \emph{Compile}, GoboLinux's
+build system.
+
+Taking inspiration from Gentoo's Portage system (which was itself
+inspired from BSD Ports) \cite{Thiruvathukal2004Gentoo}, Compile
+makes use of recipes that describe how to fetch the source code of
+a piece of software and the sequence of commands required to build
+and install it. Because recipes are frequently hand-written, it is
+essential to make them as simple as possible so that users are encouraged
+to contribute to the distribution's ecosystem. The approach adopted
+by Compile is to embed as much code as possible in its build systems'
+backends (e.g. Autoconf, Makefile, xmkmf, CMake), allowing the majority
+of recipes to be described with little more than a couple of lines.
+More complex build cases can be described by extending recipes with
+regular shell scripting. Compile can also enable the installation
+of packages through third-party package managers. More details of
+that feature are given in Section \ref{sub:GoboLinux-Aliens}.
+
+Up to GoboLinux 014.01, packages built with Compile had their prefixes
+set to their versioned directory during their compilation. That had
+a consequence in a considerable extent of software that use their
+prefix directory for run-time lookups of \textit{shared }files (i.e.
+those under\texttt{ /usr/share}) and impacted the layout of the GoboLinux
+directory tree and its management scripts. Each versioned directory
+received a \texttt{Shared} sub-directory containing that package´s
+own files and a symbolic link named \texttt{share p}ointing back to
+\texttt{/System/Links/Shared} (which managed links to the files of
+each package's \texttt{Shared} directory), leading to code growth
+and a deviation to the distribution's original design. As the Linux
+userland ecosystem evolved, some new packages started to share files
+through \texttt{/usr/lib\{64\}}, too. It is easy to picture how complicated
+the task of a modern package manager can be nowadays, as even subtle
+changes to filesystem namespace semantics can have profound impact
+on the organization of this class of software. In GoboLinux, we fixed
+this problem once and for all by introducing major changes to the
+system's directory layout and by using a new compilation prefix \texttt{/System/Index}
+common to all packages (Figure \ref{fig:gobofs}). Through this structure,
+even though packages are organized in self-contained directories under
+\texttt{/Programs}, applications can find their files through the
+traditional Unix hierarchy, as \texttt{/usr} is a symbolic link to
+\texttt{/System/Index}. 
+
+\begin{figure*}[t]
+\begin{centering}
+\includegraphics[scale=0.8]{gobo_systemindex}
+\par\end{centering}
+
+\begin{centering}
+(a) The filesystem is indexed with the use of directories and symbolic
+links.\\
+~
+\par\end{centering}
+
+\begin{centering}
+\includegraphics[scale=0.8]{gobo_programs}
+\par\end{centering}
+
+\begin{centering}
+(b) Packages are managed through a versioned directory tree.\\
+~
+\par\end{centering}
+
+\protect\caption{\label{fig:gobofs}GoboLinux file system hierarchy}
+\end{figure*}
+
+
+\begin{comment}
+The mostly declarative style of GoboLinux recipes proved to be a success
+among users and gave us greater freedom when modifying the build process.
+We made major changes to the system's directory layout between releases
+014 and 015 of the distribution, and the use of high-level descriptions
+and our cautious avoidance of hardcoded paths allowed us to reuse
+the majority of recipes with no changes.
+\end{comment}
+
+
+\begin{comment}
+\begin{itemize}
+\item parts of the Unix FS hierarchy which assume a single directory: /usr/share/icons
+
+\begin{itemize}
+\item effect this had on share/ in Gobo
+
+\begin{itemize}
+\item having to symlink /P/Foo/x.y/share into /S/L/share
+\item launching helper indexing such as gtk-update-icon-cache upon each
+installation 
+\end{itemize}
+\end{itemize}
+\item discuss symlinks
+
+\begin{itemize}
+\item The ``virtualized'' Unix directories of GoboLinux avoid some compatibility
+issues that affect other distributions: all executables appear at
+the same time in /bin, /sbin, /usr/bin and so on.
+\end{itemize}
+\item the build system, the tooling for generating packages, is the central
+piece of a package management system.
+
+\begin{itemize}
+\item not clear at first, but looking at package management systems they
+all integrate the build process. Why?
+\end{itemize}
+\item Discuss the challenges of GoboLinux through the prism of its build
+system (?)
+
+\begin{itemize}
+\item Tried to make it easy for users to build packages.
+\item Took inspiration from systems such as Gentoo, which was itself inspired
+from BSD Ports.
+\item aim was to make the simple cases super-simple (like a 3-line script)
+and the complex cases possible (leveraging the generality of shell
+scripts)
+\item This worked up to a point. Eventually, started requiring more and
+more metadata, even for the so-called simple cases.
+\item Further, this metadata had to be integrated with the deployed system. 
+\item The ArchLinux build system seems to be a modern-day successor of this
+style of build system in the Linux space.
+\end{itemize}
+\item tie in with the discussion of above section about includes? Gobo
+pre-/S/I didn't need versioned includes when applications detect the
+install prefix of libraries they depended on (e.g. via pkgconfig);
+with /S/I, pkgconfig will return includedir as /usr/include, so this
+becomes an issue: the recipe needs to point the conflicting program
+to /P/Foo/x.y/include, or the user needs to temporarily symlink the
+desired version (which is more fragile).
+
+\begin{itemize}
+\item Still, the compatibility gains for maintenance greatly outweigh the
+losses, of course.\end{itemize}
+\end{itemize}
+\end{comment}
+
+
+
+\subsection{LuaRocks}
+
+
+
+LuaRocks \cite{Muhammad2013LuaRocks} is a package manager for the
+ecosystem of the Lua programming language. It was developed building
+on our previous experience writing package management tools for GoboLinux
+and adapting them to the realities of a language-specific manager.
+
+The package specification format (\emph{rockspec}) was largely influenced
+by GoboLinux, and LuaRocks pushes the use of declarative specifications
+even further. While the \texttt{.rockspec} files themselves are actually
+Lua scripts, LuaRocks loads them using a restricted execution environment
+that disables the Lua standard libraries; they essentially consist
+of variable declarations, describing the package via Lua tables (Lua's
+single data structure, which combines numeric and associative arrays).
+
+
+
+Another design feature inherited from GoboLinux was the support for
+multiple build back-ends. In most language ecosystems, at any point
+in time a single build tool is well-established as a standard (such
+as \texttt{easy\_install} and later \texttt{pip} for Python, Rake
+for Ruby, ExtUtils::MakeMaker and later Module::Build for Perl). In
+the Lua world, by the time LuaRocks was conceived, in spite of several
+contenders, there was no clear winner as a standard build tool. To
+deal with the variety of build systems, OS-level package managers
+typically let developers call their preferred build tools explicitly
+in imperative scripts. LuaRocks attempted to solve this in a more
+controlled manner, with a system of plugins for the various tools,
+akin to the one used in GoboLinux. In LuaRocks, each plugin is implemented
+as a Lua module, selected through an entry in the rockspec. For example,
+using \texttt{build.type=\textquotedbl{}cmake\textquotedbl{}} causes
+LuaRocks to invoke CMake with the appropriate arguments. We also included
+a simple built-in build system, invoked via \texttt{build.type=\textquotedbl{}builtin\textquotedbl{}},
+which is able to install Lua files and portably compile C code into
+Lua modules. This proved a success among developers: at the time of
+this writing, 75\% of all packages in the LuaRocks repository use
+the built-in build system.
+
+
+
+LuaRocks installs all packages into a sandbox directory and later
+moves them to their final destinations. The actual installation prefix
+is never told to the build system under execution. This prevents a
+package from hardcoding its own installation directory in its source
+code. While the ability to do this is a feature sometimes requested
+by developers (as it would make it easier to load asset files, for
+example), disallowing hardcoded paths ensures that every package built
+is relocatable. Having fully relocatable packages is rare on Unix,
+but is an expected feature on Windows. Having to cater to such conflicting
+requirements is a constant in writing portable software; to alleviate
+the issue of finding asset files, one of the authors developed a Lua
+module called \texttt{datafile} %
+\footnote{\url{http://github.com/hishamhm/datafile}, also available via \texttt{luarocks
+install datafile}%
+}, which resolves directory locations portably at run-time.
+
+
+
+As also happened with GoboLinux, having a high-level description format
+allowed us to make radical changes to the installation layout once
+that proved necessary. Since LuaRocks does not provide to specification
+files any knowledge of the final directory structure, this change
+was even less impacting for users than the change on GoboLinux: all
+existing rockspecs could be used in the new directory layout without
+any changes. This level of information hiding, extending not only
+the installation prefix, but to all subdirectories, was only possible
+because we were dealing with a language-specific manager, where we
+could make assumptions about the contents of files (Lua source code
+and binary dynamic libraries) and how they would be later used (as
+command-line scripts or loaded by Lua through its package loader system).
+
+
+
+
+
+The design changes that LuaRocks underwent from version 1.0 to version
+2.0 were due to lessons learned on the specificities of language-specific
+package management. The original design of LuaRocks was filesystem-oriented,
+like GoboLinux. Each version of an installed package was given its
+own directory and each category of files got its own subdirectory.
+For example, for module \texttt{lpeg 0.12-1} one would store Lua files
+in \texttt{\$PREFIX/lib/luarocks/rocks/lpeg/0.12-1/lua}. LuaRocks
+included then a custom wrapper for Lua's \texttt{require()} function
+in module \texttt{luarocks.require}. Once this module was loaded (either
+via plain \texttt{require()} or via a command-line flag), subsequent
+calls to \texttt{require()} would match module names to file locations,
+taking into account the dependency trees of previously loaded modules.
+This allowed multiple versions of a module to coexist in an installation,
+and let modules load the correct versions of their dependencies transparently.
+The approach of loading a custom \texttt{require()} function is the
+same as adopted by RubyGems. However, many Lua users perceived the
+wrapper as tampering with a standard library function, and disliked
+having to perform an initial setup in their scripts for using modules
+installed via LuaRocks %
+\footnote{Since Ruby 1.9, the interpreter preloads the \texttt{rubygems} module
+automatically; in prior versions uses had to add \texttt{require 'rubygems'}
+explicitly. This was never an option for Lua due to the language's
+minimalistic design, rendering LuaRocks as a strictly optional component.%
+}. For LuaRocks 2.0, the design was changed to be database-oriented,
+so that Lua modules could be installed into a typical Unix-like layout
+that matched the default configuration of the Lua interpreter's package
+loader. Since now Lua modules from all packages were installed into
+a single directory such as \texttt{\$PREFIX/share/lua/5.3}, a database
+had to be put in place matching files to packages. We kept to Lua's
+minimalistic approach, using a plain-text manifest file (loadable
+as Lua code) as a database. Supporting multiple versions of the same
+package installed at the same time is still possible, but requires
+the now-optional custom package loader, which produces versioned filenames
+such as \texttt{\$PREFIX/lib/5.3/lpeg-0.11-1.so} when the dependency
+graph requires an old version of a module.
+
+
+\subsection{GoboLinux Aliens\label{sub:GoboLinux-Aliens}}
+
+In GoboLinux we researched the idea of building a foreign function
+interface (FFI) of sorts into our general-purpose package manager,
+which we called Aliens\cite{Homer2010LCA}. Aliens provides an API
+to write shims that connect the general-purpose system package manager
+with domain-specific package managers.
+
+With Aliens, packages in the general-purpose manager may express a
+dependency on a package provided by a supported domain-specific manager:
+for example, a package that requires the Perl \texttt{XML::Parser}
+module, available from CPAN, can express a dependency ``\texttt{CPAN:XML::Parser
+>= 2.34}''. The Aliens system directs such a dependency to a translating
+shim, which uses the CPAN tool to confirm whether it is satisfied,
+to install the package (and its dependencies) if required, and to
+upgrade it, communicating any necessary information back to the general-purpose
+manager. The shim can then make symbolic links for any binaries or
+native libraries that have been installed. Any package in one of the
+supported domain-specific managers is automatically available in this
+way, without creating wrapper packages.
+
+The domain-specific managers themselves are not modified in this process.
+Each system is given complete control of a directory tree, and the
+relevant languages configured to search in that tree. This protects
+against changes in the functioning of the third-party systems, and
+allows users to access them directly as well. A drawback, however,
+is that the domain-specific managers do not have reciprocal access
+to the wider system: installing a RubyGem that depends on a native
+library will not innately result in the native dependency being satisfied.
+The cross-platform nature of these systems makes even specifying such
+information in a machine-readable way difficult, although some, notably
+LuaRocks, make the attempt.
+
+Not all domain-specific package managers lend themselves to this integration.
+Some are resistant to placing their files within a restricted directory
+tree, preferring to install into the global filesystem hierarchy where
+they may interfere with each other and the system, while others do
+not mechanize well. This limited coverage is an additional drawback
+of the Aliens approach, but one that is limited to failing to solve
+an existing problem, rather than creating a new one. As with programming
+languages, a consensus implementation platform would inevitably be
+simpler, but social and technical factors make it impractical. FFIs,
+and Aliens, attempt to bridge the gap, with reasonable success.
+
+
+\section{Lessons learned}
+
+
+
+
+\subsection{Paradigms of package management: filesystem-oriented vs. database-oriented}
 
 It is customary to organize the landscape of programming languages
 into paradigms, such as imperative, functional, object-oriented, and
@@ -173,7 +516,7 @@ In the world of package managers, we can also identify general paradigms,
 by looking at their core concepts and design trade-offs. Package managers
 are programs that map relations between files and packages (which
 correspond to sets of files), and between packages (dependencies),
-allowing users to perform maintainance of their systems in terms of
+allowing users to perform maintenance of their systems in terms of
 packages rather than at the level of individual files. The central
 design choice in a package manager, therefore, is how to perform those
 mappings.
@@ -191,7 +534,7 @@ on a database, or an equivalent structure that acts as one. We say
 in these cases that management is \emph{database-oriented}. Most package
 managers for Linux distributions, such as RPM and dpkg/APT, are database-oriented.
 Filesystem-oriented package management is more often seen in language-specific
-package managers, such as npm and Bower, but as we discuss in Section
+package managers, such as npm and Bower, but as we discussed in Section
 \ref{sub:GoboLinux}, it can be performed system-wide.
 
 Being database-oriented does not imply an opaque, binary database
@@ -405,176 +748,6 @@ examples}
 \end{figure*}
 
 
-
-\subsection{GoboLinux\label{sub:GoboLinux}}
-
-GoboLinux \cite{Muhammad2002WSL} is a Linux distribution based on
-the concept of installing each package in a separate installation
-prefix. It was the first Linux distribution to be entirely based on
-a filesystem-oriented approach to package management. Each program
-is installed under its own versioned directory, such as \texttt{/Programs/Bash/4.3.28}
-and \texttt{/Programs/GTK+/3.16.0}. This direct mapping of the package
-structure to the directory layout allows one to inspect the system
-using standard Unix commands. For example, to get a list of installed
-packages, one only needs to issue \texttt{ls /Programs}.
-
-As well as the individual program trees, a tree of symbolic links
-also exists created collecting references to the files of every program
-in the system together. A single directory contains symlinks matching
-the structure of the ``\texttt{lib}'' directory of every program,
-paralleling the contents of \texttt{/usr/lib} in a conventional layout.
-In this way only a single entry in PATH is needed to find every executable
-and libraries can be loaded using the ordinary linker mechanisms without
-further configuration. An additional layer of fixed symlinks provides
-backwards compatibility with the conventional Filesystem Hierarchy
-Standard\cite{fhs}.
-
-Since packages become self-described through the GoboLinux filesystem
-hierarchy, the distribution features its own set of system management
-tools built around scripting languages. At first, these scripts automated
-tasks such as the installation of new packages (simply compressed
-tar archives) and their ``activation'' in the system (namely, the
-creation of symbolic links to their libraries, headers, executables,
-and manuals) as well as their removal (achieved by deleting their
-directory and the now-broken symbolic links). Over time, these scripts
-inevitably became more complex as they were integrated with other
-system tools and served as the pillars for \emph{Compile}, GoboLinux's
-build system.
-
-Taking inspiration from Gentoo's Portage system (which was itself
-inspired from BSD Ports) \cite{Thiruvathukal2004Gentoo}, Compile
-makes use of recipes that describe how to fetch the source code of
-a piece of software and the sequence of commands required to build
-and install it. Because recipes are frequently hand-written, it is
-essential to make them as simple as possible so that users are encouraged
-to contribute to the distribution's ecosystem. The approach adopted
-by Compile is to embed as much code as possible in its build systems'
-backends (e.g. Autoconf, Makefile, xmkmf, CMake), allowing the majority
-of recipes to be described with little more than a couple of lines.
-More complex build cases can be described by extending recipes with
-regular shell scripting. Compile can also enable the installation
-of packages through third-party package managers. More details of
-that feature are given in Section \ref{sub:GoboLinux-Aliens}.
-
-Up to GoboLinux 014.01, packages built with Compile had their prefixes
-set to their versioned directory during their compilation. That had
-a consequence in a considerable extent of software that use their
-prefix directory for run-time lookups of \textit{shared }files (i.e.
-those under\texttt{ /usr/share}) and impacted the layout of the GoboLinux
-directory tree and its management scripts. Each versioned directory
-received a \texttt{Shared} sub-directory containing that package´s
-own files and a symbolic link named \texttt{share p}ointing back to
-\texttt{/System/Links/Shared} (which managed links to the files of
-each package's \texttt{Shared} directory), leading to code growth
-and a deviation to the distribution's original design. As the Linux
-userland ecosystem evolved, some new packages started to share files
-through \texttt{/usr/lib\{64\}}, too. It is easy to picture how complicated
-the task of a modern package manager can be nowadays, as even subtle
-changes to filesystem namespace semantics can have profound impact
-on the organization of this class of software. In GoboLinux, we fixed
-this problem once and for all by introducing major changes to the
-system's directory layout and by using a new compilation prefix \texttt{/System/Index}
-common to all packages (Figure \ref{fig:gobofs}). Through this structure,
-even though packages are organized in self-contained directories under
-\texttt{/Programs}, applications can find their files through the
-traditional Unix hierarchy, as \texttt{/usr} is a symbolic link to
-\texttt{/System/Index}. 
-
-\begin{figure*}[t]
-\begin{centering}
-\includegraphics[scale=0.8]{gobo_systemindex}
-\par\end{centering}
-
-\begin{centering}
-(a) The filesystem is indexed with the use of directories and symbolic
-links.\\
-~
-\par\end{centering}
-
-\begin{centering}
-\includegraphics[scale=0.8]{gobo_programs}
-\par\end{centering}
-
-\begin{centering}
-(b) Packages are managed through a versioned directory tree.\\
-~
-\par\end{centering}
-
-\protect\caption{\label{fig:gobofs}GoboLinux file system hierarchy}
-\end{figure*}
-
-
-\begin{comment}
-The mostly declarative style of GoboLinux recipes proved to be a success
-among users and gave us greater freedom when modifying the build process.
-We made major changes to the system's directory layout between releases
-014 and 015 of the distribution, and the use of high-level descriptions
-and our cautious avoidance of hardcoded paths allowed us to reuse
-the majority of recipes with no changes.
-\end{comment}
-
-
-\begin{comment}
-\begin{itemize}
-\item parts of the Unix FS hierarchy which assume a single directory: /usr/share/icons
-
-\begin{itemize}
-\item effect this had on share/ in Gobo
-
-\begin{itemize}
-\item having to symlink /P/Foo/x.y/share into /S/L/share
-\item launching helper indexing such as gtk-update-icon-cache upon each
-installation 
-\end{itemize}
-\end{itemize}
-\item discuss symlinks
-
-\begin{itemize}
-\item The ``virtualized'' Unix directories of GoboLinux avoid some compatibility
-issues that affect other distributions: all executables appear at
-the same time in /bin, /sbin, /usr/bin and so on.
-\end{itemize}
-\item the build system, the tooling for generating packages, is the central
-piece of a package management system.
-
-\begin{itemize}
-\item not clear at first, but looking at package management systems they
-all integrate the build process. Why?
-\end{itemize}
-\item Discuss the challenges of GoboLinux through the prism of its build
-system (?)
-
-\begin{itemize}
-\item Tried to make it easy for users to build packages.
-\item Took inspiration from systems such as Gentoo, which was itself inspired
-from BSD Ports.
-\item aim was to make the simple cases super-simple (like a 3-line script)
-and the complex cases possible (leveraging the generality of shell
-scripts)
-\item This worked up to a point. Eventually, started requiring more and
-more metadata, even for the so-called simple cases.
-\item Further, this metadata had to be integrated with the deployed system. 
-\item The ArchLinux build system seems to be a modern-day successor of this
-style of build system in the Linux space.
-\end{itemize}
-\item tie in with the discussion of above section about includes? Gobo
-pre-/S/I didn't need versioned includes when applications detect the
-install prefix of libraries they depended on (e.g. via pkgconfig);
-with /S/I, pkgconfig will return includedir as /usr/include, so this
-becomes an issue: the recipe needs to point the conflicting program
-to /P/Foo/x.y/include, or the user needs to temporarily symlink the
-desired version (which is more fragile).
-
-\begin{itemize}
-\item Still, the compatibility gains for maintenance greatly outweigh the
-losses, of course.\end{itemize}
-\end{itemize}
-\end{comment}
-
-
-
-\subsection{Other filesystem-oriented approaches}
-
 One of the earliest filesystem-oriented package managers to note is
 GNU Stow \cite{stow}, which inherited ideas from Carnegie Mellon's
 Depot \cite{Colyer1992Depot}. Stow focuses on the management of programs
@@ -630,6 +803,8 @@ this only shifts the problem to a larger granularity: the containers
 themselves need to be managed, and various services communicating
 with each other in separate containers will also have versioning compatibility
 requirements.
+
+
 
 \begin{comment}
 \begin{itemize}
@@ -694,7 +869,7 @@ minimalistic operating system targeting hypervisor-based architectures.\end{item
 
 
 
-\section{Language-specific vs. language-agnostic package managers}
+\subsection{Language-specific vs. language-agnostic package managers}
 
 \begin{figure*}[t]
 \begin{centering}
@@ -824,7 +999,7 @@ packages is untenable: for example, while the repository for the Debian
 Linux distribution features 43,000 packages in total, the Maven Central
 repository for Java alone contains over 103,000 packages, with the
 advantage that the repository is portable to various platforms, some
-of which lacking a built-in universal package manager (Microsoft Windows
+of which lack a built-in universal package manager (Microsoft Windows
 being a notable case). Still, this kind of effort duplication does
 happen: the Debian repository contains 715 packages of Ruby modules;
 this is a far cry from the 100,000 modules in the RubyGems repository.
@@ -851,119 +1026,7 @@ their packages are not adapted for that, so per-user installations
 are discouraged.
 
 
-\subsection{LuaRocks}
-
-LuaRocks \cite{Muhammad2013LuaRocks} is a package manager for the
-Lua ecosystem. It was developed building on our previous experience
-writing package management tools for GoboLinux and adapting them to
-the realities of a language-specific manager.
-
-The package specification format (\emph{rockspec}) was largely influenced
-by GoboLinux, and LuaRocks pushes the use of declarative specifications
-even further. While the \texttt{.rockspec} files themselves are actually
-Lua scripts, LuaRocks loads them using a restricted execution environment
-that disables the Lua standard libraries; they essentially consist
-of variable declarations, describing the package via Lua tables (Lua's
-single data structure, which combines numeric and associative arrays).
-
-
-
-Another design feature inherited from GoboLinux was the support for
-multiple build back-ends. In most language ecosystems, at any point
-in time a single build tool is well-established as a standard (such
-as \texttt{easy\_install} and later \texttt{pip} for Python, Rake
-for Ruby, ExtUtils::MakeMaker and later Module::Build for Perl). In
-the Lua world, by the time LuaRocks was conceived, in spite of several
-contenders, there was no clear winner as a standard build tool. To
-deal with the variety of build systems, OS-level package managers
-typically let developers call their preferred build tools explicitly
-in imperative scripts. LuaRocks attempted to solve this in a more
-controlled manner, with a system of plugins for the various tools,
-akin to the one used in GoboLinux. In LuaRocks, each plugin is implemented
-as a Lua module, selected through an entry in the rockspec. For example,
-using \texttt{build.type=\textquotedbl{}cmake\textquotedbl{}} causes
-LuaRocks to invoke CMake with the appropriate arguments. We also included
-a simple built-in build system, invoked via \texttt{build.type=\textquotedbl{}builtin\textquotedbl{}},
-which is able to install Lua files and portably compile C code into
-Lua modules. This proved a success among developers: at the time of
-this writing, 75\% of all packages in the LuaRocks repository use
-the built-in build system.
-
-
-
-LuaRocks installs all packages into a sandbox directory and later
-moves them to their final destinations. The actual installation prefix
-is never informed to the build system under execution. This prevents
-a package from hardcoding its own installation directory in its source
-code. While the ability to do this is a feature sometimes requested
-by developers (as it would make it easier to load asset files, for
-example), disallowing hardcoded paths ensures that every package built
-is relocatable. Having fully relocatable packages is rare on Unix,
-but is an expected feature on Windows. Having to cater to such conflicting
-requirements is a constant in writing portable software; to alleviate
-the issue of finding asset files, one of the authors developed a Lua
-module called \texttt{datafile} %
-\footnote{\url{http://github.com/hishamhm/datafile}, also available via \texttt{luarocks
-install datafile}%
-}, which resolves directory locations portably at run-time.
-
-
-
-As it also happened with GoboLinux, having a high-level description
-format allowed us to make radical changes to the installation layout
-once that proved necessary. Since LuaRocks does not provide to specification
-files any knowledge of the final directory structure, this change
-was even less impacting for users than the change on GoboLinux: all
-existing rockspecs could be used in the new directory layout without
-any changes. This level of information hiding, extending not only
-the installation prefix, but to all subdirectories, was only possible
-because we were dealing with a language-specific manager, where we
-could make assumptions about the contents of files (Lua source code
-and binary dynamic libraries) and how they would be later used (as
-command-line scripts or loaded by Lua through its package loader system).
-
-
-
-
-
-The design changes that LuaRocks underwent from version 1.0 to version
-2.0 were due to lessons learned on the specificities of language-specific
-package management. The original design of LuaRocks was filesystem-oriented,
-like GoboLinux. Each version of an installed package was given its
-own directory and each category of files got its own subdirectory.
-For example, for module \texttt{lpeg 0.12-1} one would store Lua files
-in \texttt{\$PREFIX/lib/luarocks/rocks/lpeg/0.12-1/lua}. LuaRocks
-included then a custom wrapper for Lua's \texttt{require()} function
-in module \texttt{luarocks.require}. Once this module was loaded (either
-via plain \texttt{require()} or via a command-line flag), subsequent
-calls to \texttt{require()} would match module names to file locations,
-taking into account the dependency trees of previously loaded modules.
-This allowed multiple versions of a module to coexist in an installation,
-and let modules load the correct versions of their dependencies transparently.
-The approach of loading a custom \texttt{require()} function is the
-same as adopted by RubyGems. However, many Lua users perceived the
-wrapper as tampering with a standard library function, and disliked
-having to perform an initial setup in their scripts for using modules
-installed via LuaRocks %
-\footnote{Since Ruby 1.9, the interpreter preloads the \texttt{rubygems} module
-automatically; in prior versions uses had to add \texttt{require 'rubygems'}
-explicitly. This was never an option for Lua due to the language's
-minimalistic design, rendering LuaRocks as a strictly optional component.%
-}. For LuaRocks 2.0, the design was changed to be database-oriented,
-so that Lua modules could be installed into a typical Unix-like layout
-that matched the default configuration of the Lua interpreter's package
-loader. Since now Lua modules from all packages were installed into
-a single directory such as \texttt{\$PREFIX/share/lua/5.3}, a database
-had to be put in place matching files to packages. We kept to Lua's
-minimalistic approach, using a plain-text manifest file (loadable
-as Lua code) as a database. Supporting multiple versions of the same
-package installed at the same time is still possible, but requires
-the now-optional custom package loader, which produces versioned filenames
-such as \texttt{\$PREFIX/lib/5.3/lpeg-0.11-1.so} when the dependency
-graph requires an old version of a module.
-
-
-\section{Integration between languages vs. integration between package managers}
+\subsection{Integration between languages vs. integration between package managers}
 
 Programming languages, both general-purpose and domain-specific, frequently
 have points of integration between each other, in the form of foreign
@@ -1002,65 +1065,22 @@ scripts launch LuaRocks to generate Lua modules and then collect and
 integrate them to the system.
 
 
-\subsection{GoboLinux Aliens\label{sub:GoboLinux-Aliens}}
-
-In GoboLinux we researched the idea of building a foreign function
-interface (FFI) of sorts into our general-purpose package manager,
-which we called Aliens\cite{Homer2010LCA}. Aliens provides an API
-to write shims that connect the general-purpose system package manager
-with domain-specific package managers.
-
-With Aliens, packages in the general-purpose manager may express a
-dependency on a package provided by a supported domain-specific manager:
-for example, a package that requires the Perl \texttt{XML::Parser}
-module, available from CPAN, can express a dependency ``\texttt{CPAN:XML::Parser
->= 2.34}''. The Aliens system directs such a dependency to a translating
-shim, which uses the CPAN tool to confirm whether it is satisfied,
-to install the package (and its dependencies) if required, and to
-upgrade it, communicating any necessary information back to the general-purpose
-manager. The shim can then make symbolic links for any binaries or
-native libraries that have been installed. Any package in one of the
-supported domain-specific managers is automatically available in this
-way, without creating wrapper packages.
-
-The domain-specific managers themselves are not modified in this process.
-Each system is given complete control of a directory tree, and the
-relevant languages configured to search in that tree. This protects
-against changes in the functioning of the third-party systems, and
-allows users to access them directly as well. A drawback, however,
-is that the domain-specific managers do not have reciprocal access
-to the wider system: installing a RubyGem that depends on a native
-library will not innately result in the native dependency being satisfied.
-The cross-platform nature of these systems makes even specifying such
-information in a machine-readable way difficult, although some, notably
-LuaRocks, make the attempt.
-
-Not all domain-specific package managers lend themselves to this integration.
-Some are resistant to placing their files within a restricted directory
-tree, preferring to install into the global filesystem hierarchy where
-they may interfere with each other and the system, while others do
-not mechanize well. This limited coverage is an additional drawback
-of the Aliens approach, but one that is limited to failing to solve
-an existing problem, rather than creating a new one. As with programming
-languages, a consensus implementation platform would inevitably be
-simpler, but social and technical factors make it impractical. FFIs,
-and Aliens, attempt to bridge the gap, with reasonable success.
 
 
 \section{Conclusion}
 
-In this paper, we presented an analysis of the landscape of existing
-methodologies for package management, substantiated by our practical
-experiences in the development and maintenance over the years of a
-system-wide package manager for a Linux distribution and a portable
-package manager for a scripting language. Package management is an
-area that is notably neglected in academic studies, but is one of
-practical impact in the design of modern operating systems and module
-systems for programming languages, and a central issue in system administration.
-With this work, we provide the beginnings of a conceptual organization
-of approaches for package management, an area that lacks even common
-terminology, and where many of the same design issues are faced and
-dealt with time and again.
+In this paper, we presented our practical experiences in the development
+and maintenance over the years of a system-wide package manager for
+a Linux distribution and a portable package manager for a scripting
+language, and an analysis of the landscape of existing methodologies
+for package management. Package management is an area that is notably
+neglected in academic studies, but is one of practical impact in the
+design of modern operating systems and module systems for programming
+languages, and a central issue in system administration. With this
+work, we provide the beginnings of a conceptual organization of approaches
+for package management, an area that lacks even common terminology,
+and where many of the same design issues are faced and dealt with
+time and again.
 
 In the realm of programming languages, the existing conceptual organization
 is useful in various levels. As one learns about a new programming
@@ -1126,9 +1146,6 @@ filesystem organization and with run-time systems. Doing this from
 early on keeps possibilities open for better designs that less prone
 to ``dependency hell'' and versioning conflicts.
 
-\begin{acks}
-Gobo
-\end{acks}
 \renewcommand{\refname}{REFERENCES}
 
 \bibliographystyle{wileyj}
