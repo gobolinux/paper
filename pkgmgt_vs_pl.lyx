@@ -1,25 +1,37 @@
-#LyX 2.1 created this file. For more info see http://www.lyx.org/
-\lyxformat 474
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
-\textclass sigplanconf
-\options times,10pt
-\use_default_options true
+\save_transient_properties true
+\origin unavailable
+\textclass acmart
+\begin_preamble
+\acmConference{PLOS 2019}{October 29, 2019}{Huntsville, Canada}
+\acmMonth{10}
+\acmYear{2019}
+\copyrightyear{2019}
+\setcopyright{acmlicensed}
+\settopmatter{printacmref=false}
+\end_preamble
+\options format=sigplan,10pt
+\use_default_options false
 \maintain_unincluded_children false
 \language english
 \language_package default
 \inputencoding utf8
 \fontencoding global
-\font_roman times
-\font_sans default
-\font_typewriter default
-\font_math auto
+\font_roman "times" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
-\font_tt_scale 100
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -29,7 +41,7 @@
 \spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -40,15 +52,16 @@
 \use_package stackrel 1
 \use_package stmaryrd 1
 \use_package undertilde 1
-\cite_engine basic
-\cite_engine_type default
-\biblio_style 
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style \use_bibtopic false
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
 \justification true
 \use_refstyle 1
+\use_minted 0
 \index Index
 \shortcut idx
 \color #008000
@@ -61,7 +74,10 @@
 \tocdepth 3
 \paragraph_separation indent
 \paragraph_indentation default
-\quotes_language english
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
@@ -75,6 +91,15 @@
 \begin_body
 
 \begin_layout Title
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Understanding package management
+\end_layout
+
+\end_inset
+
 Understanding package management
 \begin_inset Newline newline
 \end_inset
@@ -83,154 +108,52 @@ through the lens of programming languages
 \end_layout
 
 \begin_layout Author
-\begin_inset Argument 1
-status open
-
-\begin_layout Plain Layout
 Hisham Muhammad
 \end_layout
 
-\end_inset
-
-
-\begin_inset Argument 2
-status open
-
-\begin_layout Plain Layout
-PUC-Rio - Rio de Janeiro, Brazil
+\begin_layout Affiliation
+Kong Inc.
 \end_layout
 
-\end_inset
-
-
-\begin_inset Argument 3
-status open
-
-\begin_layout Plain Layout
-hisham.hm@gmail.com
-\end_layout
-
-\end_inset
-
-
+\begin_layout Email
+hisham@konghq.com
 \end_layout
 
 \begin_layout Author
-\begin_inset Argument 1
-status open
-
-\begin_layout Plain Layout
 Lucas C.
  Villa Real
 \end_layout
 
-\end_inset
-
-
-\begin_inset Argument 2
-status open
-
-\begin_layout Plain Layout
+\begin_layout Affiliation
 IBM Research - Sao Paulo, Brazil
 \end_layout
 
-\end_inset
-
-
-\begin_inset Argument 3
-status open
-
-\begin_layout Plain Layout
+\begin_layout Email
 lucasvr@br.ibm.com
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
 \begin_layout Author
-\begin_inset Argument 1
-status open
-
-\begin_layout Plain Layout
 Michael Homer
 \end_layout
 
-\end_inset
-
-
-\begin_inset Argument 2
-status open
-
-\begin_layout Plain Layout
+\begin_layout Affiliation
 Victoria University of Wellington - Wellington, New Zealand
 \end_layout
 
-\end_inset
-
-
-\begin_inset Argument 3
-status open
-
-\begin_layout Plain Layout
+\begin_layout Email
 mwh@ecs.vuw.ac.nz
 \end_layout
 
-\end_inset
-
-
-\end_layout
-
-\begin_layout Conference
-\begin_inset Argument 1
-status open
-
-\begin_layout Plain Layout
-Onward! 2016
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout CopyrightYear
-2016
-\end_layout
-
-\begin_layout Copyrightdata
-978-1-nnnn-nnnn-n/yy/mm
-\end_layout
-
 \begin_layout Abstract
-Package management is instrumental for programming languages, operating
- systems and system administration, and yet it is neglected by all three
- areas as an implementation detail.
- For this reason, package management lacks the same kind of conceptual organizat
-ion present in other disciplines.
- Moreover, we lack terminology to classify them or to reason about their
- design trade-offs or issues that affect families of similar managers.
- In this paper, we share our experience from over a decade of writing package
- managers for both a Linux distribution and a scripting language, and draw
- on that experience to categorize families of package managers and discuss
+Package management is instrumental for programming languages and operating
+ systems, and yet it is neglected by both areas as an implementation detail.
+ For this reason, it lacks the same kind of conceptual organization: we
+ lack terminology to classify them or to reason about their design trade-offs.
+ In this paper, we share our experience both OS and language-specific package
+ manager development, categorizing families of package managers and discussing
  their design implications beyond particular implementations.
  We also identify possibilities in the still largely unexplored area of
  package manager interoperability.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-This is a good line that it'd be nice to work back in (but it doesn't fit
- the experience-report pattern so much): The multitude of package managers
- in modern systems should be embraced, so we could start reasoning about
- them the way we do about ecosystems of programming languages.
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Keywords
@@ -244,9 +167,11 @@ Introduction
 
 \begin_layout Standard
 Package management is an area that lies somewhere in the border between
- programming languages, operating systems and system administration.
- For this reason, it seems to be overlooked by all three fields as an implementa
-tion issue.
+ programming languages and operating systems: packaging is a step that sits
+ after a language's build process, and before an operating system's component
+ installation.
+ For this reason, it seems to be overlooked by both fields as an implementation
+ issue.
  In the meantime, package management keeps growing in complexity.
  New languages, new deployment models and new portability requirements,
  all give rise to new package management systems.
@@ -261,6 +186,7 @@ For example, when writing JavaScript web applications on a Mac environment,
 \begin_inset CommandInset citation
 LatexCommand cite
 key "bower"
+literal "true"
 
 \end_inset
 
@@ -273,6 +199,7 @@ npm
 \begin_inset CommandInset citation
 LatexCommand cite
 key "npm"
+literal "true"
 
 \end_inset
 
@@ -284,6 +211,7 @@ node.js
 \begin_inset CommandInset citation
 LatexCommand cite
 key "nodejs"
+literal "true"
 
 \end_inset
 
@@ -297,6 +225,7 @@ npm
 \begin_inset CommandInset citation
 LatexCommand cite
 key "homebrew"
+literal "true"
 
 \end_inset
 
@@ -304,19 +233,25 @@ key "homebrew"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "macports"
+literal "true"
 
 \end_inset
 
-, the two most popular general-purpose package managers for Mac OSX.
+, the two most popular general-purpose package managers for macOS.
  This is not a deliberately contrived example; it is the regular way to
  install development modules for a popular language in a modern platform.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
 In 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Burns2012Deploying"
+literal "true"
 
 \end_inset
 
@@ -327,6 +262,7 @@ key "Burns2012Deploying"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Hashimoto2013Vagrant"
+literal "true"
 
 \end_inset
 
@@ -334,6 +270,7 @@ key "Hashimoto2013Vagrant"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Arrundel2011Puppet"
+literal "true"
 
 \end_inset
 
@@ -346,6 +283,11 @@ key "Arrundel2011Puppet"
  It is interesting to note the number of different tools being used on top
  of each other to manage containment and compatibility issues on various
  layers; and again, this is a typical, realistic scenario.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -412,6 +354,7 @@ In this paper we draw on our own unique combination of experiences on all
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Muhammad2002WSL,Homer2010LCA"
+literal "true"
 
 \end_inset
 
@@ -419,6 +362,7 @@ key "Muhammad2002WSL,Homer2010LCA"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Muhammad2013LuaRocks"
+literal "true"
 
 \end_inset
 
@@ -426,15 +370,24 @@ key "Muhammad2013LuaRocks"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Homer2010LCA"
+literal "true"
 
 \end_inset
 
 , as well as being simply developers and end users of other software.
- We will present these experiences and propose categorizations and commonalities
- we have found in them, and aim to show that — as all of the observations
- about languages above can be made equally about package management — package
- management can and should follow the lead of programming languages in the
- solution space as well.
+ By building a taxonomy for package management and sharing our experiences
+ with package management development in both the programming language and
+ operating system spaces, we aim in this paper to make the case that not
+ only the problem space of package management mirrors that of programming
+ languages, it should follow the lead of programming languages in the solution
+ space as well.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace -0.2em
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -443,48 +396,24 @@ Paradigms of package management: filesystem-oriented vs.
 \end_layout
 
 \begin_layout Standard
-It is customary to organize the landscape of programming languages into
- paradigms, such as imperative, functional, object-oriented, and so on.
- These paradigms describe the core conceptual frameworks on top of which
+It is a typical didactic device to organize the landscape of programming
+ languages into paradigms, such as imperative, functional, object-oriented,
+ and so on.
+ 
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
+These paradigms describe the core conceptual frameworks on top of which
  languages are designed.
- The paradigms a language is categorized into inform users about particular
- design choices, and with these choices come design trade-offs.
- Many of these trade-offs have been studied and are well understood.
- A notable example is the Expression Problem 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Wadler1998EP,Krishnamurthi:1998:SOF:646155.679709"
-
-\end_inset
-
-, which poses a trade-off between traditional functional and object-oriented
- approaches when extending code via separate compilation units: in functional
- programming, it is easy to add new operations to a data type (adding new
- functions), but it is not possible to extend the type (adding new cases
- to the algebraic data type) without editing the original code; in OOP,
- it is easy to extend the type (adding a subclass), but it is not possible
- to add new operations to an existing type (adding new methods to the original
- class) without editing code.
- Once this trade-off is understood, it becomes easier to propose solutions
- to mitigate it, such as open classes 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Clifton:2000:MMO:353171.353181"
-
-\end_inset
-
- and mixins 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Flatt:1998:CM:268946.268961"
-
-\end_inset
-
-.
+ 
 \end_layout
 
-\begin_layout Standard
-In the world of package managers, we can also identify general paradigms,
+\end_inset
+
+The paradigms a language is categorized into inform users about particular
+ design choices, and with these choices come design trade-offs.
+ In the world of package managers, we can also identify general paradigms,
  by looking at their core concepts and design trade-offs.
  Package managers are programs that map relations between files and packages
  (which correspond to sets of files), and between packages (dependencies),
@@ -508,15 +437,26 @@ external
  As this choice embodies a series of trade-offs and is the single decision
  that affects the design and implementation of a package manager the most,
  we identify these as two paradigms of package management.
- When the mapping is internal to the file hierarchy structure, we say that
+ When the mapping is done within the file hierarchy structure, we say that
  package management is 
 \emph on
 filesystem-oriented
 \emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Being database-oriented does not imply an opaque, binary database format.
+ Various database-oriented package managers store their file manifests in
+ plain text files
+\end_layout
+
+\end_inset
+
 .
  When it is external to the hierarchy of files being managed, the mapping
- needs to be stored elsewhere: on a database, or an equivalent structure
- that acts as one.
+ needs to be stored elsewhere.
  We say in these cases that management is 
 \emph on
 database-oriented
@@ -525,228 +465,39 @@ database-oriented
  Most package managers for Linux distributions, such as RPM and dpkg/APT,
  are database-oriented.
  Filesystem-oriented package management is more often seen in language-specific
- package managers, such as npm and Bower, but as we discuss in Section 
+ package managers, but as we will see in Section 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sub:GoboLinux"
+reference "subsec:GoboLinux"
 
 \end_inset
 
-, it can be performed system-wide.
+, it can also be performed system-wide.
 \end_layout
 
 \begin_layout Standard
-Being database-oriented does not imply an opaque, binary database format.
- LuaRocks 2.x uses a set of Lua tables (in 
-\family typewriter
-.lua
-\family default
- source format) as its database.
- ArchLinux keeps its database as a tree under 
-\family typewriter
-/var/lib/pacman/local
-\family default
-, with one subdirectory per package, containing text files that list which
- files belong to which package, as well as other metadata.
- The tree of Makefiles in BSD ports, containing 
-\family typewriter
-install
-\family default
- and 
-\family typewriter
-uninstall
-\family default
- rules which control the mapping of files to packages, can be considered
- a central database for package management as well.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement t
-wide true
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="2">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top" width="99col%">
-<column alignment="center" valignment="top" width="99col%">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /Users/hisham/ac/gobo/python_pip.eps
-	scale 80
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /Users/hisham/ac/gobo/ruby_rubygems.eps
-	scale 80
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-(a) Database-oriented management of Python modules.
-\begin_inset Newline newline
-\end_inset
-
-Modules for all packages are stored together under 
-\family typewriter
-/usr/lib/python2.7/site-packages/
-\family default
-.
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-(b) Ruby modules managed with RubyGems.
-\begin_inset Newline newline
-\end_inset
-
-Each package gets its own subdirectory under 
-\family typewriter
-/usr/lib/ruby/gems/1.9.1/gems/
-\family default
-.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Comparison-of-db-and-fs"
-
-\end_inset
-
-Comparison of database-oriented and filesystem-oriented package management
- styles.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Comparison-of-db-and-fs"
-
-\end_inset
-
- illustrates the two different styles of package management.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Comparison-of-db-and-fs"
-
-\end_inset
-
-(a) is representative of the database-oriented style.
- It shows the directory structure using 
+The directory structure used by 
 \family typewriter
 pip
 \family default
-, the package manager for Python modules.
+, the package manager for Python modules, is representative of the database-orie
+nted style.
  Note that all installed modules are stored under 
 \family typewriter
-/usr/lib/python2.7/site-packages/
+/usr/lib/python3.7/site-packages/: 
 \family default
-, which was the default directory for locally-installed modules prior to
- the introduction of 
+this structure was already the default subdirectory for locally-installed
+ modules prior to the introduction of 
 \family typewriter
 pip
 \family default
 .
  Database-oriented designs are often chosen when the package manager needs
  to accomodate a pre-existing directory structure.
- Conflicts are avoided through the use of the Python module namespace, but
- may still occur in case of module clashes.
- In this example, Pillow is a fork of the PIL (Python Imaging Library) package,
- and reuses the same namespace.
- Both cannot be installed at the same time.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Comparison-of-db-and-fs"
-
-\end_inset
-
-(b) showcases the filesystem-oriented style, presenting the directory structure
- produced by RubyGems, the package manager for Ruby.
- Each package has its own subtree under a versioned directory, containing
- a Unix substructure with 
-\family typewriter
-bin/
-\family default
-, 
-\family typewriter
-lib/
-\family default
- and so on.
- The 
+ If Python packages have modules with the same name, clashes may occur.
+ In a filesystem-oriented design, such as for example that of RubyGems,
+ this problem would not happen.
+ Each package has its own subtree under a versioned directory, and the 
 \family typewriter
 rubygems.rb
 \family default
@@ -763,10 +514,14 @@ reference "fig:pm-taxonomy"
 
 \end_inset
 
- lists more examples and their classification.
+ lists more examples of package managers and their classification.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
 \begin_inset Note Note
 status open
 
@@ -789,13 +544,18 @@ ns shouldn't care what language they are written in, but on the other hand
  the language paradigm affects those who write programs greatly.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 The major trade-off between the filesystem-oriented and the database-oriented
  approaches is whether applications should be aware of the file structure
  defined by the manager or whether the manager should adapt to the file
  structure defined by applications.
  This affects how the manager tracks the mapping of files and how applications
- find their resource files.
+ are configured to find their resource files.
  
 \end_layout
 
@@ -838,6 +598,10 @@ Conversely, in database-oriented managers the mapping of files to packages
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
 \begin_inset Note Note
 status open
 
@@ -850,7 +614,7 @@ Challenges with database-oriented systems
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Repository maintainers of database-oriented package managers often solve
  versioning conflicts by resorting to filesystem-oriented approaches.
  For example, the maintainer of Debian packages for the Lua virtual machine
@@ -870,6 +634,7 @@ lua.h
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Muhammad2013LuaRocks"
+literal "true"
 
 \end_inset
 
@@ -877,6 +642,7 @@ key "Muhammad2013LuaRocks"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "prosody"
+literal "true"
 
 \end_inset
 
@@ -896,7 +662,7 @@ key "prosody"
  C headers for Python, for example, install into versioned directories such
  as 
 \family typewriter
-/usr/include/python2.7
+/usr/include/python3.7
 \family default
  by default in every system.
  It is unclear, however, which packages are the ones where users will desire
@@ -922,6 +688,11 @@ libfoo.so
  is aware of this structure and makes use of versioned filenames.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Note Note
 status open
@@ -942,9 +713,7 @@ Filesystem-oriented managers also present their own set of challenges, as
  global changes to the system, such as adding users and setting environment
  variables.
  Some applications also include database-oriented portions which are assumed
- to be updated by installation scripts, such as the icon cache for the GTK+
- widget library: any package that installs new icons has to refresh this
- global cache.
+ to be updated by installation scripts, such as refreshing global caches.
  Non-relocatable packages often assume hardcoded default paths in which
  resource files are expected to be found; if the package manager employs
  a different organization, it needs to reconfigure applications to make
@@ -974,7 +743,12 @@ everything is a file
 \end_inset
 
  is a long-standing tradition.
- Different styles of bootscripts on Unix employ one or the other approach,
+ 
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
+Different styles of bootscripts on Unix employ one or the other approach,
  with System V being the archetypical file-hierarchy-based init system and
  BSD init using 
 \family typewriter
@@ -990,21 +764,24 @@ everything is a file
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Pennington2002GConf"
+literal "true"
 
 \end_inset
 
 .
+ In modern Linux distributions, the package manager is the most central
+ component for organizing the operating system.
  
 \end_layout
 
-\begin_layout Standard
-In modern Linux distributions, the package manager is the most central component
- for organizing the operating system.
- Database-oriented solutions often are considered un-Unix-like (GConf, for
+\end_inset
+
+Database-oriented solutions often are considered un-Unix-like (GConf, for
  instance, raises comparisons to the Windows Registry 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Wallen2003GConfWin"
+literal "true"
 
 \end_inset
 
@@ -1024,7 +801,7 @@ status open
 \align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="3">
-<features rotate="0" tabularvalignment="middle">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top" width="0pt">
 <column alignment="center" valignment="top" width="0pt">
 <column alignment="center" valignment="top" width="0pt">
@@ -1080,8 +857,8 @@ Language-agnostic
 
 \size footnotesize
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="1">
-<features rotate="0" tabularvalignment="middle">
+<lyxtabular version="3" rows="2" columns="1">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" usebox="none">
@@ -1090,7 +867,7 @@ Language-agnostic
 \begin_layout Plain Layout
 
 \size footnotesize
-Homebrew (Mac OS X)
+Homebrew (macOS), GNU Stow, Nix,
 \end_layout
 
 \end_inset
@@ -1103,33 +880,7 @@ Homebrew (Mac OS X)
 \begin_layout Plain Layout
 
 \size footnotesize
-Nix
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-PBI 8 (PC-BSD)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-GoboLinux
+Encap, PBI 8 (PC-BSD), GoboLinux
 \end_layout
 
 \end_inset
@@ -1151,8 +902,8 @@ GoboLinux
 
 \size footnotesize
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="1">
-<features rotate="0" tabularvalignment="middle">
+<lyxtabular version="3" rows="2" columns="1">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" usebox="none">
@@ -1161,7 +912,7 @@ GoboLinux
 \begin_layout Plain Layout
 
 \size footnotesize
-RPM (RedHat/Fedora/etc.)
+RPM (RedHat/Fedora/etc.), dpkg/apt (Debian/Ubuntu/etc.)
 \end_layout
 
 \end_inset
@@ -1174,33 +925,7 @@ RPM (RedHat/Fedora/etc.)
 \begin_layout Plain Layout
 
 \size footnotesize
-dpkg/apt (Debian/Ubuntu/etc.)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-PBI 9 (PC-BSD)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Pacman (ArchLinux)
+PBI 9 (PC-BSD), Pacman (ArchLinux)
 \end_layout
 
 \end_inset
@@ -1235,8 +960,8 @@ Language-specific
 
 \size footnotesize
 \begin_inset Tabular
-<lyxtabular version="3" rows="5" columns="1">
-<features rotate="0" tabularvalignment="middle">
+<lyxtabular version="3" rows="2" columns="1">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" usebox="none">
@@ -1245,7 +970,7 @@ Language-specific
 \begin_layout Plain Layout
 
 \size footnotesize
-npm (server-side JavaScript)
+npm (server-side JavaScript), Bower (client-side JavaScript)
 \end_layout
 
 \end_inset
@@ -1258,46 +983,7 @@ npm (server-side JavaScript)
 \begin_layout Plain Layout
 
 \size footnotesize
-Bower (client-side JavaScript)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-RubyGems (Ruby)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Cargo (Rust)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-LuaRocks 1.x (Lua)
+RubyGems (Ruby), Cargo (Rust), LuaRocks 1.x (Lua)
 \end_layout
 
 \end_inset
@@ -1319,8 +1005,8 @@ LuaRocks 1.x (Lua)
 
 \size footnotesize
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="1">
-<features rotate="0" tabularvalignment="middle">
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <row>
 <cell alignment="center" valignment="top" usebox="none">
@@ -1329,33 +1015,7 @@ LuaRocks 1.x (Lua)
 \begin_layout Plain Layout
 
 \size footnotesize
-Cabal (Haskell)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-pip (Python)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-LuaRocks 2.x (Lua)
+Cabal (Haskell), pip (Python), LuaRocks 2.x (Lua)
 \end_layout
 
 \end_inset
@@ -1411,483 +1071,23 @@ More db examples??
 
 \end_layout
 
-\begin_layout Subsection
-GoboLinux
-\begin_inset CommandInset label
-LatexCommand label
-name "sub:GoboLinux"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-GoboLinux 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Muhammad2002WSL"
-
-\end_inset
-
- is a Linux distribution based on the concept of installing each package
- in a separate installation prefix.
- It was the first Linux distribution to be entirely based on a filesystem-orient
-ed approach to package management.
- Each program is installed under its own versioned directory, such as 
-\family typewriter
-/Programs/Bash/4.3.28
-\family default
- and 
-\family typewriter
-/Programs/GTK+/3.16.0
-\family default
-.
- This direct mapping of the package structure to the directory layout allows
- one to inspect the system using standard Unix commands.
- For example, to get a list of installed packages, one only needs to issue
- 
-\family typewriter
-ls /Programs
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-As well as the individual program trees, a tree of symbolic links also exists
- created collecting references to the files of every program in the system
- together.
- A single directory contains symlinks matching the structure of the 
-\begin_inset Quotes eld
-\end_inset
-
-
-\family typewriter
-lib
-\family default
-
-\begin_inset Quotes erd
-\end_inset
-
- directory of every program, paralleling the contents of 
-\family typewriter
-/usr/lib
-\family default
- in a conventional layout.
- In this way only a single entry in PATH is needed to find every executable
- and libraries can be loaded using the ordinary linker mechanisms without
- further configuration.
- An additional layer of fixed symlinks provides backwards compatibility
- with the conventional Filesystem Hierarchy Standard
-\begin_inset CommandInset citation
-LatexCommand cite
-key "fhs"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Since packages become self-described through the GoboLinux filesystem hierarchy,
- the distribution features its own set of system management tools built
- around scripting languages.
- At first, these scripts automated tasks such as the installation of new
- packages (simply compressed tar archives) and their 
-\begin_inset Quotes eld
-\end_inset
-
-activation
-\begin_inset Quotes erd
-\end_inset
-
- in the system (namely, the creation of symbolic links to their libraries,
- headers, executables, and manuals) as well as their removal (achieved by
- deleting their directory and the now-broken symbolic links).
- Over time, these scripts inevitably became more complex as they were integrated
- with other system tools and served as the pillars for 
-\emph on
-Compile
-\emph default
-, GoboLinux's build system.
-\end_layout
-
-\begin_layout Standard
-Taking inspiration from Gentoo's Portage system (which was itself inspired
- from BSD Ports) 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Thiruvathukal2004Gentoo"
-
-\end_inset
-
-, Compile makes use of recipes that describe how to fetch the source code
- of a piece of software and the sequence of commands required to build and
- install it.
- Because recipes are frequently hand-written, it is essential to make them
- as simple as possible so that users are encouraged to contribute to the
- distribution's ecosystem.
- The approach adopted by Compile is to embed as much code as possible in
- its build systems' backends (e.g.
- Autoconf, Makefile, xmkmf, CMake), allowing the majority of recipes to
- be described with little more than a couple of lines.
- More complex build cases can be described by extending recipes with regular
- shell scripting.
- Compile can also enable the installation of packages through third-party
- package managers.
- More details of that feature are given in Section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:GoboLinux-Aliens"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-Up to GoboLinux 014.01, packages built with Compile had their prefixes set
- to their versioned directory during their compilation.
- That had a consequence in a considerable extent of software that use their
- prefix directory for run-time lookups of 
-\shape italic
-shared 
-\shape default
-files (i.e.
- those under
-\family typewriter
- /usr/share
-\family default
-) and impacted the layout of the GoboLinux directory tree and its management
- scripts.
- Each versioned directory received a 
-\family typewriter
-Shared
-\family default
- sub-directory containing that package´s own files and a symbolic link named
- 
-\family typewriter
-share p
-\family default
-ointing back to 
-\family typewriter
-/System/Links/Shared
-\family default
- (which managed links to the files of each package's 
-\family typewriter
-Shared
-\family default
- directory), leading to code growth and a deviation to the distribution's
- original design.
- As the Linux userland ecosystem evolved, some new packages started to share
- files through 
-\family typewriter
-/usr/lib{64}
-\family default
-, too.
- It is easy to picture how complicated the task of a modern package manager
- can be nowadays, as even subtle changes to filesystem namespace semantics
- can have profound impact on the organization of this class of software.
- In GoboLinux, we fixed this problem once and for all by introducing major
- changes to the system's directory layout and by using a new compilation
- prefix 
-\family typewriter
-/System/Index
-\family default
- common to all packages (Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:gobofs"
-
-\end_inset
-
-).
- Through this structure, even though packages are organized in self-contained
- directories under 
-\family typewriter
-/Programs
-\family default
-, applications can find their files through the traditional Unix hierarchy,
- as 
-\family typewriter
-/usr
-\family default
- is a symbolic link to 
-\family typewriter
-/System/Index
-\family default
-.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement t
-wide true
-sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="2">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="left" valignment="middle" width="45page%">
-<column alignment="left" valignment="middle" width="50page%">
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /Users/hisham/ac/gobo/gobo_systemindex.eps
-	scale 80
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename /Users/hisham/ac/gobo/gobo_programs.eps
-	scale 80
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-(a) The filesystem is indexed with the use of 
-\begin_inset Newline newline
-\end_inset
-
-directories and symbolic links.
-\end_layout
-
-\end_inset
-</cell>
-<cell multirow="3" alignment="left" valignment="middle" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-(b) Versioned directory tree.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:gobofs"
-
-\end_inset
-
-GoboLinux file system hierarchy
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Standard
 \begin_inset Note Comment
-status collapsed
-
-\begin_layout Plain Layout
-The mostly declarative style of GoboLinux recipes proved to be a success
- among users and gave us greater freedom when modifying the build process.
- We made major changes to the system's directory layout between releases
- 014 and 015 of the distribution, and the use of high-level descriptions
- and our cautious avoidance of hardcoded paths allowed us to reuse the majority
- of recipes with no changes.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Itemize
-\begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-NEW, moved from 2.0
+
+\series bold
+Other filesystem-based approaches
 \end_layout
-
-\end_inset
-
-parts of the Unix FS hierarchy which assume a single directory: /usr/share/icons
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-effect this had on share/ in Gobo
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-having to symlink /P/Foo/x.y/share into /S/L/share
-\end_layout
-
-\begin_layout Itemize
-launching helper indexing such as gtk-update-icon-cache upon each installation
- 
-\end_layout
-
-\end_deeper
-\end_deeper
-\begin_layout Itemize
-\begin_inset Note Note
-status open
 
 \begin_layout Plain Layout
-NEW
-\end_layout
-
-\end_inset
-
-discuss symlinks
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-The 
-\begin_inset Quotes eld
-\end_inset
-
-virtualized
-\begin_inset Quotes erd
-\end_inset
-
- Unix directories of GoboLinux avoid some compatibility issues that affect
- other distributions: all executables appear at the same time in /bin, /sbin,
- /usr/bin and so on.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-the build system, the tooling for generating packages, is the central piece
- of a package management system.
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-not clear at first, but looking at package management systems they all integrate
- the build process.
- Why?
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-Discuss the challenges of GoboLinux through the prism of its build system
- (?)
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Tried to make it easy for users to build packages.
-\end_layout
-
-\begin_layout Itemize
-Took inspiration from systems such as Gentoo, which was itself inspired
- from BSD Ports.
-\end_layout
-
-\begin_layout Itemize
-aim was to make the simple cases super-simple (like a 3-line script) and
- the complex cases possible (leveraging the generality of shell scripts)
-\end_layout
-
-\begin_layout Itemize
-This worked up to a point.
- Eventually, started requiring more and more metadata, even for the so-called
- simple cases.
-\end_layout
-
-\begin_layout Itemize
-Further, this metadata had to be integrated with the deployed system.
- 
-\end_layout
-
-\begin_layout Itemize
-The ArchLinux build system seems to be a modern-day successor of this style
- of build system in the Linux space.
-\end_layout
-
-\end_deeper
-\begin_layout Itemize
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-NEW
-\end_layout
-
-\end_inset
-
-tie in with the discussion of above section about includes? Gobo pre-/S/I
- didn't need versioned includes when applications detect the install prefix
- of libraries they depended on (e.g.
- via pkgconfig); with /S/I, pkgconfig will return includedir as /usr/include,
- so this becomes an issue: the recipe needs to point the conflicting program
- to /P/Foo/x.y/include, or the user needs to temporarily symlink the desired
- version (which is more fragile).
-\end_layout
-
-\begin_deeper
-\begin_layout Itemize
-Still, the compatibility gains for maintenance greatly outweigh the losses,
- of course.
-\end_layout
-
-\end_deeper
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Other filesystem-oriented approaches
-\end_layout
-
-\begin_layout Standard
 One of the earliest filesystem-oriented package managers to note is GNU
  Stow 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "stow"
+literal "true"
 
 \end_inset
 
@@ -1895,6 +1095,7 @@ key "stow"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Colyer1992Depot"
+literal "true"
 
 \end_inset
 
@@ -1921,6 +1122,7 @@ activates
 \begin_inset CommandInset citation
 LatexCommand cite
 key "encap"
+literal "true"
 
 \end_inset
 
@@ -1942,7 +1144,7 @@ epkg
  
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 The popularization of union-based filesystems brought novel ideas into package
  management.
  The GNU Hurd community proposes the use of GNU Guix to have packages installed
@@ -1961,6 +1163,7 @@ stowfs
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hurd"
+literal "true"
 
 \end_inset
 
@@ -1994,6 +1197,7 @@ xpdf
 \begin_inset CommandInset citation
 LatexCommand cite
 key "pbi"
+literal "true"
 
 \end_inset
 
@@ -2008,22 +1212,29 @@ d
  At the present time that is still an ongoing work.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-One last class of virtualization arose motivated by the widespread adoption
- of cloud computing and is represented by projects such as Docker 
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+The desire to avoid filesystem conflicts was a key aspect in the popularization
+ of container technology, such as Docker 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Merkel2014Docker"
+literal "true"
 
 \end_inset
 
 .
  Docker provides an abstraction layer so that users can deploy their application
-s (together with their dependencies) inside 
-\shape italic
-containers
-\shape default
- that run with isolated resources, as if they were in a virtual machine.
+s (together with their dependencies) inside containers that run with isolated
+ filesystems and other resources, as if they were in a virtual machine.
  Linux kernel namespace and control groups (cgroups) subsystems are used
  to implement Docker's fine-grained control over the hardware and operating
  system resources.
@@ -2039,6 +1250,43 @@ containers
  themselves need to be managed, and various services communicating with
  each other in separate containers will also have versioning compatibility
  requirements.
+ More recently, a further layer of abstraction in the form of 
+\emph on
+orchestration systems
+\emph default
+ such as Kubernetes 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "kubernetes"
+literal "false"
+
+\end_inset
+
+ has arisen to wrap the deployment of containers, but again, package management
+ is an inescapable problem, and today pods of Kubernetes containers are
+ managed via the Helm package manager 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "helm"
+literal "false"
+
+\end_inset
+
+, and tools such as Kustomize 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "kustomize"
+literal "false"
+
+\end_inset
+
+ aim to provide a configuration management layer on top of it, similar to
+ the relationship between Puppet and a Linux distribution package manager.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2047,6 +1295,10 @@ status collapsed
 
 \begin_layout Itemize
 Short history of alternative approaches:
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2082,6 +1334,10 @@ app dirs: RiscOS, Mac OSX.
 The Nix project has been around almost as long as GoboLinux.
  NixOS is nowadays a serious contender in the world of server-oriented operating
  systems.
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2097,6 +1353,10 @@ rescue
 \end_inset
 
  distros such as Damn Small Linux and tomsrtbt (which would fit in a floppy!).
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2116,6 +1376,10 @@ core
 \end_inset
 
  OSes.
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2152,6 +1416,10 @@ the GoboLinux way
 \begin_layout Itemize
 What do we mean by filesystem facilities: a more powerful fs would make
  things better?
+\begin_inset Separator latexpar
+\end_inset
+
+
 \end_layout
 
 \begin_deeper
@@ -2215,12 +1483,12 @@ status open
 \size footnotesize
 \begin_inset Tabular
 <lyxtabular version="3" rows="7" columns="5">
-<features rotate="0" tabularvalignment="middle">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top">
-<column alignment="center" valignment="top" width="10page%">
-<column alignment="center" valignment="top" width="10page%">
-<column alignment="center" valignment="top" width="10page%">
-<column alignment="center" valignment="top" width="10page%">
+<column alignment="center" valignment="top" width="15page%">
+<column alignment="center" valignment="top" width="15page%">
+<column alignment="center" valignment="top" width="15page%">
+<column alignment="center" valignment="top" width="15page%">
 <row>
 <cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
@@ -2398,41 +1666,9 @@ Installs code written in
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="1">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
 \size footnotesize
-JS family,
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-C/C++
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
+JS family, C/C++
 \end_layout
 
 \end_inset
@@ -2441,41 +1677,9 @@ C/C++
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="1">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
 \size footnotesize
-Ruby, C/C++,
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-JVM family
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
+Ruby, C/C++, JVM family
 \end_layout
 
 \end_inset
@@ -2519,41 +1723,9 @@ Files managed
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="1">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
 \size footnotesize
-JS scripts,
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-JS modules
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
+JS scripts, JS modules
 \end_layout
 
 \end_inset
@@ -2562,41 +1734,9 @@ JS modules
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="1">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
 \size footnotesize
-Ruby scripts,
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Ruby modules
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
+Ruby scripts, Ruby modules
 \end_layout
 
 \end_inset
@@ -2605,41 +1745,9 @@ Ruby modules
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="1">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
 \size footnotesize
-.NET and
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-native packages
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
+.NET and native packages
 \end_layout
 
 \end_inset
@@ -2648,41 +1756,9 @@ native packages
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="1">
-<features rotate="0" tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 
 \size footnotesize
-Lua scripts,
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size footnotesize
-Lua modules
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
+Lua scripts, Lua modules
 \end_layout
 
 \end_inset
@@ -2799,7 +1875,7 @@ yes
 \size footnotesize
 \begin_inset Tabular
 <lyxtabular version="3" rows="7" columns="5">
-<features rotate="0" tabularvalignment="middle">
+<features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top" width="10page%">
 <column alignment="center" valignment="top" width="10page%">
@@ -2933,7 +2009,7 @@ Portability
 \begin_layout Plain Layout
 
 \size footnotesize
-Linux/OSX
+Linux/macOS
 \end_layout
 
 \end_inset
@@ -2944,7 +2020,7 @@ Linux/OSX
 \begin_layout Plain Layout
 
 \size footnotesize
-OSX
+macOS/Linux
 \end_layout
 
 \end_inset
@@ -3247,6 +2323,7 @@ little languages
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Bentley:1986:PPL:6424.315691"
+literal "true"
 
 \end_inset
 
@@ -3257,12 +2334,20 @@ inclusion
  of features tailored for a domain.
  This means that a domain-specific language may end up including all features
  normally understood as those defining a general purpose language.
- MATLAB, for instance, is a complete programming language, but its wealth
- of features for numerical computing it is often regarded as being domain-specif
-ic 
+ MATLAB 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "matlab"
+literal "false"
+
+\end_inset
+
+, for instance, is a complete programming language, but its wealth of features
+ for numerical computing it is often regarded as being domain-specific 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Gill:2014:DLC:2611429.2617811,Fowler2005LanguageWorkbench"
+literal "true"
 
 \end_inset
 
@@ -3288,8 +2373,7 @@ language-specific
 
 ), but that is not necessarily the case: environments such as .NET and the
  JVM make this evident, but other languages also grow into families: for
- example, LuaRocks was written for Lua but also supports MoonScript and
- Typed Lua; npm supports JavaScript, CoffeeScript, TypeScript and others.
+ example, npm supports JavaScript, CoffeeScript, TypeScript and others.
  Besides, these VM-based ecosystems usually support loading native extensions,
  and therefore they must also support building and integrating libraries
  usually written in C or C++ (or, in the case of RubyGems with JRuby, Java).
@@ -3317,14 +2401,14 @@ This leads us to question why should we have language-specific managers
  versus the number of modules available in mature module repositories from
  scripting languages, it becomes clear that the approach of converting everythin
 g into native packages is untenable: for example, while the repository for
- the Debian Linux distribution features 43,000 packages in total, the Maven
- Central repository for Java alone contains over 103,000 packages, with
- the advantage that the repository is portable to various platforms, some
- of which lack a built-in universal package manager (Microsoft Windows being
- a notable case).
+ the Debian Linux distribution features over 59,000 packages in total, the
+ Maven Central repository for Java alone contains over 290,000 packages,
+ with the advantage that the repository is portable to various platforms,
+ some of which lack a built-in universal package manager (Microsoft Windows
+ being a notable case).
  Still, this kind of effort duplication does happen: the Debian repository
- contains 715 packages of Ruby modules; this is a far cry from the 100,000
- modules in the RubyGems repository.
+ contains 1,196 Ruby packages; this is a far cry from the over 150,000 modules
+ in the RubyGems repository.
 \end_layout
 
 \begin_layout Standard
@@ -3364,6 +2448,603 @@ s, but that often requires patching packages for removing hardcoded pathnames.
  for that, so per-user installations are discouraged.
 \end_layout
 
+\begin_layout Section
+Integration between languages vs.
+ integration between package managers
+\end_layout
+
+\begin_layout Standard
+Programming languages, both general-purpose and domain-specific, frequently
+ have points of integration between each other, in the form of foreign function
+ interfaces (FFIs).
+ Code written in one language can frequently call into code written in another
+ language, sometimes with some adapter code in between.
+ Domain-specific languages are in fact frequently embedded in general-purpose
+ languages and in programs.
+ Programming languages can also integrate between each other through common
+ calling and linking conventions.
+\end_layout
+
+\begin_layout Standard
+The same is not true of general-purpose and domain-specific package managers.
+ Integration between two package managers is almost unheard of, even when
+ they may be found on the same system.
+ Instead, a subset of packages distributed through a domain-specific package
+ manager are repackaged in the format of the general-purpose system.
+ These packages are fully integrated with the broader system and fully detached
+ from the domain-specific manager.
+ Packages that were not repackaged are still available by using the domain-speci
+fic system, but others are available twice, potentially in different versions
+ and with different configurations.
+ Debian experimented with a 
+\family typewriter
+rubygems-integration
+\family default
+ package that provided a limited connection between APT and RubyGems, allowing
+ Debian packages of individual RubyGems to satisfy dependencies in the gem
+ tool, but encountered nontrivial complications in doing so
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "debian-ruby-trouble,debian-ruby-packaging"
+literal "true"
+
+\end_inset
+
+.
+ Debian has not yet pursued even this level of integration for other widely-used
+ domain-specific package managers, and the integration it has for RubyGems
+ is ad-hoc and highly specialized.
+ In Section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:GoboLinux-Aliens"
+
+\end_inset
+
+ we discuss our attempt at deeper integration in GoboLinux, but we are aware
+ of no other such integrations beyond what Debian performs.
+\end_layout
+
+\begin_layout Standard
+A weaker form of one-way integration between package managers occurs when
+ the system-wide manager uses the language-specific package manager merely
+ as a build system.
+ An example is the use of LuaRocks by Buildroot 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "buildroot"
+literal "true"
+
+\end_inset
+
+.
+ Buildroot is a system for compiling full-system images for embedded environment
+s, which has its own package specification format.
+ It uses LuaRocks as a build tool: the Buildroot specification scripts launch
+ LuaRocks to generate Lua modules and then collect and integrate them to
+ the system.
+\end_layout
+
+\begin_layout Section
+Experiences with package management
+\end_layout
+
+\begin_layout Standard
+In the following section, we share some of our experiences, each case study
+ dealing with one the three aspects of package management design outlined
+ above.
+\end_layout
+
+\begin_layout Subsection
+GoboLinux
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:GoboLinux"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+GoboLinux 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhammad2002WSL"
+literal "true"
+
+\end_inset
+
+ is a Linux distribution based on the concept of installing each package
+ in a separate installation prefix.
+ Introduced in 2002, it was the first Linux distribution to be entirely
+ based on a filesystem-oriented approach to package management
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+While GoboLinux remained a research distribution with a niche community,
+ its design proved influential, as its filesystem-oriented approach was
+ used as a basis for the design of Homebrew, the most popular package manager
+ in macOS today, as noted in its original documentation: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://github.com/Homebrew/legacy-homebrew/tree/89283db693e9380ccc2e4abc4fa0ad14
+b4790202
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ Each program is installed under its own versioned directory, such as 
+\family typewriter
+/Programs/Bash/4.3.28
+\family default
+ and 
+\family typewriter
+/Programs/GTK+/3.16.0
+\family default
+.
+ This direct mapping of the package structure to the directory layout allows
+ one to inspect the system using standard Unix commands.
+ For example, to get a list of installed packages, one only needs to issue
+ 
+\family typewriter
+ls /Programs
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+As well as the individual program trees, a tree of symbolic links called
+ 
+\family typewriter
+/System/Index
+\family default
+ collects references to the files from every program in the system.
+ A single directory contains symlinks matching the structure of the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+lib
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+ directory of every program, paralleling the contents of 
+\family typewriter
+/usr/lib
+\family default
+ in a conventional layout.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:gobofs"
+
+\end_inset
+
+ illustrates this structure.
+ In this way only a single entry in PATH is needed to find every executable
+ and libraries can be loaded using the ordinary linker mechanisms without
+ further configuration.
+ An additional layer of fixed symlinks provides backwards compatibility
+ with the conventional Filesystem Hierarchy Standard
+\begin_inset CommandInset citation
+LatexCommand cite
+key "fhs"
+literal "true"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
+Since packages become self-described through the GoboLinux filesystem hierarchy,
+ the distribution features its own set of system management tools built
+ around scripting languages.
+ At first, these scripts automated tasks such as the installation of new
+ packages (simply compressed tar archives) and their 
+\begin_inset Quotes eld
+\end_inset
+
+activation
+\begin_inset Quotes erd
+\end_inset
+
+ in the system (namely, the creation of symbolic links to their libraries,
+ headers, executables, and manuals) as well as their removal (achieved by
+ deleting their directory and the now-broken symbolic links).
+ Over time, these scripts inevitably became more complex as they were integrated
+ with other system tools and served as the pillars for 
+\emph on
+Compile
+\emph default
+, GoboLinux's build system.
+\end_layout
+
+\begin_layout Plain Layout
+Taking inspiration from Gentoo's Portage system (which was itself inspired
+ from BSD Ports) 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Thiruvathukal2004Gentoo"
+literal "true"
+
+\end_inset
+
+, Compile makes use of recipes that describe how to fetch the source code
+ of a piece of software and the sequence of commands required to build and
+ install it.
+ Because recipes are frequently hand-written, it is essential to make them
+ as simple as possible so that users are encouraged to contribute to the
+ distribution's ecosystem.
+ The approach adopted by Compile is to embed as much code as possible in
+ its build systems' backends (e.g.
+ Autoconf, Makefile, xmkmf, CMake), allowing the majority of recipes to
+ be described with little more than a couple of lines.
+ More complex build cases can be described by extending recipes with regular
+ shell scripting.
+ Compile can also enable the installation of packages through third-party
+ package managers.
+ More details of that feature are given in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:GoboLinux-Aliens"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In its original design, packages compiled for GoboLinux targeted their versioned
+ directory during compilation.
+ That made them aware of the modified filesystem structure, and often required
+ configuration contortions and also workarounds to handle the management
+ of files that were designed to be shared between packages.
+ In a later revision, GoboLinux switched to compilation targeting 
+\family typewriter
+/usr
+\family default
+ and installation to the per-program location.
+ Through this structure, even though packages are organized in self-contained
+ directories under 
+\family typewriter
+/Programs
+\family default
+, applications find their files through the traditional Unix hierarchy,
+ as 
+\family typewriter
+/usr
+\family default
+ is a symbolic link to 
+\family typewriter
+/System/Index
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement t
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="middle" width="45page%">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/hisham/projects/gobolinux/paper/gobo_systemindex.eps
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(a) The filesystem is indexed with the use of 
+\begin_inset Newline newline
+\end_inset
+
+directories and symbolic links.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/hisham/projects/gobolinux/paper/gobo_programs.eps
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(b) Versioned directory tree.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:gobofs"
+
+\end_inset
+
+GoboLinux file system hierarchy
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
+The mostly declarative style of GoboLinux recipes proved to be a success
+ among users and gave us greater freedom when modifying the build process.
+ We made major changes to the system's directory layout between releases
+ 014 and 015 of the distribution, and the use of high-level descriptions
+ and our cautious avoidance of hardcoded paths allowed us to reuse the majority
+ of recipes with no changes.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW, moved from 2.0
+\end_layout
+
+\end_inset
+
+parts of the Unix FS hierarchy which assume a single directory: /usr/share/icons
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+effect this had on share/ in Gobo
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+having to symlink /P/Foo/x.y/share into /S/L/share
+\end_layout
+
+\begin_layout Itemize
+launching helper indexing such as gtk-update-icon-cache upon each installation
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW
+\end_layout
+
+\end_inset
+
+discuss symlinks
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The 
+\begin_inset Quotes eld
+\end_inset
+
+virtualized
+\begin_inset Quotes erd
+\end_inset
+
+ Unix directories of GoboLinux avoid some compatibility issues that affect
+ other distributions: all executables appear at the same time in /bin, /sbin,
+ /usr/bin and so on.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+the build system, the tooling for generating packages, is the central piece
+ of a package management system.
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+not clear at first, but looking at package management systems they all integrate
+ the build process.
+ Why?
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Discuss the challenges of GoboLinux through the prism of its build system
+ (?)
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tried to make it easy for users to build packages.
+\end_layout
+
+\begin_layout Itemize
+Took inspiration from systems such as Gentoo, which was itself inspired
+ from BSD Ports.
+\end_layout
+
+\begin_layout Itemize
+aim was to make the simple cases super-simple (like a 3-line script) and
+ the complex cases possible (leveraging the generality of shell scripts)
+\end_layout
+
+\begin_layout Itemize
+This worked up to a point.
+ Eventually, started requiring more and more metadata, even for the so-called
+ simple cases.
+\end_layout
+
+\begin_layout Itemize
+Further, this metadata had to be integrated with the deployed system.
+\end_layout
+
+\begin_layout Itemize
+The ArchLinux build system seems to be a modern-day successor of this style
+ of build system in the Linux space.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+NEW
+\end_layout
+
+\end_inset
+
+tie in with the discussion of above section about includes? Gobo pre-/S/I
+ didn't need versioned includes when applications detect the install prefix
+ of libraries they depended on (e.g.
+ via pkgconfig); with /S/I, pkgconfig will return includedir as /usr/include,
+ so this becomes an issue: the recipe needs to point the conflicting program
+ to /P/Foo/x.y/include, or the user needs to temporarily symlink the desired
+ version (which is more fragile).
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Still, the compatibility gains for maintenance greatly outweigh the losses,
+ of course.
+\end_layout
+
+\end_deeper
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 LuaRocks
 \end_layout
@@ -3373,16 +3054,21 @@ LuaRocks
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Muhammad2013LuaRocks"
+literal "true"
 
 \end_inset
 
  is a package manager for the Lua ecosystem.
  It was developed building on our previous experience writing package management
- tools for GoboLinux and adapting them to the realities of a language-specific
+ tools for GoboLinux and adapting it to the realities of a language-specific
  manager.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
 The package specification format (
 \emph on
 rockspec
@@ -3397,7 +3083,12 @@ e specifications even further.
  restricted execution environment that disables the Lua standard libraries;
  they essentially consist of variable declarations, describing the package
  via Lua tables (Lua's single data structure, which combines numeric and
- associative arrays).
+ associative arrays)
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -3414,6 +3105,10 @@ LR has a plugin-based build system like Gobo
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
 Another design feature inherited from GoboLinux was the support for multiple
  build back-ends.
  In most language ecosystems, at any point in time a single build tool is
@@ -3451,7 +3146,7 @@ build.type="builtin"
  of all packages in the LuaRocks repository use the built-in build system.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 \begin_inset Note Note
 status open
 
@@ -3464,7 +3159,7 @@ LR supports relocatable packages
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 LuaRocks installs all packages into a sandbox directory and later moves
  them to their final destinations.
  The actual installation prefix is never told to the build system under
@@ -3507,6 +3202,11 @@ luarocks install datafile
 , which resolves directory locations portably at run-time.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Note Note
 status open
@@ -3518,22 +3218,6 @@ LR changed its directory layout like Gobo
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-As also happened with GoboLinux, having a high-level description format
- allowed us to make radical changes to the installation layout once that
- proved necessary.
- Since LuaRocks does not provide to specification files any knowledge of
- the final directory structure, this change was even less impacting for
- users than the change on GoboLinux: all existing rockspecs could be used
- in the new directory layout without any changes.
- This level of information hiding, extending not only the installation prefix,
- but to all subdirectories, was only possible because we were dealing with
- a language-specific manager, where we could make assumptions about the
- contents of files (Lua source code and binary dynamic libraries) and how
- they would be later used (as command-line scripts or loaded by Lua through
- its package loader system).
 \end_layout
 
 \begin_layout Standard
@@ -3563,47 +3247,14 @@ TODO illustrate with figures
 \end_layout
 
 \begin_layout Standard
-The design changes that LuaRocks underwent from version 1.0 to version 2.0
- were due to lessons learned on the specificities of language-specific package
- management.
+The design changes that LuaRocks underwent were due to lessons learned on
+ the specificities of language-specific package management.
  The original design of LuaRocks was filesystem-oriented, like GoboLinux.
- Each version of an installed package was given its own directory and each
- category of files got its own subdirectory.
- For example, for module 
-\family typewriter
-lpeg 0.12-1
-\family default
- one would store Lua files in 
-\family typewriter
-$PREFIX/lib/luarocks/rocks/lpeg/0.12-1/lua
-\family default
-.
  LuaRocks included then a custom wrapper for Lua's 
 \family typewriter
 require()
 \family default
- function in module 
-\family typewriter
-luarocks.require
-\family default
-.
- Once this module was loaded (either via plain 
-\family typewriter
-require()
-\family default
- or via a command-line flag), subsequent calls to 
-\family typewriter
-require()
-\family default
- would match module names to file locations, taking into account the dependency
- trees of previously loaded modules.
- This allowed multiple versions of a module to coexist in an installation,
- and let modules load the correct versions of their dependencies transparently.
- The approach of loading a custom 
-\family typewriter
-require()
-\family default
- function is the same as adopted by RubyGems.
+ function, much like RubyGems.
  However, many Lua users perceived the wrapper as tampering with a standard
  library function, and disliked having to perform an initial setup in their
  scripts for using modules installed via LuaRocks 
@@ -3630,109 +3281,36 @@ require 'rubygems'
  For LuaRocks 2.0, the design was changed to be database-oriented, so that
  Lua modules could be installed into a typical Unix-like layout that matched
  the default configuration of the Lua interpreter's package loader.
- Since now Lua modules from all packages were installed into a single directory
- such as 
-\family typewriter
-$PREFIX/share/lua/5.3
-\family default
-, a database had to be put in place matching files to packages.
- We kept to Lua's minimalistic approach, using a plain-text manifest file
- (loadable as Lua code) as a database.
+ With all packages installed under a single directory, a database had to
+ be put in place matching files to packages.
  Supporting multiple versions of the same package installed at the same
  time is still possible, but requires the now-optional custom package loader,
- which produces versioned filenames such as 
-\family typewriter
-$PREFIX/lib/5.3/lpeg-0.11-1.so
-\family default
- when the dependency graph requires an old version of a module.
-\end_layout
-
-\begin_layout Section
-Integration between languages vs.
- integration between package managers
+ which produces versioned filenames when the dependency graph requires an
+ old version of a module.
+ This language-specific runtime adjustment allows avoiding the issue with
+ filename conflicts, so common with database-oriented designs — a luxury
+ that operating system package managers cannot afford so easily.
 \end_layout
 
 \begin_layout Standard
-Programming languages, both general-purpose and domain-specific, frequently
- have points of integration between each other, in the form of foreign function
- interfaces (FFIs).
- Code written in one language can frequently call into code written in another
- language, sometimes with some adapter code in between.
- Domain-specific languages are in fact frequently embedded in general-purpose
- languages and in programs.
-\end_layout
-
-\begin_layout Standard
-The same is not true of general-purpose and domain-specific package managers.
- Integration between two package managers is almost unheard of, even when
- they may be found on the same system.
- Instead, a subset of packages distributed through a domain-specific package
- manager are repackaged in the format of the general-purpose system.
- These packages are fully integrated with the broader system and fully detached
- from the domain-specific manager.
- Packages that were not repackaged are still available by using the domain-speci
-fic system, but others are available twice, potentially in different versions
- and with different configurations.
- Debian experimented with a 
-\family typewriter
-rubygems-integration
-\family default
- package that provided a limited connection between APT and RubyGems, allowing
- Debian packages of individual RubyGems to satisfy dependencies in the gem
- tool, but encountered nontrivial complications in doing so
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset citation
-LatexCommand cite
-key "debian-ruby-trouble,debian-ruby-packaging"
-
-\end_inset
-
-.
- Debian has not yet pursued even this level of integration for other widely-used
- domain-specific package managers, and the integration it has for RubyGems
- is ad-hoc and highly specialized.
- In Section
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sub:GoboLinux-Aliens"
-
-\end_inset
-
- we discuss our attempt at deeper integration in GoboLinux, but we are aware
- of no other such integrations beyond what Debian performs.
-\end_layout
-
-\begin_layout Standard
-A weaker form of one-way integration between package managers occurs when
- the system-wide manager uses the language-specific package manager merely
- as a build system.
- An example is the use of LuaRocks by Buildroot 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "buildroot"
-
-\end_inset
-
-.
- Buildroot is a system for compiling full-system images for embedded environment
-s, which has its own package specification format.
- It uses LuaRocks as a build tool: the Buildroot specification scripts launch
- LuaRocks to generate Lua modules and then collect and integrate them to
- the system.
+Having a high-level declarative specification allowed us to make such radical
+ changes to the installation layout easily.
+ Since LuaRocks produces relocatable packages, it does not provide to rockspec
+ files any knowledge of the final directory structure.
+ This allowed all existing rockspecs could be used in the new directory
+ layout without any changes.
+ This level of information hiding was only possible because we were dealing
+ with a language-specific manager, where we could make assumptions about
+ the contents of files (Lua source code and binary dynamic libraries) and
+ how they would be used (as command-line scripts or loaded by Lua through
+ its package loader system).
 \end_layout
 
 \begin_layout Subsection
 GoboLinux Aliens
 \begin_inset CommandInset label
 LatexCommand label
-name "sub:GoboLinux-Aliens"
+name "subsec:GoboLinux-Aliens"
 
 \end_inset
 
@@ -3746,6 +3324,7 @@ In GoboLinux we researched the idea of building a foreign function interface
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Homer2010LCA"
+literal "true"
 
 \end_inset
 
@@ -3812,54 +3391,53 @@ Not all domain-specific package managers lend themselves to this integration.
  FFIs, and Aliens, attempt to bridge the gap, with reasonable success.
 \end_layout
 
+\begin_layout Standard
+\begin_inset VSpace -0.3em
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Conclusion
 \end_layout
 
 \begin_layout Standard
-In this paper, we presented our practical experiences in the development
- and maintenance over the years of a system-wide package manager for a Linux
- distribution and a portable package manager for a scripting language, and
- an analysis of the landscape of existing methodologies for package management.
- Package management is an area that is notably neglected in academic studies,
- but is one of practical impact in the design of modern operating systems
- and module systems for programming languages, and a central issue in system
- administration.
- With this work, we provide the beginnings of a conceptual organization
- of approaches for package management, an area that lacks even common terminolog
-y, and where many of the same design issues are faced and dealt with time
- and again.
-\end_layout
+\begin_inset Note Comment
+status open
 
-\begin_layout Standard
-In the realm of programming languages, the existing conceptual organization
- is useful in various levels.
- As one learns about a new programming language, one can immediately gather
- some insight about its workings by learning whether it is imperative or
- functional, statically-typed or dynamically-typed, if it features eager
- or lazy evaluation.
- One is also able to reason generally about whole families of languages,
- but studying design issues and trade-offs that apply to all of them.
+\begin_layout Plain Layout
+In this paper, we presented our practical experiences in the development
+ and maintenance of a system-wide package manager for a Linux distribution
+ and a portable package manager for a scripting language, and an analysis
+ of the landscape of existing methodologies for package management.
  
 \end_layout
 
-\begin_layout Standard
-Similar methods of classification are needed for package managers.
- By identifying families of filesystem-oriented and database-oriented package
- managers, we were able to point out issues common to them and the general
- solutions in use.
- It is notable how many of the package managers we researched for this work
- went through similar changes, and how many of their experiences match our
- own.
+\end_inset
+
+Package management is an area that is notably neglected in academic studies,
+ but is one of practical impact in the design of modern operating systems
+ and module systems for programming languages.
+ In the realm of programming languages, we have useful ways to categorize
+ languages.
+ Package management even lacks common terminology, and each new system faces
+ the same design issues time and again, even as we move to containers and
+ orchestration systems 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "helm"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-Package managers deal fundamentally with the mapping between the file-level
- organization of the filesystem and the higher-level concept of packages.
- We observed that filesystem-oriented designs are preferrable as they tend
- to have less problems with conflict resolution, but they require some level
- of control on how run-time lookup happens, to ensure that it is consistent
- for all packages.
+As we categorize package management systems, we conclude that filesystem-oriente
+d designs are preferrable as they tend to be less susceptible to conflicts,
+ but they require some level of control on runtime lookup.
  We observe that this control exists when language-specific package managers
  are bundled with the language environment, as is the case with npm for
  node.js and RubyGems for Ruby.
@@ -3871,7 +3449,15 @@ Package managers deal fundamentally with the mapping between the file-level
 /System/Index
 \family default
  tree of symbolic links or in the stowfs filesystem virtualization proposed
- for GNU Hurd.
+ for GNU Hurd 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "stow"
+literal "false"
+
+\end_inset
+
+.
  Database-oriented designs, on the other hand, are more generally applicable,
  but are more opaque to their users and are more prone to package conflict
  and file-to-package synchronization issues.
@@ -3900,26 +3486,6 @@ c highlighted the complementary qualities of these two classes of managers.
  We shared our experience in progressing on this direction with the GoboLinux
  Aliens project, and we plan to further pursue FFI-style package management
  interoperability.
- Future directions for LuaRocks include a plug-in system through which a
- closer integration with the host system may be implemented.
-\end_layout
-
-\begin_layout Standard
-New package managers will continue to appear, as new languages and environments
- give rise to new needs.
- Since new languages and environments invariably give rise to new package
- managers, it is important to take this issue into account, understanding
- how they interact with the filesystem organization and with run-time systems.
- Doing this from early on keeps possibilities open for better designs that
- less prone to 
-\begin_inset Quotes eld
-\end_inset
-
-dependency hell
-\begin_inset Quotes erd
-\end_inset
-
- and versioning conflicts.
 \end_layout
 
 \begin_layout Standard
@@ -3943,6 +3509,7 @@ refname}{REFERENCES}
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
+btprint "btPrintCited"
 bibfiles "gobo"
 options "wileyj"
 

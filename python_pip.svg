@@ -80,7 +80,7 @@
            id="tspan2995"
            y="238.59248"
            x="28.702068"
-           sodipodi:role="line">    /python2.7/</tspan><tspan
+           sodipodi:role="line">    /python3.7/</tspan><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans Mono;-inkscape-font-specification:DejaVu Sans Mono"
            id="tspan2999"
            y="266.09247"
@@ -95,12 +95,12 @@
            id="tspan3003"
            y="321.09247"
            x="28.702068"
-           sodipodi:role="line">        iotop-0.4.1-py2.7.egg-info</tspan><tspan
+           sodipodi:role="line">        iotop-0.4.1-py3.7.egg-info</tspan><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans Mono;-inkscape-font-specification:DejaVu Sans Mono"
            id="tspan3007"
            y="348.59247"
            x="28.702068"
-           sodipodi:role="line">        /Pillow-2.8.1-py2.7.egg-info/</tspan><tspan
+           sodipodi:role="line">        /Pillow-2.8.1-py3.7.egg-info/</tspan><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans Mono;-inkscape-font-specification:DejaVu Sans Mono"
            id="tspan3011"
            y="376.09247"
