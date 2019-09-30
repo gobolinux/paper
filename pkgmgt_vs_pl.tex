@@ -34,7 +34,7 @@ in Programming Languages and Operating Systems}
 \affiliation{Kong Inc.}
 \email{hisham@konghq.com}
 \author{Lucas C. Villa Real}
-\affiliation{IBM Research - Sao Paulo, Brazil}
+\affiliation{IBM Research}
 \email{lucasvr@br.ibm.com}
 \author{Michael Homer}
 \affiliation{Victoria University of Wellington - Wellington, New Zealand}
@@ -186,9 +186,10 @@ can also be performed system-wide.
 
 The directory structure used by \texttt{pip}, the package manager
 for Python modules, is representative of the database-oriented style.
-Note that all installed modules are stored under \texttt{/usr/lib/python3.7/site-packages/: }this
-structure was already the default subdirectory for locally-installed
-modules prior to the introduction of \texttt{pip}. Database-oriented
+Modules installed by \texttt{pip} are stored under a filesystem
+path that conforms to Python's default directory for locally-installed
+modules (e.g. \texttt{/usr/lib/python3.7/site-pack\-ages/}), whose definition
+predates the introduction of \texttt{pip}. Database-oriented
 designs are often chosen when the package manager needs to accomodate
 a pre-existing directory structure. If Python packages have modules
 with the same name, clashes may occur. In a filesystem-oriented design,
@@ -826,7 +827,7 @@ typically let developers call their preferred build tools explicitly
 in imperative scripts. LuaRocks attempted to solve this in a more
 controlled manner, with a system of plugins for the various tools,
 akin to the one used in GoboLinux. In LuaRocks, each plugin is implemented
-as a Lua module, selected through an entry in the rockspec. For example,
+as a Lua module, selected through an entry in the \emph{rockspec}. For example,
 using \texttt{build.type=\textquotedbl cmake\textquotedbl} causes
 LuaRocks to invoke CMake with the appropriate arguments. We also included
 a simple built-in build system, invoked via \texttt{build.type=\textquotedbl builtin\textquotedbl},
@@ -876,8 +877,8 @@ afford so easily.
 Having a high-level declarative specification allowed us to make such
 radical changes to the installation layout easily. Since LuaRocks
 produces relocatable packages, it does not provide to specification
-files (rockspecs) any knowledge of the final directory structure.
-This allowed all existing rockspecs to be used in the new directory
+files (\emph{rockspecs}) any knowledge of the final directory structure.
+This allowed all existing \emph{rockspecs} to be used in the new directory
 layout without any changes. This level of information hiding was only
 possible because we were dealing with a language-specific manager,
 where we knew what was in the files (Lua source code and binary dynamic
@@ -966,7 +967,7 @@ in general, but we also recognize that there are situations where
 a database-oriented solution works best to preserve compatibility
 with the ecosystem at play, as was the case with LuaRocks.
 
-Our classification of package managers as language-agnostic and language-specific
+Our classification of package managers as language-ag\-nos\-tic and language-specific
 highlighted the complementary qualities of these two classes of managers.
 The existence of language-specific package managers distributes integration
 efforts, as upstream module developers are often the package integrators
