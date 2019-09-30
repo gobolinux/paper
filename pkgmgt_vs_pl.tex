@@ -28,8 +28,8 @@
 
 \usepackage{babel}
 \begin{document}
-\title[Understanding package management]{Understanding package management\\
-through the lens of programming languages}
+\title[Taxonomy of Package Management]{Taxonomy of Package Management\\
+in Programming Languages and Operating Systems}
 \author{Hisham Muhammad}
 \affiliation{Kong Inc.}
 \email{hisham@konghq.com}
@@ -44,11 +44,11 @@ Package management is instrumental for programming languages and operating
 systems, and yet it is neglected by both areas as an implementation
 detail. For this reason, it lacks the same kind of conceptual organization:
 we lack terminology to classify them or to reason about their design
-trade-offs. In this paper, we share our experience both OS and language-specific
-package manager development, categorizing families of package managers
-and discussing their design implications beyond particular implementations.
-We also identify possibilities in the still largely unexplored area
-of package manager interoperability.
+trade-offs. In this paper, we share our experience in both OS and
+language-specific package manager development, categorizing families
+of package managers and discussing their design implications beyond
+particular implementations. We also identify possibilities in the
+still largely unexplored area of package manager interoperability.
 \end{abstract}
 \keywords{\noindent package management, operating systems, module systems, filesystem
 hierarchy}
@@ -56,13 +56,17 @@ hierarchy}
 
 \section{Introduction}
 
+Package managers are programs that map relations between files and
+packages (which correspond to sets of files), and between packages
+(dependencies), allowing users to perform maintenance of their systems
+in terms of packages rather than at the level of individual files.
 Package management is an area that lies somewhere in the border between
 programming languages and operating systems: packaging is a step that
 sits after a language's build process, and before an operating system's
 component installation. For this reason, it seems to be overlooked
 by both fields as an implementation issue. In the meantime, package
 management keeps growing in complexity. New languages, new deployment
-models and new portability requirements, all give rise to new package
+models, and new portability requirements all give rise to new package
 management systems. Further, this is not simply a matter of competing
 implementations: modern complex environments often require several
 package managers to be used in tandem.
@@ -111,12 +115,11 @@ that is often proposed, especially by users of operating systems that
 feature a system-provided package manager (as is the case of most
 Linux distributions), is to avoid using multiple package managers
 and use a single general-purpose package manager. This is, of course,
-as much as a solution as trying to make everyone agree on a single
-programming language, and this is the first of various analogies between
-package management and programming languages that we will make throughout
-this paper. The result is that the ecosystem is not getting any simpler,
-and at first glance it seems that package management is indeed a largely
-unsolved problem.
+as much of a solution as trying to make everyone agree on a single
+programming language --- one of many analogies between package management
+and programming languages. The result is that the ecosystem is not
+getting any simpler, and at first glance it seems that package management
+is indeed a largely unsolved problem.
 
 However, maybe the statement ``package management is an unsolved
 problem'' simply does not make sense, and is akin to saying that
@@ -139,10 +142,9 @@ and integrating system and language-specific package managers \citep{Homer2010LC
 as well as being simply developers and end users of other software.
 By building a taxonomy for package management and sharing our experiences
 with package management development in both the programming language
-and operating system spaces, we aim in this paper to make the case
-that not only the problem space of package management mirrors that
-of programming languages, it should follow the lead of programming
-languages in the solution space as well.
+and operating system spaces, we aim in this paper to frame the design
+choices, layers, and trade-offs attendant to package managers for
+developers, maintainers, and users.
 
 \vspace{-0.2em}
 
@@ -160,21 +162,19 @@ The paradigms a language is categorized into inform users about particular
 design choices, and with these choices come design trade-offs. In
 the world of package managers, we can also identify general paradigms,
 by looking at their core concepts and design trade-offs. Package managers
-are programs that map relations between files and packages (which
-correspond to sets of files), and between packages (dependencies),
+map between files and packages, and between packages and their dependencies,
 allowing users to perform maintenance of their systems in terms of
 packages rather than at the level of individual files. The central
 design choice in a package manager, therefore, is how to perform those
 mappings.
 
 There are two approaches on how to map files to packages: the mapping
-can be either \emph{internal} or \emph{external} to the hierarchical
-structure of directories where the files reside. As this choice embodies
-a series of trade-offs and is the single decision that affects the
-design and implementation of a package manager the most, we identify
-these as two paradigms of package management. When the mapping is
-done within the file hierarchy structure, we say that package management
-is \emph{filesystem-oriented}\footnote{Being database-oriented does not imply an opaque, binary database
+can be based on the hierarchical directory structure where the files
+reside, or can be separate. As this choice embodies a series of trade-offs
+and is the single decision that affects the design and implementation
+of a package manager the most, we identify these as two paradigms
+of package management. When the mapping is internal to the file hierarchy
+structure, we say that package management is \emph{filesystem-oriented}\footnote{Being database-oriented does not imply an opaque, binary database
 format. Various database-oriented package managers store their file
 manifests in plain text files}. When it is external to the hierarchy of files being managed, the
 mapping needs to be stored elsewhere. We say in these cases that management
@@ -230,7 +230,8 @@ can be complicated, if they are oblivious to the structure defined
 by the package manager. Applications must either agree beforehand
 to this structure (which might be an option in domain-specific environments),
 or the package manager has to do extra work to configure them to use
-the structure; in the worst case, patching them.
+the structure, such as setting configuration options or environment
+variables, or in the worst case, patching them.
 
 Conversely, in database-oriented managers the mapping of files to
 packages is more complicated. Applications may install files wherever
@@ -557,12 +558,12 @@ with JRuby, Java). A language-specific package manager, therefore,
 is almost never specific to code written in a single language. Like
 domain-specific programming languages which are not necessarily much
 smaller than their general-purpose counterparts, the more sophisticated
-language-specific package managers are in effect general package managers
-with specific support for an ecosystem added. They need to build and
-deploy executables, native libraries and resource files written in
-different languages, keep track of installed files, check dependencies,
-perform network operations and manage remote repositories. Some of
-these tasks can be simplified due to ecosystem-specific assumptions,
+language-specific package managers are in effect much broader package
+managers with specific support for an ecosystem added. They need to
+build and deploy executables, native libraries and resource files
+written in different languages, keep track of installed files, check
+dependencies, perform network operations and manage remote repositories.
+Some of these tasks can be simplified due to ecosystem-specific assumptions,
 but many are equivalent in complexity to the tasks of a system-wide
 package manager.
 
@@ -718,12 +719,12 @@ is a symbolic link to \texttt{/System/Index}.
 
 \begin{figure}[t]
 \begin{tabular}{>{\raggedright}m{0.45\paperwidth}}
-\includegraphics[scale=0.6]{/Users/hisham/projects/gobolinux/paper/gobo_systemindex}\tabularnewline
+\includegraphics[scale=0.6,bb = 0 0 200 100, draft, type=eps]{C:/Users/hisham/projects/gobolinux/paper/gobo_systemindex.eps}\tabularnewline
 (a) The filesystem is indexed with the use of \\
 directories and symbolic links.\\
 \\
 \tabularnewline
-\includegraphics[scale=0.6]{/Users/hisham/projects/gobolinux/paper/gobo_programs}\tabularnewline
+\includegraphics[scale=0.6,bb = 0 0 200 100, draft, type=eps]{C:/Users/hisham/projects/gobolinux/paper/gobo_programs.eps}\tabularnewline
 (b) Versioned directory tree.\tabularnewline
 \end{tabular}\caption{\label{fig:gobofs}GoboLinux file system hierarchy}
 \end{figure}
@@ -812,7 +813,6 @@ that disables the Lua standard libraries; they essentially consist
 of variable declarations, describing the package via Lua tables (Lua's
 single data structure, which combines numeric and associative arrays)
 \end{comment}
-.
 
 \begin{comment}
 Another design feature inherited from GoboLinux was the support for
@@ -876,14 +876,14 @@ afford so easily.
 
 Having a high-level declarative specification allowed us to make such
 radical changes to the installation layout easily. Since LuaRocks
-produces relocatable packages, it does not provide to rockspec files
-any knowledge of the final directory structure. This allowed all existing
-rockspecs could be used in the new directory layout without any changes.
-This level of information hiding was only possible because we were
-dealing with a language-specific manager, where we could make assumptions
-about the contents of files (Lua source code and binary dynamic libraries)
-and how they would be used (as command-line scripts or loaded by Lua
-through its package loader system).
+produces relocatable packages, it does not provide to specification
+files (rockspecs) any knowledge of the final directory structure.
+This allowed all existing rockspecs to be used in the new directory
+layout without any changes. This level of information hiding was only
+possible because we were dealing with a language-specific manager,
+where we knew what was in the files (Lua source code and binary dynamic
+libraries) and how they would be used (as command-line scripts or
+loaded by Lua through its package loader system).
 
 \subsection{GoboLinux Aliens\label{subsec:GoboLinux-Aliens}}
 
@@ -949,23 +949,23 @@ faces the same design issues time and again, even as we move to containers
 and orchestration systems \citep{helm}.
 
 As we categorize package management systems, we conclude that filesystem-oriented
-designs are preferrable as they tend to be less susceptible to conflicts,
-but they require some level of control on runtime lookup. We observe
-that this control exists when language-specific package managers are
-bundled with the language environment, as is the case with npm for
-node.js and RubyGems for Ruby. These managers were free to adopt filesystem-oriented
-designs since they adjusted their module loaders accordingly. The
-other way to exert this control over run-time lookup is to employ
-a system-wide lower-level solution as we did in GoboLinux with the
-\texttt{/System/Index} tree of symbolic links or in the stowfs filesystem
-virtualization proposed for GNU Hurd \citep{stow}. Database-oriented
-designs, on the other hand, are more generally applicable, but are
-more opaque to their users and are more prone to package conflict
-and file-to-package synchronization issues. For these reasons, we
-advocate filesystem-oriented systems in general, but we also recognize
-that there are situations where a database-oriented solution works
-best to preserve compatibility with the ecosystem at play, as was
-the case with LuaRocks.
+designs are preferable as they tend to be less susceptible to conflicts,
+but they require some level of intervention to enable files to be
+found at run time. We observe that this control exists when language-specific
+package managers are bundled with the language environment, as is
+the case with npm for node.js and RubyGems for Ruby. These managers
+were free to adopt filesystem-oriented designs since they adjusted
+their module loaders accordingly. The other way to exert this control
+over run-time lookup is to employ a system-wide lower-level solution
+as we did in GoboLinux with the \texttt{/System/Index} tree of symbolic
+links or in the stowfs filesystem virtualization proposed for GNU
+Hurd \citep{stow}. Database-oriented designs, on the other hand,
+are more generally applicable, but are more opaque to their users
+and are more prone to package conflict and file-to-package synchronization
+issues. For these reasons, we advocate filesystem-oriented systems
+in general, but we also recognize that there are situations where
+a database-oriented solution works best to preserve compatibility
+with the ecosystem at play, as was the case with LuaRocks.
 
 Our classification of package managers as language-agnostic and language-specific
 highlighted the complementary qualities of these two classes of managers.
