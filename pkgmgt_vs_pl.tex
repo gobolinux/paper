@@ -1,7 +1,7 @@
 %% LyX 2.3.3 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[english,format=sigplan,10pt]{acmart}
-\usepackage{mathptmx}
+%\usepackage{mathptmx}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \setcounter{secnumdepth}{3}
@@ -40,7 +40,7 @@ in Programming Languages and Operating Systems}
 \affiliation{IBM Research}
 \email{lucasvr@br.ibm.com}
 \author{Michael Homer}
-\affiliation{Victoria University of Wellington - Wellington, New Zealand}
+\affiliation{Victoria University of Wellington\\Wellington, New Zealand}
 \email{mwh@ecs.vuw.ac.nz}
 \begin{abstract}
 Package management is instrumental for programming languages and operating
@@ -63,11 +63,11 @@ Package managers are programs that map relations between files and
 packages (which correspond to sets of files), and between packages
 (dependencies), allowing users to perform maintenance of their systems
 in terms of packages rather than at the level of individual files.
-Package management is an area that lies somewhere in the border between
+Package management is an area that lies in the border between
 programming languages and operating systems: packaging is a step that
 sits after a language's build process, and before an operating system's
 component installation. For this reason, it seems to be overlooked
-by both fields as an implementation issue. In the meantime, package
+by both fields as an implementation issue. Meanwhile, package
 management keeps growing in complexity. New languages, new deployment
 models, and new portability requirements all give rise to new package
 management systems. Further, this is not simply a matter of competing
@@ -80,9 +80,9 @@ for client-side JavaScript components. Bower is installed using \texttt{npm}
 \citep{npm}, a package manager for \texttt{node.js} \citep{nodejs},
 a JavaScript environment. On a Mac system, the typical way to install
 command-line tools such as \texttt{npm} is via either Homebrew \citep{homebrew}
-or MacPorts \citep{macports}, the two most popular general-purpose
-package managers for macOS. This is not a deliberately contrived example;
-it is the regular way to install development modules for a popular
+or MacPorts \citep{macports}, the two popular general-purpose
+package managers for macOS. This is not a deliberately contrived example:
+it is the regular way to install modules for a popular
 language in a modern platform.
 
 \begin{comment}
@@ -161,13 +161,12 @@ and so on. %
 These paradigms describe the core conceptual frameworks on top of
 which languages are designed. 
 \end{comment}
-The paradigms a language is categorized into inform users about particular
-design choices, and with these choices come design trade-offs. In
+The paradigms a language is categorized into inform users about its
+design choices, and with these choices come trade-offs. In
 the world of package managers, we can also identify general paradigms,
-by looking at their core concepts and design trade-offs. Package managers
-map between files and packages, and between packages and their dependencies,
-allowing users to perform maintenance of their systems in terms of
-packages rather than at the level of individual files. The central
+by looking at their core concepts and trade-offs. Package managers
+map between files and packages, and between packages and dependencies,
+so users can work with packages instead of files. The central
 design choice in a package manager, therefore, is how to perform those
 mappings.
 
@@ -189,7 +188,7 @@ can also be performed system-wide.
 
 The directory structure used by \texttt{pip}, the package manager
 for Python modules, is representative of the database-oriented style.
-Modules installed by \texttt{pip} are stored under a filesystem
+Modules are stored under a
 path that conforms to Python's default directory for locally-installed
 modules (e.g. \texttt{/usr/lib/python3.7/site-pack\-ages/}), whose definition
 predates the introduction of \texttt{pip}. Database-oriented
@@ -290,10 +289,10 @@ database-oriented portions which are assumed to be updated by installation
 scripts, such as refreshing global caches. Non-relocatable packages
 often assume hardcoded default paths in which resource files are expected
 to be found; if the package manager employs a different organization,
-it needs to reconfigure applications to make sure the required files
+it needs to reconfigure applications to make sure the files
 are found. One common solution is to use environment variables, since
 applications often support setting custom paths via variables in addition
-to the system-wide defaults. Most applications can be installed in
+to the global defaults. Most applications can be installed in
 custom locations, with the installation prefix being adjustable at
 compile time. The \texttt{/opt} directory is a traditional location
 for filesystem-oriented organization of additional packages. Core
@@ -532,9 +531,9 @@ language-agnostic package managers}
 In the world of programming languages, there is a distinction between
 DSLs and general purpose languages. Categorizing languages in one
 camp or another is not always easy, but a working definition is that
-domain-specific languages are those designed with a specific application
+domain-specific languages are designed with a specific application
 domain in mind, and general purpose languages are the complementary
-set, that is, those languages designed not with a particular domain
+set: languages made not with a particular domain
 in mind, but rather focusing on general areas such as ``systems programming''.
 
 While we tend to see DSLs as smaller languages than their general-purpose
@@ -557,8 +556,7 @@ make this evident, but other languages also grow into families: for
 example, npm supports JavaScript, CoffeeScript, TypeScript and others.
 Besides, these VM-based ecosystems usually support loading native
 extensions, and therefore they must also support building and integrating
-libraries usually written in C or C++ (or, in the case of RubyGems
-with JRuby, Java). A language-specific package manager, therefore,
+libraries usually written in C or C++. A language-specific package manager, therefore,
 is almost never specific to code written in a single language. Like
 domain-specific programming languages which are not necessarily much
 smaller than their general-purpose counterparts, the more sophisticated
